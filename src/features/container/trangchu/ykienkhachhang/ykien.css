@@ -1,0 +1,21 @@
+#ykien i {
+  color: #cac6c5;
+  font-size: 1.2rem;
+}
+#ykien {
+  background-color: #f3f3f3;
+}
+#ykien .ant-avatar {
+  width: 70px !important;
+  height: 70px !important;
+}
+#ykien .content-yk p {
+  width: 100%;
+  max-width: 80%;
+  margin: 0 auto;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+#ykien .content-yk {
+  background-color: white;
+}

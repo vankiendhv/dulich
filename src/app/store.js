@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import tintucReducer from "../features/container/admin/tintuc/tintucSlice"
+import userReducer from './userSlice';
+const rootReducer = {
+  tintucs: tintucReducer,
+  user: userReducer
+}
 
 export default configureStore({
-  reducer: {
-    counter: counterReducer,
-  },
-});
+  reducer: rootReducer
+}); 

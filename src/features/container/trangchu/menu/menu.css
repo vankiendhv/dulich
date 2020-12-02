@@ -1,0 +1,30 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
+.logo {
+  width: 4rem;
+}
+.navbar-brand{
+  font-family: 'Galada', cursive;
+  color: #03175f !important;
+  /* text-shadow: 2px 2px 2px gray; */
+}
+nav {
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+}
+.nav-link.active {
+  color: #cac531 !important;
+  font-weight: 700;
+}
+.navbar-light .navbar-nav .nav-link {
+  color: white;
+}
+.nav-link {
+  margin-left: 0.5rem;
+}
+.navbar-light .navbar-nav .nav-link:hover {
+  color: teal;
+}
+.bg-dark {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}

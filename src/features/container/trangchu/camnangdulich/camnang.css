@@ -1,0 +1,16 @@
+#camnang .col-md-3:hover i {
+  background-color: #e5f9ff;
+  color: #006989;
+}
+#camnang i {
+  background-color: #f9e3e6;
+  padding: 11px 14px;
+  border-radius: 100%;
+  font-size: 2rem;
+  transition: 0.7s;
+  color: #da4453;
+}
+#camnang .content_cn p {
+  font-size: 1.2rem;
+  font-weight: 700;
+}

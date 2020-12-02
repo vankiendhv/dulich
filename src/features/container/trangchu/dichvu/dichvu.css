@@ -1,0 +1,62 @@
+#dichvu .icon span {
+  font-size: 28px;
+  line-height: 60px;
+  color: #0fc39b;
+}
+#dichvu .icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  border: 1px solid #bdbdbd;
+}
+#dichvu .content-dv strong {
+  font-size: 1.2rem;
+  letter-spacing: 0.1rem;
+  margin-bottom: 1px;
+}
+#dichvu .content-dv {
+  margin-bottom: 2rem;
+}
+#dichvu .content-dv p {
+  font-size: 0.9rem;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 80%;
+}
+.border-left-top {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.border-mid-top {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 0;
+}
+.border-right-top {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.border-mid-bot {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 0;
+  border-top: 0;
+}
+@media (max-width: 768px) {
+  .border-left-top {
+    border-bottom: 0;
+  }
+  .border-mid-top {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-left: 0;
+    border-right: 0;
+  }
+  .border-right-top {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  .border-mid-bot {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    border-left: 0;
+    border-right: 0;
+  }
+}
