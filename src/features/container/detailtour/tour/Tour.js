@@ -167,22 +167,22 @@ export class Tour extends Component {
           <div className="form-group">
             <label htmlFor="">Họ tên(*)</label>
             <input type="text"
-              className="form-control" name="hoten" value={hoten} onChange={this.onchange} id="" aria-describedby="helpId" placeholder="" />
+              className="form-control" name="hoten" value={hoten} onChange={this.onchange} aria-describedby="helpId" placeholder="" />
           </div>
           <div className="form-group">
             <label htmlFor="">Email(*)</label>
             <input type="email"
-              className="form-control" name="email" value={email} onChange={this.onchange} id="" aria-describedby="helpId" placeholder="" />
+              className="form-control" name="email" value={email} onChange={this.onchange} aria-describedby="helpId" placeholder="" />
           </div>
           <div className="form-group">
             <label htmlFor="">Số điện thoại(*)</label>
             <input type="text"
-              className="form-control" name="sdt" value={sdt} onChange={this.onchange} id="" aria-describedby="helpId" placeholder="" />
+              className="form-control" name="sdt" value={sdt} onChange={this.onchange} aria-describedby="helpId" placeholder="" />
           </div>
           <div className="form-group">
             <label htmlFor="">Địa chỉ</label>
             <input type="text"
-              className="form-control" name="diachi" value={diachi} onChange={this.onchange} id="" aria-describedby="helpId" placeholder="" />
+              className="form-control" name="diachi" value={diachi} onChange={this.onchange} aria-describedby="helpId" placeholder="" />
           </div>
           <h4 className="text-center text-primary">Số người</h4>
           <div className="row">
@@ -190,28 +190,28 @@ export class Tour extends Component {
               <div className="form-group">
                 <label htmlFor="">Người lớn</label>
                 <input type="number"
-                  className="form-control" name="nguoilon" min="1" value={nguoilon} onChange={this.onchange} id="" aria-describedby="helpId" placeholder="" />
+                  className="form-control" name="nguoilon" min="1" value={nguoilon} onChange={this.onchange} aria-describedby="helpId" placeholder="" />
               </div>
             </div>
             <div className="col-md-3">
               <div className="form-group">
                 <label htmlFor="">Trẻ em</label>
                 <input type="number"
-                  className="form-control" name="treem" min="0" value={treem} onChange={this.onchange} id="" aria-describedby="helpId" placeholder="" />
+                  className="form-control" name="treem" min="0" value={treem} onChange={this.onchange} aria-describedby="helpId" placeholder="" />
               </div>
             </div>
             <div className="col-md-3">
               <div className="form-group">
                 <label htmlFor="">Em bé</label>
                 <input type="number"
-                  className="form-control" value={embe} name="embe" min="0" onChange={this.onchange} id="" aria-describedby="helpId" placeholder="" />
+                  className="form-control" value={embe} name="embe" min="0" onChange={this.onchange} aria-describedby="helpId" placeholder="" />
               </div>
             </div>
             <div className="col-md-3">
               <div className="form-group">
                 <label htmlFor="">Tổng</label>
                 <input type="number" disabled
-                  className="form-control" name="tong" value={tong} id="" aria-describedby="helpId" placeholder="" />
+                  className="form-control" name="tong" value={tong} aria-describedby="helpId" placeholder="" />
               </div>
             </div>
           </div>

@@ -1,21 +1,21 @@
 import tintucApi from "../../../../api/tintucApi";
 
-const { createSlice } = require("@reduxjs/toolkit");
+const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
-
+export const tintucData = createAsyncThunk('tintucs/tintucData', async () => {
+    const tintuc = await tintucApi.getAll();
+    return tintuc;
+})
 var datatintuc = [];
 const Tintuc = createSlice({
     name: "tintucs",
     initialState: {
-        datatintuc: [],
-        status: 'idle',
-        error: null
+        tintuc: [],
+        Loading: true,
+        error: ''
     },
     reducers: {
-        TintucSuccess: (state, action) => {
-            state.tintuc = action.payload;
-            state.isLoading = false;
-        },
+
         addTintuc: (state, action) => {
             state.push(action.payload)
         },
@@ -25,9 +25,22 @@ const Tintuc = createSlice({
             return state;
         },
         updateTintuc: (state, action) => { }
+    },
+    extraReducers: {
+        [tintucData.pending]: (state) => {
+            state.Loading = true;
+        },
+        [tintucData.rejected]: (state, action) => {
+            state.Loading = true;
+            state.error = action.error;
+        },
+        [tintucData.fulfilled]: (state, action) => {
+            state.Loading = false;
+            state.tintuc = action.payload;
+        }
     }
 });
 const { reducer, actions } = Tintuc;
-export const { addTintuc, removeTintuc, TintucSuccess } = actions;
+export const { addTintuc, removeTintuc } = actions;
 
 export default reducer;

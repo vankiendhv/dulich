@@ -46,3 +46,9 @@ svg{
 .ant-layout-sider{
   min-height: 100vh;
 }
+.spin{
+  text-align: center;
+}
+#admin textarea {
+  resize: none;
+}

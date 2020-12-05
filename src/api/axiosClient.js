@@ -25,19 +25,13 @@ const getFirebasetoken = async () => {
     })
 }
 const axiosClient = axios.create({
-    baseURL: `https://js-post-api.herokuapp.com/api`,
+    baseURL: `http://localhost:666`,
     headers: {
         'content-type': 'application/json',
     },
-
     paramsSerializer: params => queryString.stringify(params),
 });
 axiosClient.interceptors.request.use(async (config) => {
-    // const currenUser = firebase.auth().currentUser;
-    // if (currenUser) {
-    //     const token = await currenUser.getIdToken();
-    //     config.headers.Authorization = `Bearer ${token}`
-    // }
     const token = await getFirebasetoken();
     if (token) {
         config.headers.authorization = `Bearer ${token}`

@@ -1,43 +1,49 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { Spin } from 'antd';
 
-export class Chitiettintuc extends Component {
-    render() {
-        return (
-            <div id="admin">
-                <div className="heading">
-                    <h4>Chi tiết tin tức</h4>
-                    <div className="hr"></div>
-                </div>
-                <div className="content">
-                    <div className="ct">
-                        <p>Tên tin tức:&emsp; <b><i>Những điều cần biết khi đi du lịch ở chợ bò</i></b></p>
-                        <p>Tên tác giả:&emsp; <b><i>Trần thị lài em</i></b></p>
-                        <p>Ngày đăng:&emsp; <b><i>20/10/2020</i></b></p>
-                        <p>Facebook:&emsp; </p>
-                        <p>Twitch:&emsp; </p>
-                        <p>Instagram:&emsp; </p>
-                        <p>Tóm tắt:&emsp;</p>
-                        <div className="container">
-                            <p>ok hello chao các bạn</p>
-                        </div>
-                        <p>Nội dung:</p>
-                        <div className="container">
-                            <p>ok cc</p>
-                        </div>
-                    </div>
+function Chitiettintuc(props) {
+    const { id } = useParams();
+    const loading = useSelector(state => state.tintucs.loading);
+    const tintuc = useSelector(state => state.tintucs.tintuc.data.find(x => x.id === +id));
+    return (
+        <div id="admin">
+            <div className="heading">
+                <h4>Chi tiết tin tức</h4>
+                <div className="hr"></div>
+            </div>
+            <div className="content">
+                <div className="ct">
+                    {loading ? <div className="spin"><Spin className="mt-5" /></div> :
+                        <div>
+                            <p>Tên tin tức:&emsp; <b><i>{tintuc.name}</i></b></p>
+                            <p>Tên tác giả:&emsp; <b><i>{tintuc.tacgia}</i></b></p>
+                            <p>Ngày đăng:&emsp; <b><i>{tintuc.createdAt}</i></b></p>
+                            <p>Facebook:&emsp; <i>{tintuc.facebook}</i></p>
+                            <p>Twitch:&emsp; <i>{tintuc.twitch}</i></p>
+                            <p>Instagram:&emsp; <i>{tintuc.instagram}</i></p>
+                            <p>Tóm tắt:&emsp;</p>
+                            <div className="container">
+                                <p>{tintuc.tomtat}</p>
+                            </div>
+                            <p>Nội dung:</p>
+                            <div className="container">
+                                <p>{tintuc.content}</p>
+                            </div>
+                        </div>}
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-const mapStateToProps = (state) => ({
-
-})
-
-const mapDispatchToProps = {
+Chitiettintuc.propTypes = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chitiettintuc)
+export default Chitiettintuc
+
+
+

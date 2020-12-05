@@ -1,11 +1,10 @@
 import { Button } from '@material-ui/core'
-import { message } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { addloaitour, loaitourData, updateloaitour } from './loaitourSlice';
+import { addanh, anhData, updateanh } from './anhSlice';
 
-function Themloaitour(props) {
+function Themanh(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [state, setState] = useState({ status: 1, name: '', idsua: '' });
@@ -15,14 +14,14 @@ function Themloaitour(props) {
             [e.target.name]: e.target.value,
         });
     }
-    const actionResult = async () => { await dispatch(loaitourData()) }
+    const actionResult = async () => { await dispatch(anhData()) }
     const history = useHistory()
-    const loaitour = useSelector(state => state.loaitours.loaitour.data.find(x => x.id === +id));
+    const anh = useSelector(state => state.anhs.anh.data.find(x => x.id === +id));
     useEffect(() => {
         if (id) {
             setState({
-                status: loaitour.status,
-                name: loaitour.name,
+                status: anh.status,
+                name: anh.name,
                 idsua: id
             })
         }
@@ -30,42 +29,38 @@ function Themloaitour(props) {
     const { name } = state;
     const onSubmit = e => {
         e.preventDefault();
-        if (name === "") {
-            message.error("Xin hãy nhập đầy đủ thông tin!");
+        if (id) {
+            dispatch(updateanh(state));
         } else {
-            if (id) {
-                dispatch(updateloaitour(state));
-            } else {
-                const action = addloaitour(state);
-                dispatch(action);
-            }
-            setTimeout(() => {
-                actionResult();
-            }, 700);
-            history.push("/admin/loaitour");
+            const action = addanh(state);
+            dispatch(action);
         }
+        setTimeout(() => {
+            actionResult();
+        }, 700);
+        history.push("/admin/anh");
     }
     return (
         <div id="admin">
             <div className="heading">
-                <h4>{id ? "Sửa loại tour" : "Thêm loại tour"}</h4>
+                <h4>{id ? "Sửa ảnh" : "Thêm ảnh"}</h4>
                 <div className="hr"></div>
             </div>
             <div className="content">
                 <form action="" method="post" onSubmit={onSubmit}>
                     <div className="form-group">
-                        <label htmlFor="">Tên loại tour</label>
+                        <label htmlFor="">Link ảnh</label>
                         <input type="text" name="name" value={name} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
-                    <div className="text-center mtb"><Button type="submit" color="primary" variant="contained">{id ? "Sửa loại tour" : "Thêm loại tour"}</Button></div>
+                    <div className="text-center mtb"><Button type="submit" color="primary" variant="contained">{id ? "Sửa ảnh" : "Thêm ảnh"}</Button></div>
                 </form>
             </div>
         </div>
     )
 }
 
-Themloaitour.propTypes = {
+Themanh.propTypes = {
 
 }
 
-export default Themloaitour
+export default Themanh

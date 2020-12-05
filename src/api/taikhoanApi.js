@@ -1,10 +1,10 @@
 import axiosClient from "./axiosClient";
 
-class TintucApi {
+class TaikhoanApi {
     getAll = (params) => {
-        const url = '/tintucs';
+        const url = '/users';
         return axiosClient.get(url, { params });
     };
 }
-const tintucApi = new TintucApi();
-export default tintucApi;
+const taikhoanApi = new TaikhoanApi();
+export default taikhoanApi;

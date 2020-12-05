@@ -23,6 +23,17 @@ import firebase from 'firebase';
 import { useDispatch } from "react-redux";
 import { getMe } from "../../app/userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { quocgiaData } from "../container/admin/Quocgia/quocgiaSlice";
+import { tintucData } from "../container/admin/tintuc/tintucSlice";
+import { loaitourData } from "../container/admin/Loaitour/loaitourSlice";
+import { diadiemData } from "../container/admin/DiaDiem/diadiemSlice";
+import { mangxahoiData } from "../container/admin/mxh/mangxahoiSlice";
+import { binhluanData } from "../container/admin/Binhluan/binhluanSlice";
+import { userData } from "../container/admin/taikhoan/taikhoanSlice";
+import { tagData } from "../container/admin/Tag/tagSlice";
+import { anhData } from "../container/admin/Anh/anhSlice";
+import { dichvuData } from "../container/admin/Dichvu/dichvuSlice";
+import { hoadonData } from "../container/admin/Hoadon/hoadonSlice";
 
 // Configure Firebase.
 const config = {
@@ -53,7 +64,17 @@ export default function NestingExample() {
   //   }
   //   fetchTintucList();
   // }, []);
-
+  const actionquocgia = async () => { await dispatch(quocgiaData()) }
+  const actiontintuc = async () => { await dispatch(tintucData()) }
+  const actionloaitour = async () => { await dispatch(loaitourData()) }
+  const actionuser = async () => { await dispatch(userData()) }
+  const actiondiadiem = async () => { await dispatch(diadiemData()) }
+  const actionmangxahoi = async () => { await dispatch(mangxahoiData()) }
+  const actionbinhluan = async () => { await dispatch(binhluanData()) }
+  const actiontag = async () => { await dispatch(tagData()) }
+  const actionanh = async () => { await dispatch(anhData()) }
+  const actiondichvu = async () => { await dispatch(dichvuData()) }
+  const actionhoadon = async () => { await dispatch(hoadonData()) }
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
       if (!user) {
@@ -63,10 +84,19 @@ export default function NestingExample() {
       const token = await user.getIdToken();
       localStorage.setItem('token', token);
       const actionResult = await dispatch(getMe());
-      // const currentUser = unwrapResult(actionResult);
-      console.log(actionResult);
-      // console.log("user" + user.displayName);
-      // console.log("token" + token);
+      const currentUser = unwrapResult(actionResult);
+
+      actionquocgia();
+      actiontintuc();
+      actionloaitour();
+      actionuser();
+      actiondiadiem();
+      actionmangxahoi();
+      actionbinhluan();
+      actiontag();
+      actionanh();
+      actiondichvu();
+      actionhoadon();
     }
     );
     return () => unregisterAuthObserver();

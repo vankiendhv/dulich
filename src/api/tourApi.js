@@ -1,10 +1,10 @@
 import axiosClient from "./axiosClient";
 
-class TintucApi {
+class TourApi {
     getAll = (params) => {
-        const url = '/tintucs';
+        const url = '/tours';
         return axiosClient.get(url, { params });
     };
 }
-const tintucApi = new TintucApi();
-export default tintucApi;
+const tourApi = new TourApi();
+export default tourApi;
