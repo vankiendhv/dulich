@@ -1,7 +1,7 @@
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button } from '@material-ui/core';
-import { Popconfirm, Spin, Table } from 'antd';
+import { Popconfirm, Popover, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
@@ -71,7 +71,12 @@ function Hoadon(props) {
                             key: index + 1,
                             name: <span>{ok.User.name}</span>,
                             tour: <span>{ok.Tour.name}</span>,
-                            soluong: <span>{ok.soluong}</span>,
+                            soluong: <Popover content={<div>
+                                <p>Người lớn: {ok.soluong}</p>
+                                <p>Trẻ em: {ok.soluong}</p>
+                                <p>Em bé: {ok.soluong}</p></div>} title="Số lượng cụ thể">
+                                <span>{ok.soluong}</span>
+                            </Popover>,
                             tien: <span>10000</span>,
                             action:
                                 <div className="action">

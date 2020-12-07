@@ -72,9 +72,9 @@ function Binhluan(props) {
                     <Table columns={columns} dataSource={binhluans.map((ok, index) => (
                         {
                             key: index + 1,
-                            user: <p>{ok.User.name}</p>,
-                            tour: <p>{ok.Tour.name}</p>,
-                            binhluan: <p>{ok.binhluan}</p>,
+                            user: <span>{ok.User.name}</span>,
+                            tour: <span>{ok.Tour.name}</span>,
+                            binhluan: <span>{ok.binhluan}</span>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">

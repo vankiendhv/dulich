@@ -49,7 +49,7 @@ function Taikhoan(props) {
                         {
                             key: index + 1,
                             name: <Link to={`${props.url}/chitiettaikhoan/${ok.id}`}>{ok.name}</Link>,
-                            email: <p>{ok.email}</p>,
+                            email: <span>{ok.email}</span>,
                             avatar: ok.avatar ? <img width="100px" height="120px" src={ok.avatar} alt="" /> : <img width="100px" height="120px" src="https://i.pinimg.com/originals/2b/df/58/2bdf587201cb0ad510f41391b6410621.png" alt="" />,
                             status: <div className="action">{ok.status === 1 ? <Link><i className="far fa-thumbs-up "></i></Link> : <Link><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action: <div className="action"><Link to={`${props.url}/suatintuc/${ok.id}`}><i className="far fa-edit mr-4"></i></Link><Link ><i className="far fa-trash-alt" ></i></Link></div>

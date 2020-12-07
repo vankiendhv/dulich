@@ -1,29 +1,29 @@
 import { message } from "antd";
 import axiosClient from "./axiosClient";
 
-class TintucApi {
+class TintuctagApi {
     getAll = (params) => {
-        const url = '/tintucs';
+        const url = '/tintuctags';
         return axiosClient.get(url, { params });
     };
-    posttintuc = (params) => {
-        const url = '/tintucs';
+    posttintuctag = (params) => {
+        const url = '/tintuctags';
         return axiosClient.post(url, params).then(data => {
             message.success("Thêm thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });
     };
-    deletetintuc = (id) => {
-        const url = `/tintucs/${id}`;
+    deletetintuctag = (id) => {
+        const url = `/tintuctags/${id}`;
         return axiosClient.delete(url).then(data => {
             message.success("Xoá thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });
     };
-    edittintuc = (params) => {
-        const url = `/tintucs/${params.idsua}`;
+    edittintuctag = (params) => {
+        const url = `/tintuctags/${params.idsua}`;
         return axiosClient.patch(url, params).then(data => {
             message.success("Sửa thành công!");
         }).catch(err => {
@@ -31,5 +31,5 @@ class TintucApi {
         });
     }
 }
-const tintucApi = new TintucApi();
-export default tintucApi;
+const tintuctagApi = new TintuctagApi();
+export default tintuctagApi;

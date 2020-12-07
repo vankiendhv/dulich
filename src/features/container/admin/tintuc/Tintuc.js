@@ -1,25 +1,18 @@
 
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button } from '@material-ui/core';
-import { Spin, Table } from 'antd'
+import { Popconfirm, Spin, Table } from 'antd'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import './tintuc.css'
-import { removeTintuc, tintucData } from "./tintucSlice"
+import { removetintuc, tintucData, updatetintuc } from "./tintucSlice"
 function Tintuc(props) {
     const dispatch = useDispatch()
     const tintucs = useSelector(state => state.tintucs.tintuc.data);
     const loading = useSelector(state => state.tintucs.Loading);
-    const handleDelete = (e) => {
-        console.log(e);
-        const action = removeTintuc(e)
-        dispatch(action);
-    }
-    const actionResult = async () => await dispatch(tintucData());
-    useEffect(() => {
-        actionResult();
-    }, [])
 
+    const actionResult = async () => await dispatch(tintucData());
     const columns = [
         {
             title: 'Tiêu đề',
@@ -43,9 +36,28 @@ function Tintuc(props) {
         }
     ];
 
-    const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra);
+
+    const history = useHistory()
+    const hangdleDelete = e => {
+        dispatch(removetintuc(e));
+        setTimeout(() => {
+            actionResult();
+        }, 500);
     }
+    const hangdleEdit = (id) => {
+        history.replace(`${props.url}/suatintuc/${id}`)
+    }
+    const handleStatus = (e, id) => {
+        if (e === 1) {
+            dispatch(updatetintuc({ status: 0, idsua: id }))
+        } else {
+            dispatch(updatetintuc({ status: 1, idsua: id }))
+        }
+        setTimeout(() => {
+            actionResult();
+        }, 500);
+    }
+
     return (
         <div id="admin">
             <div className="heading">
@@ -62,10 +74,18 @@ function Tintuc(props) {
                         name: <Link to={`${props.url}/chitiettintuc/${ok.id}`}>{ok.name}</Link>,
                         author: <p>{ok.tacgia}</p>,
                         date: <p>{ok.date}</p>,
-                        status: <div className="action">{ok.status === 1 ? <Link><i className="far fa-thumbs-up "></i></Link> : <Link><i className="far fa-thumbs-down "></i></Link>}</div>,
-                        action: <div className="action"><Link to={`${props.url}/suatintuc/${ok.id}`}><i className="far fa-edit mr-4"></i></Link><Link ><i className="far fa-trash-alt" onClick={() => { handleDelete(ok.id) }}></i></Link></div>
+                        status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
+                        action:
+                            <div className="action">
+                                <Popconfirm title="Bạn có muốn sửa？" onConfirm={() => { hangdleEdit(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'green' }} />}>
+                                    <Link ><i className="far fa-edit mr-4"></i></Link>
+                                </Popconfirm>
+                                <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
+                                    <Link ><i className="far fa-trash-alt" ></i></Link>
+                                </Popconfirm>
+                            </div>
                     }))}
-                    onChange={onChange} />}
+                />}
             </div>
         </div>
     )

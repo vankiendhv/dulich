@@ -12,6 +12,8 @@ import tagReducer from "../features/container/admin/Tag/tagSlice"
 import anhReducer from "../features/container/admin/Anh/anhSlice"
 import dichvuReducer from "../features/container/admin/Dichvu/dichvuSlice"
 import hoadonReducer from "../features/container/admin/Hoadon/hoadonSlice"
+import tintuctagReducer from "../features/container/admin/tintuc/tintuctagSlice"
+import roleReducer from "../features/container/admin/Role/roleSlice";
 
 const rootReducer = {
   tintucs: tintucReducer,
@@ -26,7 +28,9 @@ const rootReducer = {
   tags: tagReducer,
   anhs: anhReducer,
   dichvus: dichvuReducer,
-  hoadons: hoadonReducer
+  hoadons: hoadonReducer,
+  tintuctags: tintuctagReducer,
+  roles: roleReducer
 }
 
 export default configureStore({

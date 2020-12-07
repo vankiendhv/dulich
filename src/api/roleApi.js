@@ -1,29 +1,29 @@
 import { message } from "antd";
 import axiosClient from "./axiosClient";
 
-class TintucApi {
+class RoleApi {
     getAll = (params) => {
-        const url = '/tintucs';
+        const url = '/roles';
         return axiosClient.get(url, { params });
     };
-    posttintuc = (params) => {
-        const url = '/tintucs';
+    postrole = (params) => {
+        const url = '/roles';
         return axiosClient.post(url, params).then(data => {
             message.success("Thêm thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });
     };
-    deletetintuc = (id) => {
-        const url = `/tintucs/${id}`;
+    deleterole = (id) => {
+        const url = `/roles/${id}`;
         return axiosClient.delete(url).then(data => {
             message.success("Xoá thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });
     };
-    edittintuc = (params) => {
-        const url = `/tintucs/${params.idsua}`;
+    editrole = (params) => {
+        const url = `/roles/${params.idsua}`;
         return axiosClient.patch(url, params).then(data => {
             message.success("Sửa thành công!");
         }).catch(err => {
@@ -31,5 +31,5 @@ class TintucApi {
         });
     }
 }
-const tintucApi = new TintucApi();
-export default tintucApi;
+const roleApi = new RoleApi();
+export default roleApi;

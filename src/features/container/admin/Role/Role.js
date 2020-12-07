@@ -5,25 +5,17 @@ import { Popconfirm, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { anhData, removeanh, updateanh } from './anhSlice';
-function Anh(props) {
+import { roleData, removerole, updaterole } from './roleSlice';
+function Role(props) {
 
     const columns = [
         {
-            title: 'Tour',
+            title: 'quyền',
             dataIndex: 'name',
         },
         {
-            title: 'Ảnh',
+            title: 'Tình trạng',
             dataIndex: 'status',
-        },
-        {
-            title: 'Link',
-            dataIndex: 'link',
-        },
-        {
-            title: 'Banner',
-            dataIndex: 'banner',
         },
         {
             title: 'Action',
@@ -34,26 +26,26 @@ function Anh(props) {
     function onChange(pagination, filters, sorter, extra) {
         console.log('params', pagination, filters, sorter, extra);
     }
-    const anhs = useSelector(state => state.anhs.anh.data);
-    const loading = useSelector(state => state.anhs.loading)
+    const roles = useSelector(state => state.roles.role.data);
+    const loading = useSelector(state => state.roles.loading)
     const dispatch = useDispatch();
-    const actionResult = async () => { await dispatch(anhData()) }
+    const actionResult = async () => { await dispatch(roleData()) }
 
     const history = useHistory()
     const hangdleDelete = e => {
-        dispatch(removeanh(e));
+        dispatch(removerole(e));
         setTimeout(() => {
             actionResult();
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suaanh/${id}`)
+        history.replace(`${props.url}/suarole/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
-            dispatch(updateanh({ status: 0, idsua: id }))
+            dispatch(updaterole({ status: 0, idsua: id }))
         } else {
-            dispatch(updateanh({ status: 1, idsua: id }))
+            dispatch(updaterole({ status: 1, idsua: id }))
         }
         setTimeout(() => {
             actionResult();
@@ -63,24 +55,24 @@ function Anh(props) {
     return (
         <div id="admin">
             <div className="heading">
-                <h4>Ảnh</h4>
+                <h4>Phân quyền</h4>
                 <div className="hr"></div>
             </div>
             <div className="content">
                 <div className="add">
-                    {/* <Link to={`${props.url}/themanh`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link> */}
+                    <Link to={`${props.url}/themrole`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
-                    <Table columns={columns} dataSource={anhs.map((ok, index) => (
+                    <Table columns={columns} dataSource={roles.map((ok, index) => (
                         {
                             key: index + 1,
-                            name: <span>{ok.Tour.name}</span>,
-                            link: <span>{ok.link}</span>,
-                            banner: <div>ok</div>,
+                            name: <span>{ok.name}</span>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">
-
+                                    <Popconfirm title="Bạn có muốn sửa？" onConfirm={() => { hangdleEdit(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'green' }} />}>
+                                        <Link ><i className="far fa-edit mr-4"></i></Link>
+                                    </Popconfirm>
                                     <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
                                         <Link ><i className="far fa-trash-alt" ></i></Link>
                                     </Popconfirm>
@@ -93,8 +85,8 @@ function Anh(props) {
     )
 }
 
-Anh.propTypes = {
+Role.propTypes = {
 
 }
 
-export default Anh
+export default Role

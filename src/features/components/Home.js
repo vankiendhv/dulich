@@ -19,7 +19,7 @@ import Listtour from "../container/Listtour/Listtour";
 import Dattour from "../container/detailtour/dattour/Dattour";
 import Listtintuc from "../container/tintuc/listtintuc/Listtintuc";
 import tintucApi from "../../api/tintucApi";
-import firebase from 'firebase';
+import firebase from '../../firebase';
 import { useDispatch } from "react-redux";
 import { getMe } from "../../app/userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -34,14 +34,15 @@ import { tagData } from "../container/admin/Tag/tagSlice";
 import { anhData } from "../container/admin/Anh/anhSlice";
 import { dichvuData } from "../container/admin/Dichvu/dichvuSlice";
 import { hoadonData } from "../container/admin/Hoadon/hoadonSlice";
+import { roleData } from "../container/admin/Role/roleSlice";
 
 // Configure Firebase.
-const config = {
-  apiKey: 'AIzaSyB62z_vI77NAuEAVE5mQ3Uqu3qag8a7Jos',
-  authDomain: 'test-8b330.firebaseapp.com',
-  // ...
-};
-firebase.initializeApp(config);
+// const config = {
+//   apiKey: 'AIzaSyB62z_vI77NAuEAVE5mQ3Uqu3qag8a7Jos',
+//   authDomain: 'test-8b330.firebaseapp.com',
+//   // ...
+// };
+// firebase.initializeApp(config);
 
 function Empty() {
   return ''
@@ -75,6 +76,7 @@ export default function NestingExample() {
   const actionanh = async () => { await dispatch(anhData()) }
   const actiondichvu = async () => { await dispatch(dichvuData()) }
   const actionhoadon = async () => { await dispatch(hoadonData()) }
+  const actionrole = async () => { await dispatch(roleData()) }
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
       if (!user) {
@@ -97,6 +99,7 @@ export default function NestingExample() {
       actionanh();
       actiondichvu();
       actionhoadon();
+      actionrole();
     }
     );
     return () => unregisterAuthObserver();

@@ -31,7 +31,8 @@ import Themanh from "../Anh/Themanh";
 import Dichvu from "../Dichvu/Dichvu";
 import Themdichvu from "../Dichvu/Themdichvu"
 import Hoadon from "../Hoadon/Hoadon";
-
+import Role from "../Role/Role";
+import Themrole from '../Role/Themrole';
 const { Header, Sider, Content } = Layout;
 
 export default class Nav extends Component {
@@ -104,6 +105,9 @@ export default class Nav extends Component {
                             <Menu.Item key="13" icon={this.state.collapsed === true ? <span className="fas fa-file-alt" style={this.stylenav()}></span> : <span className="fas fa-file-alt mr-2"></span>}>
                                 <Link to={`${this.props.url}/hoadon`}>Quản lý hoá đơn</Link>
                             </Menu.Item>
+                            <Menu.Item key="14" icon={this.state.collapsed === true ? <span className="fas fa-user-tag" style={this.stylenav()}></span> : <span className="fas fa-user-tag mr-2"></span>}>
+                                <Link to={`${this.props.url}/role`}>Quản lý phân quyền</Link>
+                            </Menu.Item>
                         </Menu>
                     </Sider>
 
@@ -148,11 +152,17 @@ export default class Nav extends Component {
                                 <Route path={`${this.props.path}/tour`}  >
                                     <Tour url={this.props.url} />
                                 </Route>
+                                <Route path={`${this.props.path}/role`}  >
+                                    <Role url={this.props.url} />
+                                </Route>
                                 <Route path={`${this.props.path}/themtintuc`}  >
                                     <Themtintuc />
                                 </Route>
                                 <Route path={`${this.props.path}/themtag`}  >
                                     <Themtag />
+                                </Route>
+                                <Route path={`${this.props.path}/themrole`}  >
+                                    <Themrole />
                                 </Route>
                                 <Route path={`${this.props.path}/themdichvu`}  >
                                     <Themdichvu />
@@ -174,6 +184,9 @@ export default class Nav extends Component {
                                 </Route>
                                 <Route path={`${this.props.path}/suatintuc/:id`}  >
                                     <Themtintuc />
+                                </Route>
+                                <Route path={`${this.props.path}/suarole/:id`}  >
+                                    <Themrole />
                                 </Route>
                                 <Route path={`${this.props.path}/suamangxahoi/:id`}  >
                                     <Themmangxahoi />

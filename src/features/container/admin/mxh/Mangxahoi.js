@@ -81,10 +81,10 @@ function Mangxahoi(props) {
                     <Table columns={columns} dataSource={mangxahois.map((ok, index) => (
                         {
                             key: index + 1,
-                            name: <p>{ok.name}</p>,
-                            icon: <p>{ok.icon}</p>,
-                            color: <p>{ok.color}</p>,
-                            link: <p>{ok.link}</p>,
+                            name: <span>{ok.name}</span>,
+                            icon: <span>{ok.icon}</span>,
+                            color: <span>{ok.color}</span>,
+                            link: <span>{ok.link}</span>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">

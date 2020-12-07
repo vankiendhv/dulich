@@ -16,15 +16,15 @@ const Tintuc = createSlice({
     },
     reducers: {
 
-        addTintuc: (state, action) => {
-            state.push(action.payload)
+        addtintuc: (state, action) => {
+            tintucApi.posttintuc(action.payload);
         },
-        removeTintuc: (state, action) => {
-            const removeTintucId = action.payload;
-            state = state.filter(tintuc => tintuc.id !== removeTintucId);
-            return state;
+        removetintuc: (state, action) => {
+            tintucApi.deletetintuc(action.payload);
         },
-        updateTintuc: (state, action) => { }
+        updatetintuc: (state, action) => {
+            tintucApi.edittintuc(action.payload);
+        }
     },
     extraReducers: {
         [tintucData.pending]: (state) => {
@@ -41,6 +41,6 @@ const Tintuc = createSlice({
     }
 });
 const { reducer, actions } = Tintuc;
-export const { addTintuc, removeTintuc } = actions;
+export const { addtintuc, removetintuc, updatetintuc } = actions;
 
 export default reducer;
