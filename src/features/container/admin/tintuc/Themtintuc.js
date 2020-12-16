@@ -1,68 +1,112 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, IconButton } from '@material-ui/core'
-import { message, Select } from 'antd'
+import { message, Select, Spin } from 'antd'
 import { Option } from 'antd/lib/mentions'
 import { useDispatch, useSelector } from 'react-redux'
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { addtintuc, tintucData, updatetintuc } from './tintucSlice'
 import { useHistory, useParams } from 'react-router-dom'
 import { storage } from "../../../../firebase"
-// import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials';
-// import Bold from '@ckeditor/ckeditor5-basic-styles/src/bold';
-// import Italic from '@ckeditor/ckeditor5-basic-styles/src/italic';
-// import Paragraph from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import { addtintuctag, removetintuctag, tintuctagData } from './tintuctagSlice'
+import axios from "axios";
+import JoditEditor from "jodit-react";
 function Themtintuc(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
     const actionResult = async () => { await dispatch(tintucData()) }
-    // const actionTintuctag = async () => { await dispatch(tintuctagData()) }
-    const [state, setState] = useState({ tenanh: '', name: '', idsua: '', status: 1, facebook: '', twitch: '', instagram: '', tag: [], anh: '', img: '', linkImg: '', tomtat: '', content: '', tacgia: '', tagId: [] })
-    useEffect(() => {
-        // actionTintuctag();
-        actionResult();
-        //     if (id) {
-        //         setState({
-        //             status: tintuc.status,
-        //             name: tintuc.name,
-        //             idsua: id
-        //         })
-        //     }
-        return (
-            setState({
-                ...state,
-                tag: data
-            })
-        )
-    }, [])
-    // const editorConfiguration = {
-    //     plugins: [Essentials, Bold, Italic, Paragraph],
-    //     toolbar: ['bold', 'italic']
-    // };
-    const { tenanh, linkImg, img, name, tacgia, tag, facebook, twitch, instagram, anh, content, status, tomtat, tagId } = state;
-    const onSubmit = e => {
-        e.preventDefault();
-        if (name === "" || img === "" || tacgia === "" || facebook === "" || twitch === "" || instagram === "" || content === "" || tomtat === "") {
-            message.error("Xin hãy nhập đầy đủ thông tin!");
-        } else {
-            if (id) {
-                dispatch(updatetintuc(state));
-            } else {
-                upFirebase();
-                var TintucTags = []
-                for (let i = 0; i < tagId.length; i++) {
-                    TintucTags.push({ tagId: tagId[i] })
-                }
-                dispatch(addtintuc({ name, content, tomtat, facebook, instagram, twitch, status, tacgia, TintucTags }));
+    const actiontintuctag = async () => { await dispatch(tintuctagData()) }
 
+    const [state, setState] = useState({ load: false, tenanh: '', checktag: [], name: '', idsua: '', status: 1, facebook: '', twitch: '', instagram: '', tag: [], anh: '', img: '', linkImg: '', tomtat: '', tacgia: '', tag_id: [] })
+    const [content, setcontent] = useState('')
+
+    useEffect(async () => {
+        actionResult();
+        actiontintuctag();
+        if (id) {
+            const suatag = await axios.get(`http://localhost:666/tintuctags/${id}`);
+            const ss = suatag.data
+            const sua_tag = [];
+            for (let i = 0; i < ss.data.length; i++) {
+                sua_tag.push(`${ss.data[i].tagId}`);
             }
-            setTimeout(() => {
-                actionResult();
-            }, 800);
-            history.push("/admin/tintuc");
+            setState({
+                status: tintuc.status,
+                name: tintuc.name,
+                tenanh: tintuc.tenanh,
+                facebook: tintuc.facebook,
+                twitch: tintuc.twitch,
+                anh: tintuc.anh,
+                instagram: tintuc.instagram,
+                tomtat: tintuc.tomtat,
+                tacgia: tintuc.tacgia,
+                tag_id: sua_tag,
+                checktag: sua_tag,
+                idsua: id
+            })
+            setcontent(tintuc.content)
         }
+        // return (
+        //     setState({
+        //         ...state,
+        //         tag: data
+        //     })
+        // )
+    }, [])
+    const { load, tenanh, linkImg, img, name, tacgia, anh, idsua, facebook, twitch, instagram, status, tomtat, tag_id, checktag } = state;
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        setState({ ...state, load: true })
+        // if (name === "" || tenanh === "" || tacgia === "" || facebook === "" || twitch === "" || instagram === "" || content === "" || tomtat === "") {
+        //     message.error("Xin hãy nhập đầy đủ thông tin!");
+        // } else {
+        if (id) {
+            if (img !== undefined) {
+                await storage.ref(`images/${img.name}`).put(img);
+                const anh = await storage.ref("images").child(img.name).getDownloadURL();
+                if (checktag === tag_id) {
+                    console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
+                    dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                } else {
+                    console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id);
+                    await dispatch(removetintuctag(idsua))
+                    for (let i = 0; i < tag_id.length; i++) {
+                        var tintucId = idsua;
+                        const tagId = tag_id[i];
+                        await dispatch(addtintuctag({ tintucId, tagId }))
+                    }
+                    await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                }
+            } else {
+                if (checktag === tag_id) {
+                    console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
+                    dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                } else {
+                    console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id);
+                    await dispatch(removetintuctag(idsua))
+                    for (let i = 0; i < tag_id.length; i++) {
+                        var tintucId = idsua;
+                        const tagId = tag_id[i];
+                        await dispatch(addtintuctag({ tintucId, tagId }))
+                    }
+                    await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                }
+            }
+        } else {
+            await storage.ref(`images/${img.name}`).put(img);
+            const anh = await storage.ref("images").child(img.name).getDownloadURL();
+            var TintucTags = []
+            for (let i = 0; i < tag_id.length; i++) {
+                TintucTags.push({ tagId: tag_id[i] })
+            }
+            console.log(tag_id);
+            dispatch(addtintuc({ name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh, TintucTags }));
+        }
+        setTimeout(() => {
+            actionResult();
+        }, 800);
+        history.push("/admin/tintuc");
+        // }
     }
     const tags = useSelector(state => state.tags.tag.data);
     const data = [];
@@ -72,7 +116,7 @@ function Themtintuc(props) {
     }
 
     const tintuc = useSelector(state => state.tintucs.tintuc.data.find(x => x.id === +id))
-    const tintucs = useSelector(state => state.tintucs.tintuc.data)
+    // const tintucs = useSelector(state => state.tintucs.tintuc.data)
     const onChange = (e) => {
         setState({
             ...state,
@@ -82,7 +126,7 @@ function Themtintuc(props) {
     const handleChange = (value) => {
         setState({
             ...state,
-            tagId: value
+            tag_id: value
         })
     }
     const hangdelimage = (e) => {
@@ -92,30 +136,6 @@ function Themtintuc(props) {
             tenanh: e.target.files[0].name,
             img: e.target.files[0],
         });
-    }
-
-    const upFirebase = () => {
-        const uploadTask = storage.ref(`images/${img.name}`).put(img);
-        uploadTask.on(
-            "state_change",
-            snapshot => { },
-            error => {
-                console.log(error);
-            },
-            () => {
-                storage
-                    .ref("images")
-                    .child(img.name)
-                    .getDownloadURL()
-                    .then(url => {
-                        console.log(url);
-                        setState({
-                            ...state,
-                            anh: "ok"
-                        })
-                    })
-            }
-        )
     }
     return (
         <div id="admin">
@@ -147,20 +167,12 @@ function Themtintuc(props) {
                         <label htmlFor="">Tóm tắt</label>
                         <textarea name="tomtat" onChange={onChange} cols="30" value={tomtat} className="form-control w-50" rows="4"></textarea>
                     </div>
-                    <div className="form-group ">
+                    <div className="form-group">
                         <label htmlFor="">Nội dung</label>
-                        <CKEditor
-                            // config={editorConfiguration}
-                            editor={ClassicEditor}
-                            name="content"
+                        <JoditEditor
                             value={content}
-                            onChange={(event, editor) => {
-                                const data = editor.getData();
-                                setState({
-                                    ...state,
-                                    content: data
-                                })
-                            }}
+                            tabIndex={1}
+                            onChange={e => setcontent(e)}
                         />
                     </div>
                     <div className="form-group">
@@ -181,13 +193,16 @@ function Themtintuc(props) {
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Tags liên quan</label>
-                        <Select mode="tags" onChange={handleChange} className="w-50 ml-4" placeholder="Tags Mode">
-                            {tag}
+                        <Select mode="tags" value={tag_id} onChange={handleChange} className="w-50 ml-4" placeholder="Tags Mode">
+                            {data}
                         </Select>
                     </div>
-                    <div className="text-center mtb"><Button type="submit" variant="contained" color="primary" >{id ? "Sửa tin tức" : "Thêm tin"}</Button></div>
+                    <div className="text-center mtb">
+                        {load ? <div className="spinner-border text-success" role="status"><span className="sr-only">Loading...</span></div> : ''}
+                        <Button type="submit" variant="contained" color="primary" >{id ? "Sửa tin tức" : "Thêm tin"}</Button></div>
                 </form>
             </div>
+
         </div>
     )
 }

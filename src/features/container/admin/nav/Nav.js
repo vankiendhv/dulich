@@ -33,6 +33,9 @@ import Themdichvu from "../Dichvu/Themdichvu"
 import Hoadon from "../Hoadon/Hoadon";
 import Role from "../Role/Role";
 import Themrole from '../Role/Themrole';
+import Lienhe from "../Lienhe/Lienhe";
+import Themlienhe from "../Lienhe/Themlienhe";
+import Ngaydi from "..//Ngaydi/Ngaydi";
 const { Header, Sider, Content } = Layout;
 
 export default class Nav extends Component {
@@ -108,6 +111,12 @@ export default class Nav extends Component {
                             <Menu.Item key="14" icon={this.state.collapsed === true ? <span className="fas fa-user-tag" style={this.stylenav()}></span> : <span className="fas fa-user-tag mr-2"></span>}>
                                 <Link to={`${this.props.url}/role`}>Quản lý phân quyền</Link>
                             </Menu.Item>
+                            <Menu.Item key="15" icon={this.state.collapsed === true ? <span className="fas fa-id-card" style={this.stylenav()}></span> : <span className="fas fa-id-card mr-2"></span>}>
+                                <Link to={`${this.props.url}/lienhe`}>Quản lý liên hệ</Link>
+                            </Menu.Item>
+                            <Menu.Item key="16" icon={this.state.collapsed === true ? <span className="fas fa-clock" style={this.stylenav()}></span> : <span className="fas fa-clock mr-2"></span>}>
+                                <Link to={`${this.props.url}/ngaydi`}>Quản lý Ngày đi</Link>
+                            </Menu.Item>
                         </Menu>
                     </Sider>
 
@@ -137,6 +146,12 @@ export default class Nav extends Component {
                                 <Route path={`${this.props.path}/tag`}  >
                                     <Tag url={this.props.url} />
                                 </Route>
+                                <Route path={`${this.props.path}/lienhe`}  >
+                                    <Lienhe url={this.props.url} />
+                                </Route>
+                                <Route path={`${this.props.path}/ngaydi`}  >
+                                    <Ngaydi />
+                                </Route>
                                 <Route path={`${this.props.path}/hoadon`}  >
                                     <Hoadon url={this.props.url} />
                                 </Route>
@@ -160,6 +175,9 @@ export default class Nav extends Component {
                                 </Route>
                                 <Route path={`${this.props.path}/themtag`}  >
                                     <Themtag />
+                                </Route>
+                                <Route path={`${this.props.path}/themlienhe`}  >
+                                    <Themlienhe />
                                 </Route>
                                 <Route path={`${this.props.path}/themrole`}  >
                                     <Themrole />
@@ -187,6 +205,9 @@ export default class Nav extends Component {
                                 </Route>
                                 <Route path={`${this.props.path}/suarole/:id`}  >
                                     <Themrole />
+                                </Route>
+                                <Route path={`${this.props.path}/sualienhe/:id`}  >
+                                    <Themlienhe />
                                 </Route>
                                 <Route path={`${this.props.path}/suamangxahoi/:id`}  >
                                     <Themmangxahoi />

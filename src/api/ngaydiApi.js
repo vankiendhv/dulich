@@ -1,36 +1,29 @@
 import { message } from "antd";
 import axiosClient from "./axiosClient";
 
-class TourApi {
+class NgaydiApi {
     getAll = (params) => {
-        const url = '/tours';
+        const url = '/ngaydis';
         return axiosClient.get(url, { params });
     };
-    getOne = (id) => {
-        const url = `/tours/${id}`;
-        return axiosClient.get(url);
-    };
-    posttour = (params) => {
-        const url = '/tours';
-        console.log(params);
+    postngaydi = (params) => {
+        const url = '/ngaydis';
         return axiosClient.post(url, params).then(data => {
             message.success("Thêm thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });
     };
-    deletetour = (id) => {
-        const url = `/tours/${id}`;
-        console.log(url);
+    deletengaydi = (id) => {
+        const url = `/ngaydis/${id}`;
         return axiosClient.delete(url).then(data => {
             message.success("Xoá thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });
     };
-    edittour = (params) => {
-        console.log(params);
-        const url = `/tours/${params.idsua}`;
+    editngaydi = (params) => {
+        const url = `/ngaydis/${params.idsua}`;
         return axiosClient.patch(url, params).then(data => {
             message.success("Sửa thành công!");
         }).catch(err => {
@@ -38,5 +31,5 @@ class TourApi {
         });
     }
 }
-const tourApi = new TourApi();
-export default tourApi;
+const ngaydiApi = new NgaydiApi();
+export default ngaydiApi;

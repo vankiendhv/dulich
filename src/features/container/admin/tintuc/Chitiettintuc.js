@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { Spin } from 'antd';
-
+import renderHTML from 'react-render-html';
 function Chitiettintuc(props) {
     const { id } = useParams();
     const loading = useSelector(state => state.tintucs.loading);
@@ -19,6 +19,8 @@ function Chitiettintuc(props) {
                     {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                         <div>
                             <p>Tên tin tức:&emsp; <b><i>{tintuc.name}</i></b></p>
+                            <p>Ảnh bìa:</p>
+                            <div className="text-center"><img width="500px" height="400px" src={tintuc.anh} alt="" /></div>
                             <p>Tên tác giả:&emsp; <b><i>{tintuc.tacgia}</i></b></p>
                             <p>Ngày đăng:&emsp; <b><i>{tintuc.createdAt}</i></b></p>
                             <p>Facebook:&emsp; <i>{tintuc.facebook}</i></p>
@@ -30,7 +32,7 @@ function Chitiettintuc(props) {
                             </div>
                             <p>Nội dung:</p>
                             <div className="container">
-                                <p>{tintuc.content}</p>
+                                <p>{renderHTML(tintuc.content)}</p>
                             </div>
                         </div>}
                 </div>

@@ -74,7 +74,7 @@ function Themdiadiem(props) {
                                 </Select><Spin />
                             </span>
                             :
-                            <Select defaultValue={quocgiaId} onChange={onId} className="w-25 ml-4" >
+                            <Select value={quocgiaId} onChange={onId} className="w-25 ml-4" >
                                 {quocgias.map(ok => (
                                     <Option value={ok.id} > {ok.name}</Option>
                                 ))}

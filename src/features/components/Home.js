@@ -35,6 +35,9 @@ import { anhData } from "../container/admin/Anh/anhSlice";
 import { dichvuData } from "../container/admin/Dichvu/dichvuSlice";
 import { hoadonData } from "../container/admin/Hoadon/hoadonSlice";
 import { roleData } from "../container/admin/Role/roleSlice";
+import { lienheData } from "../container/admin/Lienhe/lienheSlice";
+import { ngaydiData } from "../container/admin/Ngaydi/ngaydiSlice";
+import { tourData } from "../container/admin/Tour/tourSlice";
 
 // Configure Firebase.
 // const config = {
@@ -77,32 +80,38 @@ export default function NestingExample() {
   const actiondichvu = async () => { await dispatch(dichvuData()) }
   const actionhoadon = async () => { await dispatch(hoadonData()) }
   const actionrole = async () => { await dispatch(roleData()) }
+  const actionlienhe = async () => { await dispatch(lienheData()) }
+  const actionngaydi = async () => { await dispatch(ngaydiData()) }
+  const actiontour = async () => { await dispatch(tourData()) }
   useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
-      if (!user) {
-        console.log("log out");
-        return;
-      }
-      const token = await user.getIdToken();
-      localStorage.setItem('token', token);
-      const actionResult = await dispatch(getMe());
-      const currentUser = unwrapResult(actionResult);
+    // const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
+    //   if (!user) {
+    //     console.log("log out");
+    //     return;
+    //   }
+    //   const token = await user.getIdToken();
+    //   localStorage.setItem('token', token);
+    //   const actionResult = await dispatch(getMe());
+    //   const currentUser = unwrapResult(actionResult);
 
-      actionquocgia();
-      actiontintuc();
-      actionloaitour();
-      actionuser();
-      actiondiadiem();
-      actionmangxahoi();
-      actionbinhluan();
-      actiontag();
-      actionanh();
-      actiondichvu();
-      actionhoadon();
-      actionrole();
-    }
-    );
-    return () => unregisterAuthObserver();
+    actionquocgia();
+    actiontintuc();
+    actionloaitour();
+    actionuser();
+    actiondiadiem();
+    actionmangxahoi();
+    actionbinhluan();
+    actiontag();
+    actionanh();
+    actiondichvu();
+    actionhoadon();
+    actionrole();
+    actionlienhe();
+    actionngaydi();
+    actiontour();
+    // }
+    // );
+    // return () => unregisterAuthObserver();
   }, []);
 
   return (
@@ -132,7 +141,7 @@ export default function NestingExample() {
           <Route path="/listtintuc">
             <Listtintuc />
           </Route>
-          <Route path="/tour">
+          <Route path="/tour/:id">
             <Tour />
           </Route>
           <Route path="/detail-new">

@@ -6,6 +6,11 @@ import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom'
 import { Button } from '@material-ui/core';
 import firebase from "firebase"
 import { StyledFirebaseAuth } from 'react-firebaseui'
+import { message } from 'antd'
+import { checklogin } from "./loginSlice"
+import { useDispatch } from 'react-redux'
+import axios from 'axios'
+import loginApi from '../../../api/loginApi'
 const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: 'redirect',
@@ -16,19 +21,32 @@ const uiConfig = {
     ]
 };
 function Login(props) {
-    const [user, setuser] = useState('');
-    const [password, setpassword] = useState('');
+    const [state, setState] = useState({ username: '', password: '' })
+    const { username, password } = state
 
-    const onsubmit = (e) => {
+    const onsubmit = async (e) => {
         e.preventDefault();
-        console.log(this.state);
+        if (username === "" || password === "") {
+            message.warning("Bạn chưa nhập đầy đủ thông tin!");
+        } else {
+            // loginApi.login({ username: username, password: password })
+            const token = await axios.post("http://localhost:666/login", { email: `${username}`, password: password }).then(data => {
+                //localStorage.setItem('token', `${data.data}`)
+                var check=data.data;
+                if(check==="ok"){
+                    message.success("Đăng nhập thành công!");
+                    history.push('/')
+                }else{
+                    message.error("Tài khoản hoặc mật khẩu không chính xác!");
+                }
+            })
+        }
     }
     const onchange = (e) => {
-        setuser(e.target.value);
-        setpassword(e.target.value);
-    }
-    const onclick = (e) => {
-        console.log(e.target.value);
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
     }
     const history = useHistory()
     const hangdleDK = () => {
@@ -46,7 +64,7 @@ function Login(props) {
                                     <img src={tk} className="img-login float-left" alt="" />
                                 </span>
                             </div>
-                            <input type="email" className="form-control" placeholder="Tài khoản" value={user} name='user' onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
+                            <input type="email" className="form-control" placeholder="Tài khoản" value={username} name='username' onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
                         </div>
 
                         <div className="input-group flex-nowrap mt-3 mb-3">
@@ -68,7 +86,7 @@ function Login(props) {
                     </form>
                     <p className="or">OR</p>
                     <div className="mxh mt-3">
-                        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+                        {/* <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} /> */}
                         <Button variant="contained" color="primary" className="text-capitalize mb-3">
                             <i className="fab fa-facebook-f mr-4"></i> Facebook
                         </Button>

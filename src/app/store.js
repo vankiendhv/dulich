@@ -14,7 +14,8 @@ import dichvuReducer from "../features/container/admin/Dichvu/dichvuSlice"
 import hoadonReducer from "../features/container/admin/Hoadon/hoadonSlice"
 import tintuctagReducer from "../features/container/admin/tintuc/tintuctagSlice"
 import roleReducer from "../features/container/admin/Role/roleSlice";
-
+import lienheReducer from "../features/container/admin/Lienhe/lienheSlice"
+import ngaydiReducer from "../features/container/admin/Ngaydi/ngaydiSlice"
 const rootReducer = {
   tintucs: tintucReducer,
   user: userReducer,
@@ -30,7 +31,9 @@ const rootReducer = {
   dichvus: dichvuReducer,
   hoadons: hoadonReducer,
   tintuctags: tintuctagReducer,
-  roles: roleReducer
+  roles: roleReducer,
+  lienhes: lienheReducer,
+  ngaydis: ngaydiReducer
 }
 
 export default configureStore({

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import './Tintucdetail.css'
 import img from "./../../../images/cauvang.png";
 import { Link } from 'react-router-dom';
-import { Footer } from '../../trangchu/footer/Footer';
+import Footer from '../../trangchu/footer/Footer';
 export class Tintucdetail extends Component {
     render() {
         return (

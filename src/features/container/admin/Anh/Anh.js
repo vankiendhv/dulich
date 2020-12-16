@@ -1,6 +1,5 @@
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Button } from '@material-ui/core';
 import { Popconfirm, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,11 +13,11 @@ function Anh(props) {
             dataIndex: 'name',
         },
         {
-            title: 'Ảnh',
+            title: 'Tình trạng',
             dataIndex: 'status',
         },
         {
-            title: 'Link',
+            title: 'Ảnh',
             dataIndex: 'link',
         },
         {
@@ -59,7 +58,16 @@ function Anh(props) {
             actionResult();
         }, 500);
     }
-
+    const handleBanner = (e, id) => {
+        if (e === 1) {
+            dispatch(updateanh({ banner: 0, idsua: id }))
+        } else {
+            dispatch(updateanh({ banner: 1, idsua: id }))
+        }
+        setTimeout(() => {
+            actionResult();
+        }, 500);
+    }
     return (
         <div id="admin">
             <div className="heading">
@@ -75,8 +83,8 @@ function Anh(props) {
                         {
                             key: index + 1,
                             name: <span>{ok.Tour.name}</span>,
-                            link: <span>{ok.link}</span>,
-                            banner: <div>ok</div>,
+                            link: <img src={ok.link} width="200px" height="150px" alt="" />,
+                            banner: <div className="action">{ok.banner === 1 ? <Link onClick={() => { handleBanner(ok.banner, ok.id) }}><i className="fas fa-check text-success"></i></Link> : <Link onClick={() => handleBanner(ok.banner, ok.id)}><i className="fas fa-times text-danger"></i></Link>}</div>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">

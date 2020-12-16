@@ -23,8 +23,8 @@ function Tintuc(props) {
             dataIndex: 'author',
         },
         {
-            title: 'Ngày đăng',
-            dataIndex: 'date',
+            title: 'Ảnh',
+            dataIndex: 'anh',
         },
         {
             title: 'Tình trạng',
@@ -72,8 +72,8 @@ function Tintuc(props) {
                     {
                         key: index + 1,
                         name: <Link to={`${props.url}/chitiettintuc/${ok.id}`}>{ok.name}</Link>,
-                        author: <p>{ok.tacgia}</p>,
-                        date: <p>{ok.date}</p>,
+                        author: <span>{ok.tacgia}</span>,
+                        anh: <img src={ok.anh} width="200px" height="150px" alt="" />,
                         status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                         action:
                             <div className="action">

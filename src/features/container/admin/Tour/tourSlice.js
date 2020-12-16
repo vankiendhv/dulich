@@ -6,6 +6,7 @@ export const tourData = createAsyncThunk('tours/tourData', async () => {
     const tour = await tourApi.getAll();
     return tour;
 })
+var datatour = [];
 const Tour = createSlice({
     name: "tours",
     initialState: {
@@ -16,14 +17,14 @@ const Tour = createSlice({
     reducers: {
 
         addtour: (state, action) => {
-            state.push(action.payload)
+            tourApi.posttour(action.payload);
         },
         removetour: (state, action) => {
-            const removetourId = action.payload;
-            state = state.filter(tour => tour.id !== removetourId);
-            return state;
+            tourApi.deletetour(action.payload);
         },
-        updatetour: (state, action) => { }
+        updatetour: (state, action) => {
+            tourApi.edittour(action.payload);
+        }
     },
     extraReducers: {
         [tourData.pending]: (state) => {
@@ -40,6 +41,6 @@ const Tour = createSlice({
     }
 });
 const { reducer, actions } = Tour;
-export const { addtour, removetour } = actions;
+export const { addtour, removetour, updatetour } = actions;
 
 export default reducer;

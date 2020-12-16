@@ -52,3 +52,9 @@ svg{
 #admin textarea {
   resize: none;
 }
+.spinner-border.text-success {
+  left: -2%;
+  position: relative;
+  bottom: -10px;
+  color: #3f51b5 !important;
+}
