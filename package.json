@@ -7,7 +7,8 @@
     "@ckeditor/ckeditor5-build-classic": "^23.1.0",
     "@ckeditor/ckeditor5-react": "^3.0.0",
     "@date-io/date-fns": "^1.3.13",
-    "@material-ui/core": "^4.11.0",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
     "@material-ui/pickers": "^3.2.10",
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -30,6 +31,9 @@
     "react-dom": "^17.0.1",
     "react-firebaseui": "^4.1.0",
     "react-google-maps": "^9.4.5",
+    "react-material-ui-carousel": "^2.1.1",
+    "react-multi-carousel": "^2.6.1",
+    "react-player": "^2.7.2",
     "react-quill": "^1.3.5",
     "react-redux": "^7.2.2",
     "react-render-html": "^0.6.0",
@@ -37,6 +41,7 @@
     "react-scripts": "4.0.1",
     "react-scroll": "^1.8.1",
     "react-sticky": "^6.0.3",
+    "react-trailer": "^1.2.2",
     "swiper": "^6.3.5"
   },
   "scripts": {

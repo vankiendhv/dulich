@@ -31,7 +31,8 @@
 }
 
 #news .row .row img {
-  width: 40%;
+  width: 30%;
+  height: 63px
 }
 
 #news a {

@@ -7,9 +7,7 @@ function Chitietquocgia(props) {
     const quocgia = useSelector(state => {
         if (state.quocgias.quocgia.data) {
             return state.quocgias.quocgia.data.find(x => x.id === +id);
-        } else {
-            return "ko"
-        };
+        }
     })
     return (
         <div id="admin">
@@ -19,7 +17,6 @@ function Chitietquocgia(props) {
             </div>
             <div className="content">
                 <div className="ct">
-                    {console.log(quocgia)}
                     {quocgia === "ko" ? <div className="spin"><Spin /></div> :
                         <div>
                             <p>Tên quốc gia:&emsp; <b><i>{quocgia.name}</i></b></p>

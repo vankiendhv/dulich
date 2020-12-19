@@ -35,6 +35,9 @@
     position: relative;
     top: 5px;
 }
+#detail-tour input{
+    outline: none;
+}
 /* .icon-comment strong {
     position: relative;
     top: .1rem;

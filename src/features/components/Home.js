@@ -38,6 +38,7 @@ import { roleData } from "../container/admin/Role/roleSlice";
 import { lienheData } from "../container/admin/Lienhe/lienheSlice";
 import { ngaydiData } from "../container/admin/Ngaydi/ngaydiSlice";
 import { tourData } from "../container/admin/Tour/tourSlice";
+import { camnangdulichData } from "../container/admin/Camnangdulich/camnangdulichSlice";
 
 // Configure Firebase.
 // const config = {
@@ -83,6 +84,8 @@ export default function NestingExample() {
   const actionlienhe = async () => { await dispatch(lienheData()) }
   const actionngaydi = async () => { await dispatch(ngaydiData()) }
   const actiontour = async () => { await dispatch(tourData()) }
+  const actioncamnang = async () => { await dispatch(camnangdulichData()) }
+
   useEffect(() => {
     // const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
     //   if (!user) {
@@ -109,6 +112,7 @@ export default function NestingExample() {
     actionlienhe();
     actionngaydi();
     actiontour();
+    actioncamnang();
     // }
     // );
     // return () => unregisterAuthObserver();
@@ -144,7 +148,7 @@ export default function NestingExample() {
           <Route path="/tour/:id">
             <Tour />
           </Route>
-          <Route path="/detail-new">
+          <Route path="/detail-new/:id">
             <Tintucdetail />
           </Route>
           <Route path="/list-tour">

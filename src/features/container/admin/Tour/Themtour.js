@@ -21,8 +21,11 @@ function getBase64(file) {
     });
 }
 function Themtour(props) {
-    const handleChangea = (value) => {
-        console.log(`selected ${value}`);
+    const hangdlevitri = e => {
+        setState({
+            ...state,
+            vitri: e
+        })
     }
     // const { id } = useParams();
     const dispatch = useDispatch();
@@ -35,8 +38,8 @@ function Themtour(props) {
     const loaitour = useSelector(state => state.loaitours.loaitour.data)
     const dichvu = useSelector(state => state.dichvus.dichvu.data)
     const loadloaitour = useSelector(state => state.loaitours.loading)
-    const [state, setState] = useState({ dichvuId: [], diadiemId: [], loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
-    const { linkImg, dichvuId, name, diadiemId, loaitourId, load, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, tenanh, img, previewVisible, previewImage, fileList, previewTitle } = state;
+    const [state, setState] = useState({ vitri: 1, dichvuId: [], diadiemId: [], loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
+    const { vitri, linkImg, dichvuId, name, diadiemId, loaitourId, load, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, tenanh, img, previewVisible, previewImage, fileList, previewTitle } = state;
     const onSubmit = async (e) => {
         e.preventDefault();
         // if (name === "" || tenanh === "" || tacgia === "" || facebook === "" || twitch === "" || instagram === "" || content === "" || tomtat === "") {
@@ -85,7 +88,7 @@ function Themtour(props) {
             TourNgaydis.push({ ngaydiId: ngaydiId[i] });
         }
         console.log(TourDiadiems, TourLoaitours);
-        await dispatch(addtour({ name, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
+        await dispatch(addtour({ name, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
         //     }
         setTimeout(() => {
             actionResult();
@@ -224,6 +227,13 @@ function Themtour(props) {
                     <div className="form-group">
                         <label htmlFor="">Tên tour</label>
                         <input type="text" name="name" value={name} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Vị trí</label><br />
+                        <Select className="w-50" value={vitri} onChange={hangdlevitri}>
+                            <Option value={1}>Trong nước</Option>
+                            <Option value={2}>Nước ngoài</Option>
+                        </Select><br />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Thêm poster</label>

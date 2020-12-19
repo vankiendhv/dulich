@@ -1,35 +1,37 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux';
 import './dichvudikem.css'
-export class Dichvudikem extends Component {
-    render() {
-        return (
-            <div>
-                <div className="heading-nx">
-                    <h3>Đánh giá</h3>
-                </div>
-                <div className="container">
-                    <div className="dichvudikem">
+function Dichvudikem(props) {
+    const tours = useSelector(state => state.tours.tour.data);
+    const tour = [];
+    if (tours) {
+        for (let i = 0; i < tours.length; i++) {
+            if (tours[i].id === +props.id) {
+                tour.push(tours[i].Dichvus)
+            }
+        }
+    }
+    console.log(tour);
+    return (
+        <div>
+            <div className="heading-nx">
+                <h3>Dịch vụ đi kèm</h3>
+            </div>
+            <div className="container">
+                <div className="dichvudikem">
+                    {tour[0].map(ok => (
                         <p>
-                            • Bữa ăn theo chương trình <br />
-                        • Bảo hiểm <br />
-                        • Hướng dẫn viên <br />
-                        • Vé tham quan <br />
-                        • Vận chuyển
-                    </p>
-                    </div>
+                            • {ok.name}
+                        </p>
+                    ))}
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-const mapStateToProps = (state) => ({
-
-})
-
-const mapDispatchToProps = {
+Dichvudikem.propTypes = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dichvudikem)
+export default Dichvudikem

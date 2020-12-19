@@ -16,8 +16,8 @@ export class Camnangdulich extends Component {
         <div className="container">
           <div className="row justify-content-center ">
             <div className="col-md-3">
-              <div className="head_cn text-center">
-                <i className="fab fa-pagelines mt-2 mb-3"></i>
+              <div className="head_cn">
+                <i className="fab fa-pagelines"></i>
               </div>
               <div className="content_cn text-center">
                 <p className="text-center">Mùa du lịch</p>
@@ -29,7 +29,7 @@ export class Camnangdulich extends Component {
             </div>
             <div className="col-md-3">
               <div className="head_cn text-center">
-                <i className="fas fa-map-marker-alt mt-2 mb-3"></i>
+                <i className="fas fa-map-marker-alt "></i>
               </div>
               <div className="content_cn text-center">
                 <p className="text-center">Địa điểm đẹp</p>
@@ -41,7 +41,7 @@ export class Camnangdulich extends Component {
             </div>
             <div className="col-md-3">
               <div className="head_cn text-center">
-                <i className="far fa-credit-card mt-2 mb-3"></i>
+                <i className="far fa-credit-card "></i>
               </div>
               <div className="content_cn text-center">
                 <p className="text-center">Chi phí</p>
@@ -53,7 +53,7 @@ export class Camnangdulich extends Component {
             </div>
             <div className="col-md-3">
               <div className="head_cn text-center">
-                <i className="fas fa-car mt-2 mb-3"></i>
+                <i className="fas fa-car "></i>
               </div>
               <div className="content_cn text-center">
                 <p className="text-center">Phương tiện di chuyển</p>

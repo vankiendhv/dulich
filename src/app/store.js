@@ -16,6 +16,8 @@ import tintuctagReducer from "../features/container/admin/tintuc/tintuctagSlice"
 import roleReducer from "../features/container/admin/Role/roleSlice";
 import lienheReducer from "../features/container/admin/Lienhe/lienheSlice"
 import ngaydiReducer from "../features/container/admin/Ngaydi/ngaydiSlice"
+import camnangReducer from "../features/container/admin/Camnangdulich/camnangdulichSlice"
+
 const rootReducer = {
   tintucs: tintucReducer,
   user: userReducer,
@@ -33,7 +35,8 @@ const rootReducer = {
   tintuctags: tintuctagReducer,
   roles: roleReducer,
   lienhes: lienheReducer,
-  ngaydis: ngaydiReducer
+  ngaydis: ngaydiReducer,
+  camnangdulichs: camnangReducer
 }
 
 export default configureStore({

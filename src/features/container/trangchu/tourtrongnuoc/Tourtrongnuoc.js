@@ -3,18 +3,20 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./Tour.css";
-
 function Tourtrongnuoc(props) {
   const tours = useSelector(state => state.tours.tour.data);
   const tour = [];
   if (tours) {
+    var sort = []
     for (let i = 0; i < tours.length; i++) {
-      if (tours[i].status === 1) {
-        tour.push(tours[i])
+      sort.unshift(tours[i])
+    }
+    for (let i = 0; i < sort.length; i++) {
+      if (sort[i].status === 1 && tour.length < 6) {
+        tour.push(sort[i])
       }
     }
   }
-  console.log(tour, tours);
   return (
     <div className="mt-5 mb-5 tour" id="tour">
       <div className="heading text-center">

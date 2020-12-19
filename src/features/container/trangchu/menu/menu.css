@@ -28,3 +28,6 @@ nav {
 .bg-dark {
   background-color: rgba(0, 0, 0, 0.5) !important;
 }
+.drawer-menu .ant-drawer-content-wrapper{
+  width: 410px !important;
+}

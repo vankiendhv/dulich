@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './login.css'
 import tk from './../../images/tk.png'
 import mk from './../../images/mk.png'
-import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, Link, useHistory, Redirect } from 'react-router-dom'
 import { Button } from '@material-ui/core';
 import firebase from "firebase"
 import { StyledFirebaseAuth } from 'react-firebaseui'
@@ -11,6 +11,7 @@ import { checklogin } from "./loginSlice"
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import loginApi from '../../../api/loginApi'
+import { userData } from '../admin/taikhoan/taikhoanSlice'
 const uiConfig = {
     // Popup signin flow rather than redirect flow.
     signInFlow: 'redirect',
@@ -23,7 +24,8 @@ const uiConfig = {
 function Login(props) {
     const [state, setState] = useState({ username: '', password: '' })
     const { username, password } = state
-
+    const actionuser = async () => { await dispatch(userData()) }
+    const dispatch = useDispatch()
     const onsubmit = async (e) => {
         e.preventDefault();
         if (username === "" || password === "") {
@@ -32,11 +34,15 @@ function Login(props) {
             // loginApi.login({ username: username, password: password })
             const token = await axios.post("http://localhost:666/login", { email: `${username}`, password: password }).then(data => {
                 //localStorage.setItem('token', `${data.data}`)
-                var check=data.data;
-                if(check==="ok"){
+                var check = data.data;
+                if (check === "ok") {
                     message.success("Đăng nhập thành công!");
+                    localStorage.setItem("user", username);
+                    console.log(username);
+                    actionuser()
                     history.push('/')
-                }else{
+                    //return <Redirect to='/' />
+                } else {
                     message.error("Tài khoản hoặc mật khẩu không chính xác!");
                 }
             })

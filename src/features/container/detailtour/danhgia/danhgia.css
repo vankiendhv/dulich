@@ -66,6 +66,25 @@
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
     font-weight: 600;
 }
+#nx .dg-diem{
+    font-size: 1.2rem;
+}
+#nx .rate-dg{
+    font-size: 1.5rem;
+}
+#nx .text-dg{
+    font-size: 1.1rem;
+}
+#nx .btn-dg{
+    position: absolute;
+    right: 0;
+}
+#nx .form-control:focus{
+    box-shadow: none;
+}
+#nx textarea {
+    resize: none;
+  }
 @media (max-width:576px){
     #nx .col-md-10{
         text-align: center;

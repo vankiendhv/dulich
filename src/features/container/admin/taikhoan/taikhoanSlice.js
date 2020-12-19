@@ -14,15 +14,12 @@ const User = createSlice({
         error: ''
     },
     reducers: {
-        adduser: (state, action) => {
-            state.push(action.payload)
-        },
         removeuser: (state, action) => {
-            const removeuserId = action.payload;
-            state = state.filter(user => user.id !== removeuserId);
-            return state;
+            taikhoanApi.deleteuser(action.payload);
         },
-        updateuser: (state, action) => { }
+        updateuser: (state, action) => {
+            taikhoanApi.edituser(action.payload);
+        }
     },
     extraReducers: {
         [userData.pending]: (state) => {
@@ -39,6 +36,6 @@ const User = createSlice({
     }
 });
 const { reducer, actions } = User;
-export const { adduser, removeuser } = actions;
+export const { removeuser, updateuser } = actions;
 
 export default reducer;

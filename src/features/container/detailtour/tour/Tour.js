@@ -1,7 +1,6 @@
-import { Carousel, DatePicker, message, Rate, Select, Space, Spin } from 'antd'
-import React, { Component } from 'react'
-import { connect, useSelector } from 'react-redux'
-import anh from '../../../images/cauvang.png'
+import { Carousel, message, Rate } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import './tour.css'
 import { Button } from '@material-ui/core';
 import { Link, useParams } from 'react-router-dom';
@@ -10,17 +9,51 @@ import Footer from '../../trangchu/footer/Footer'
 import Modal from 'antd/lib/modal/Modal';
 import Hinhthucthanhtoan from './Hinhthucthanhtoan'
 import Dieukhoan from './Dieukhoan'
+import { tourData } from '../../admin/Tour/tourSlice'
+import ReactPlayer from 'react-player'
+import { binhluanData } from '../../admin/Binhluan/binhluanSlice';
 function Tour(props) {
   const { id } = useParams()
-  const tours = useSelector(state => state.tours.tour.data);
-  const tour = tours.find(x => x.id === +id)
-  if(tour){
-    console.log("ko")
-  }else{
-    console.log("ok")
+
+  const binhluans = useSelector(state => state.binhluans.binhluan.data);
+  var binhluanload = []
+  if (binhluans) {
+    for (let i = 0; i < binhluans.length; i++) {
+      if (binhluans[i].tourId === +id && binhluans[i].status === +1) {
+        binhluanload.push(binhluans[i]);
+      }
+    }
   }
-  console.log(tour);
-  const [state, setState] = [{
+
+  const tinhdiem = () => {
+    var tong = new Number()
+    if (binhluans) {
+      for (let i = 0; i < binhluanload.length; i++) {
+        tong += binhluanload[i].star
+      }
+    }
+    var diem = Math.round((tong / +binhluanload.length) * 10) / 10
+    return diem
+  }
+  const songuoidanhgia = () => {
+    return binhluanload.length
+  }
+  const dispatch = useDispatch();
+  const actionbinhluan = async () => { await dispatch(binhluanData()) }
+  useEffect(() => {
+    actionbinhluan();
+  }, [])
+  const tours = useSelector(state => state.tours.tour.data);
+  const tour = [];
+  if (tours) {
+    for (let i = 0; i < tours.length; i++) {
+      if (tours[i].id === +id) {
+        tour.push(tours[i])
+      }
+    }
+  }
+
+  const [state, setState] = useState([{
     visible: false,
     visible2: false,
     hoten: "",
@@ -31,7 +64,7 @@ function Tour(props) {
     treem: 0,
     embe: 0,
     dieukhoan: false
-  }]
+  }])
   const showModal = () => {
     setState({
       ...state,
@@ -80,10 +113,6 @@ function Tour(props) {
       ...state,
       [e.target.name]: e.target.value
     })
-    setState({
-      ...state,
-      dieukhoan: e.target.checked
-    })
   }
   const handleChange = (value) => {
     console.log(`selected ${value}`);
@@ -93,7 +122,6 @@ function Tour(props) {
   }
   const { hoten, sdt, diachi, email, nguoilon, treem, embe } = state
   var tong = Number(nguoilon) + Number(treem) + Number(embe);
-  const { Option } = Select
   return (
     <div id="detail-tour">
       <div className="breadcrumb">
@@ -105,68 +133,66 @@ function Tour(props) {
           </ol>
         </nav>
       </div>
-      {tour === undefined ? <div className="spin"><Spin className="mt-5" /></div> :''
-      //  tour.map(ok => (
-      //   <div className="box-tour">
-      //     <div className="container bg-white">
-      //       <div className="row justify-content-center" >
-      //         <div className="col-lg-8">
-      //           <Carousel autoplay>
-      //             {ok.Anhs.map(oki => (
-      //               <div>
-      //                 <img src={oki.link} className="w-100 h-100" alt="" />
-      //               </div>
-      //             ))}
-      //           </Carousel>
-      //         </div>
-      //         <div className="col-lg-4 position-relative ">
-      //           <div className=" pl-3">
-      //             <div className="star float-left">
-      //               <Rate value="4" disabled />
-      //             </div>
-      //             <div className="icon-comment">
-      //               <span><strong>4/5</strong> điểm với <strong>200</strong> đánh giá</span>
-      //             </div>
-      //             <div className="view">
-      //               <span className="mr-3"><i className="far fa-thumbs-up mr-1"></i> 200</span>
-      //               <span><i className="far fa-comment-dots mr-1"></i> 50</span>
-      //             </div>
+      { tour.map(ok => (
+        <div className="box-tour">
+          <div className="container bg-white">
+            <div className="row justify-content-center" >
+              <div className="col-lg-8">
+                <Carousel autoplay>
+                  {ok.Anhs.map(oki => (
+                    <div>
+                      <img src={oki.link} width="760px" height="430px" alt="" />
+                    </div>
+                  ))}
+                </Carousel>
+              </div>
+              <div className="col-lg-4 position-relative ">
+                <div className=" pl-3">
+                  <div className="star float-left">
+                    <Rate value={tinhdiem()} disabled />
+                  </div>
+                  <div className="icon-comment">
+                    <span><strong>{tinhdiem()}/5</strong> điểm với <strong>{binhluanload.length}</strong> đánh giá</span>
+                  </div>
+                  <div className="view">
+                    <span className="mr-3"><i className="far fa-thumbs-up mr-1"></i> 200</span>
+                    <span><i className="far fa-comment-dots mr-1"></i> {binhluanload.length}</span>
+                  </div>
 
-      //             <hr className="hr-tour" />
-      //             <div className="tt-tour">
-      //               <table className="w-100">
-      //                 <tr>
-      //                   <td><span>Khởi hành:</span></td>
-      //                   <td><span>13/02/2020</span></td>
-      //                   <td><Link>Đổi ngày</Link></td>
-      //                 </tr>
-      //                 <tr>
-      //                   <td><span>Thời gian:</span></td>
-      //                   <td><span>3 ngày</span></td>
-      //                 </tr>
-      //                 <tr>
-      //                   <td><span>Nơi khởi hành:</span></td>
-      //                   <td><span>Hà Nội</span></td>
-      //                 </tr>
-      //               </table>
-      //             </div>
-      //             <Button className="float-right position-absolute btn-dt" onClick={showModal} variant="contained" color="secondary">
-      //               <Link >Đặt tour</Link>
-      //             </Button>
-      //             <div className="price position-absolute">
-      //               <span><strong className="text-danger">{ok.gianguoilon}</strong> vnd</span>
-      //               <br />
-      //               <span>Số chỗ còn lại: 10</span>
-      //             </div>
-      //           </div>
-      //         </div>
-      //       </div>
-      //       <Detail />
-      //     </div>
-      //   </div>
+                  <hr className="hr-tour" />
+                  <div className="tt-tour">
+                    <table className="w-100">
+                      <tr>
+                        <td><span>Khởi hành:</span></td>
+                        <td><span>13/02/2020</span></td>
+                        <td><Link>Đổi ngày</Link></td>
+                      </tr>
+                      <tr>
+                        <td><span>Thời gian:</span></td>
+                        <td><span>3 ngày</span></td>
+                      </tr>
+                      <tr>
+                        <td><span>Nơi khởi hành:</span></td>
+                        <td><span>Hà Nội</span></td>
+                      </tr>
+                    </table>
+                  </div>
+                  <Button className="float-right position-absolute btn-dt" onClick={showModal} variant="contained" color="secondary">
+                    <Link >Đặt tour</Link>
+                  </Button>
+                  <div className="price position-absolute">
+                    <span><strong className="text-danger">{ok.gianguoilon}</strong> vnd</span>
+                    <br />
+                    <span>Số chỗ còn lại: 10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Detail id={id} />
+          </div>
+        </div>
 
-      // ))
-       }
+      ))}
       <Footer />
       <Modal
         title="Đặt tour"

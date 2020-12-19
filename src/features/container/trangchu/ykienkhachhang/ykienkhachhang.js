@@ -3,6 +3,7 @@ import React from "react";
 import "./ykien.css";
 
 function ykienkhachhang(props) {
+
   return (
     <div className="mt-5 tour" id="ykien">
       <div className="heading text-center pt-5">
@@ -19,7 +20,7 @@ function ykienkhachhang(props) {
             <div className="content-yk text-center rounded">
               <p>
                 <i className="fa fa-quote-left mr-3"></i>
-              Lorem Ipsum has been the industry's standard since the 1500s.
+                Lorem Ipsum has been the industry's standard since the 1500s.
               Praesent ullamcorper dui turpis.Nulla non laoreet eleifend.
               <i className="fa fa-quote-right ml-3"></i>
               </p>

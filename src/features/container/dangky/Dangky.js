@@ -1,15 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './dangky.css'
 import tk from './../../images/tk.png'
 import mk from './../../images/mk.png'
 import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom'
 import { Button } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import { Input, message, Space } from 'antd'
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import taikhoanApi from '../../../api/taikhoanApi'
+import { userData } from '../admin/taikhoan/taikhoanSlice'
+
 function Dangky(props) {
+    const [state, setState] = useState({ password: '', repassword: '', name: '', status: 1, email: '' });
+    const { password, repassword, status, name, email } = state
+    const dispatch = useDispatch();
+    const actionuser = async () => await (dispatch(userData()))
+    const users = useSelector(state => state.taikhoan.user.data)
     const onsubmit = (e) => {
         e.preventDefault();
+        if (password === "" || repassword === "" || name === "" || email === "") {
+            message.error("Bạn chưa nhập đầy đủ thông tin!");
+        } else {
+            if (password.length > 5) {
+                if (password === repassword) {
+                    if (users.find(x => x.email === email)) {
+                        message.error("Email đã được sử dụng!");
+                    } else {
+                        taikhoanApi.postuser({ name, status, email, password });
+                        setTimeout(() => {
+                            actionuser()
+                        }, 500);
+                        history.push('/dangnhap')
+                    }
+                } else {
+                    message.error("Mật khẩu không trùng khớp!")
+                }
+            } else {
+                message.error("Mật khẩu phải ít nhất 6 ký tự!")
+            }
+        }
     }
     const onchange = (e) => {
-
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
     }
     const onclick = (e) => {
         console.log(e.target.value);
@@ -30,7 +65,7 @@ function Dangky(props) {
                                     <img src={tk} className="img-login float-left" alt="" />
                                 </span>
                             </div>
-                            <input type="text" className="form-control" placeholder="Tên của bạn" name='user' onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
+                            <input type="text" className="form-control" placeholder="Tên của bạn" name='name' value={name} onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
                         </div>
                         <div className="input-group flex-nowrap mt-3 mb-3">
                             <div className="input-group-prepend">
@@ -38,7 +73,7 @@ function Dangky(props) {
                                     <img src={tk} className="img-login float-left" alt="" />
                                 </span>
                             </div>
-                            <input type="email" className="form-control" placeholder="Email" name='user' onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
+                            <input type="email" className="form-control" placeholder="Email" name='email' value={email} onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
                         </div>
                         <div className="input-group flex-nowrap mt-3 mb-3">
                             <div className="input-group-prepend">
@@ -46,7 +81,7 @@ function Dangky(props) {
                                     <img src={mk} className="img-login float-left" alt="" />
                                 </span>
                             </div>
-                            <input type="password" className="form-control" placeholder="Mật khẩu" name="password" onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
+                            <input type="password" className="form-control" placeholder="Mật khẩu" name="password" value={password} onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
                         </div>
                         <div className="input-group flex-nowrap mt-3 mb-3">
                             <div className="input-group-prepend">
@@ -54,7 +89,7 @@ function Dangky(props) {
                                     <img src={mk} className="img-login float-left" alt="" />
                                 </span>
                             </div>
-                            <input type="password" className="form-control" placeholder="Nhập lại mật khẩu" name="repassword" onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
+                            <input type="password" className="form-control" placeholder="Nhập lại mật khẩu" name="repassword" value={repassword} onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
                         </div>
 
                         <div className="form-group form-check">

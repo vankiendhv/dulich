@@ -66,7 +66,7 @@ function Diadiem(props) {
                     <Table columns={columns} dataSource={diadiems.map((ok, index) => (
                         {
                             key: index + 1,
-                            name: <p>{ok.name}</p>,
+                            name: <span>{ok.name}</span>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">
