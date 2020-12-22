@@ -11,7 +11,6 @@ function Dichvudikem(props) {
             }
         }
     }
-    console.log(tour);
     return (
         <div>
             <div className="heading-nx">

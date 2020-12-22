@@ -15,7 +15,7 @@ function Footer(props) {
   }
   const mxhs = useSelector(state => state.mangxahois.mangxahoi.data);
   const mxh = [];
-  if (footers) {
+  if (footers && mxhs) {
     for (let i = 0; i < mxhs.length; i++) {
       if (mxhs[i].status === 1) {
         mxh.push(mxhs[i])
@@ -28,9 +28,9 @@ function Footer(props) {
         <div className="container-fluid text-center text-md-left">
           <div className="row">
             {footer.map(ok => (
-              <div className="col-md-6 mt-md-0 mt-3">
+              <div className="col-md-6 mt-md-0 mt-3" key={ok.id}>
                 <h5 className="text-uppercase text-danger">Footer Content</h5>
-                <p>Công ty du lịch hàng đầu Việt Nam</p>
+                <p>{ok.content}</p>
                 <h5 className="text-uppercase text-danger mt-3">Liên hệ</h5>
                 <p>
                   <strong>Email: </strong>
@@ -80,7 +80,7 @@ function Footer(props) {
             <div className="col-md-3 mb-md-0 mb-3 mxh">
               <h5 className="text-uppercase text-danger">Mạng xã hội</h5>
               {mxh.map(ok => (
-                <Link>
+                <Link key={ok.id}>
                   <div className="icon_footer" style={{
                     background: `${ok.color}`
                   }}>

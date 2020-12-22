@@ -9,9 +9,8 @@ import Footer from '../../trangchu/footer/Footer'
 import Modal from 'antd/lib/modal/Modal';
 import Hinhthucthanhtoan from './Hinhthucthanhtoan'
 import Dieukhoan from './Dieukhoan'
-import { tourData } from '../../admin/Tour/tourSlice'
-import ReactPlayer from 'react-player'
 import { binhluanData } from '../../admin/Binhluan/binhluanSlice';
+import { addhoadon } from '../../admin/Hoadon/hoadonSlice';
 function Tour(props) {
   const { id } = useParams()
 
@@ -24,7 +23,16 @@ function Tour(props) {
       }
     }
   }
+  const users = useSelector(state => state.taikhoan.user.data);
 
+  // useEffect(() => {
+  //   if (users) {
+  //     console.log("ok");
+  //     if (emailLocal) {
+  //       console.log(users.find(x => x.email === emailLocal));
+  //     }
+  //   }
+  // }, [])
   const tinhdiem = () => {
     var tong = new Number()
     if (binhluans) {
@@ -35,9 +43,7 @@ function Tour(props) {
     var diem = Math.round((tong / +binhluanload.length) * 10) / 10
     return diem
   }
-  const songuoidanhgia = () => {
-    return binhluanload.length
-  }
+
   const dispatch = useDispatch();
   const actionbinhluan = async () => { await dispatch(binhluanData()) }
   useEffect(() => {
@@ -53,10 +59,10 @@ function Tour(props) {
     }
   }
 
-  const [state, setState] = useState([{
+  const [state, setState] = useState({
     visible: false,
     visible2: false,
-    hoten: "",
+    name: "",
     email: "",
     sdt: "",
     diachi: "",
@@ -64,23 +70,41 @@ function Tour(props) {
     treem: 0,
     embe: 0,
     dieukhoan: false
-  }])
+  })
   const showModal = () => {
-    setState({
-      ...state,
-      visible: true,
-    });
+    if (localStorage.getItem("user")) {
+      var user = users.find(x => x.email === localStorage.getItem("user"));
+      setState({
+        ...state,
+        visible: true,
+        name: user.name,
+        diachi: user.diachi,
+        sdt: user.sdt,
+        email: user.email
+      });
+    } else {
+      message.warning("Bạn cần đăng nhập trước!")
+    }
   };
 
   const handleOk = e => {
-    // if (hoten === "" || sdt === "" || diachi === "" || email === "") {
-    //   message.warning('Bạn cần nhập đầy đủ thông tin!');
-    // } else {
-    setState({
-      ...state,
-      visible2: true,
-    });
-    // }
+    if (name === "" || sdt === "" || diachi === "" || email === "" || !name || !sdt || !diachi || !email) {
+      message.warning('Bạn cần cập nhật thông tin cho tài khoản!');
+    } else {
+      var songuoi = tour[0].songuoi;
+      if (songuoiconlai(songuoi) === 0) {
+        message.warning("Đã hết chỗ quý khách vui lòng chọn thời gian khác!")
+      } else {
+        if (tong > songuoiconlai(songuoi)) {
+          message.warning("Vượt quá số người cho phép!")
+        } else {
+          setState({
+            ...state,
+            visible2: true,
+          });
+        }
+      }
+    }
   };
 
   const handleCancel = e => {
@@ -93,6 +117,10 @@ function Tour(props) {
     if (state.dieukhoan === false) {
       message.warning("Bạn chưa đồng ý điều khoản của chúng tôi!")
     } else {
+      var userId = users.find(x => x.email === localStorage.getItem("user")).id;
+      var tourId = id
+      console.log(userId, +tourId);
+      dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe }));
       setState({
         ...state,
         visible2: false,
@@ -102,7 +130,6 @@ function Tour(props) {
   };
 
   const handleCancel2 = e => {
-    console.log(e);
     setState({
       ...state,
       visible2: false,
@@ -114,13 +141,22 @@ function Tour(props) {
       [e.target.name]: e.target.value
     })
   }
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+  const hoadons = useSelector(state => state.hoadons.hoadon.data);
+  const songuoiconlai = (e) => {
+    var tonghd = new Number();
+    if (hoadons) {
+      for (let i = 0; i < hoadons.length; i++) {
+        if (hoadons[i].tourId === +id) {
+          tonghd += (hoadons[i].nguoilon + hoadons[i].treem + hoadons[i].embe)
+        }
+      }
+    }
+    return (e - tonghd);
   }
-  const onChangedate = (date, dateString) => {
-    console.log(date, dateString);
+  const thanhtien = (gia_nl, gia_te, gia_eb) => {
+    return ((gia_nl * nguoilon) + (gia_te * treem) + (gia_eb * embe)).toLocaleString();
   }
-  const { hoten, sdt, diachi, email, nguoilon, treem, embe } = state
+  const { name, sdt, diachi, email, nguoilon, treem, embe } = state
   var tong = Number(nguoilon) + Number(treem) + Number(embe);
   return (
     <div id="detail-tour">
@@ -169,7 +205,7 @@ function Tour(props) {
                       </tr>
                       <tr>
                         <td><span>Thời gian:</span></td>
-                        <td><span>3 ngày</span></td>
+                        <td><span>{ok.thoigian} ngày</span></td>
                       </tr>
                       <tr>
                         <td><span>Nơi khởi hành:</span></td>
@@ -181,9 +217,9 @@ function Tour(props) {
                     <Link >Đặt tour</Link>
                   </Button>
                   <div className="price position-absolute">
-                    <span><strong className="text-danger">{ok.gianguoilon}</strong> vnd</span>
+                    <span><strong className="text-danger">{(ok.gianguoilon).toLocaleString()}</strong> vnd</span>
                     <br />
-                    <span>Số chỗ còn lại: 10</span>
+                    <span>Số chỗ còn lại: {songuoiconlai(ok.songuoi)}</span>
                   </div>
                 </div>
               </div>
@@ -204,22 +240,22 @@ function Tour(props) {
         <div className="form-group">
           <label htmlFor="">Họ tên(*)</label>
           <input type="text"
-            className="form-control" name="hoten" value={hoten} onChange={onchange} aria-describedby="helpId" placeholder="" />
+            className="form-control" name="name" disabled value={name} onChange={onchange} aria-describedby="helpId" placeholder="" />
         </div>
         <div className="form-group">
           <label htmlFor="">Email(*)</label>
           <input type="email"
-            className="form-control" name="email" value={email} onChange={onchange} aria-describedby="helpId" placeholder="" />
+            className="form-control" name="email" disabled value={email} onChange={onchange} aria-describedby="helpId" placeholder="" />
         </div>
         <div className="form-group">
           <label htmlFor="">Số điện thoại(*)</label>
           <input type="text"
-            className="form-control" name="sdt" value={sdt} onChange={onchange} aria-describedby="helpId" placeholder="" />
+            className="form-control" name="sdt" disabled value={sdt} onChange={onchange} aria-describedby="helpId" placeholder="" />
         </div>
         <div className="form-group">
           <label htmlFor="">Địa chỉ</label>
           <input type="text"
-            className="form-control" name="diachi" value={diachi} onChange={onchange} aria-describedby="helpId" placeholder="" />
+            className="form-control" name="diachi" disabled value={diachi} onChange={onchange} aria-describedby="helpId" placeholder="" />
         </div>
         <h4 className="text-center text-primary">Số người</h4>
         <div className="row">
@@ -253,7 +289,9 @@ function Tour(props) {
           </div>
         </div>
         <h4 className="text-center text-primary">Thành tiền</h4>
-        <p>Số tiền cần phải trả: <strong className="text-danger">5,000,000</strong></p>
+        {tour.map(ok => (
+          <p>Số tiền cần phải trả: <strong className="text-danger">{thanhtien(ok.gianguoilon, ok.giatreem, ok.giaembe)}</strong></p>
+        ))}
       </Modal>
       <Modal
         title="Đặt tour"
@@ -267,8 +305,8 @@ function Tour(props) {
         <div className="dieukhoan">
           <Dieukhoan />
         </div>
-        <input type="checkbox" onChange={onchange} className="mt-3" name="agree" id="dk" />
-        <label htmlhtmlFor="dk" className="ml-3"><strong>Tôi đồng ý với điều khoản ở trên</strong></label>
+        <input type="checkbox" onChange={onchange} className="mt-3" name="dieukhoan" id="dk" />
+        <label htmlFor="dk" className="ml-3"><strong>Tôi đồng ý với điều khoản ở trên</strong></label>
       </Modal>
     </div>
 

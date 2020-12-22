@@ -9,7 +9,7 @@ class HoadonApi {
     posthoadon = (params) => {
         const url = '/hoadons';
         return axiosClient.post(url, params).then(data => {
-            message.success("Thêm thành công!");
+            message.success("Đặt vé thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });

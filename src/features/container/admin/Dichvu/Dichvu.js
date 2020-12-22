@@ -18,8 +18,16 @@ function Dichvu(props) {
             dataIndex: 'mota',
         },
         {
+            title: 'icon',
+            dataIndex: 'icon',
+        },
+        {
             title: 'Tình trạng',
             dataIndex: 'status',
+        },
+        {
+            title: 'hiện trang chủ',
+            dataIndex: 'loadhome',
         },
         {
             title: 'Action',
@@ -55,6 +63,16 @@ function Dichvu(props) {
             actionResult();
         }, 500);
     }
+    const handleLoadhome = (e, id) => {
+        if (e === 1) {
+            dispatch(updatedichvu({ loadhome: 0, idsua: id }))
+        } else {
+            dispatch(updatedichvu({ loadhome: 1, idsua: id }))
+        }
+        setTimeout(() => {
+            actionResult();
+        }, 500);
+    }
 
     return (
         <div id="admin">
@@ -72,6 +90,8 @@ function Dichvu(props) {
                             key: index + 1,
                             name: <span>{ok.name}</span>,
                             mota: <span>{ok.mota}</span>,
+                            icon: <span className={`${ok.icon} text-success`} style={{ fontSize: "1.5rem" }}></span>,
+                            loadhome: <div className="action">{ok.loadhome === 1 ? <Link onClick={() => { handleLoadhome(ok.loadhome, ok.id) }}><i className="fas fa-check text-success "></i></Link> : <Link onClick={() => handleLoadhome(ok.loadhome, ok.id)}><i className="fas fa-times text-danger"></i></Link>}</div>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">

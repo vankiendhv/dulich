@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import { Popconfirm, Rate, Spin, Table } from 'antd'
-import { Button } from '@material-ui/core';
 import { binhluanData, removebinhluan, updatebinhluan } from './binhluanSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,6 +25,10 @@ function Binhluan(props) {
         {
             title: 'Tình trạng',
             dataIndex: 'status',
+        },
+        {
+            title: 'Hiện trang chủ',
+            dataIndex: 'loadhome',
         },
         {
             title: 'Action',
@@ -62,6 +65,16 @@ function Binhluan(props) {
             actionResult();
         }, 500);
     }
+    const handleLoadhome = (e, id) => {
+        if (e === 1) {
+            dispatch(updatebinhluan({ loadhome: 0, idsua: id }))
+        } else {
+            dispatch(updatebinhluan({ loadhome: 1, idsua: id }))
+        }
+        setTimeout(() => {
+            actionResult();
+        }, 500);
+    }
     return (
         <div id="admin">
             <div className="heading">
@@ -69,18 +82,16 @@ function Binhluan(props) {
                 <div className="hr"></div>
             </div>
             <div className="content">
-                <div className="add">
-                    {/* <Link to={`${props.url}/thembinhluan`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link> */}
-                </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={binhluans.map((ok, index) => (
                         {
                             key: index + 1,
                             user: <span>{ok.User.name}</span>,
                             tour: <span>{ok.Tour.name}</span>,
-                            binhluan: <span>{ok.binhluan}</span>,
+                            binhluan: <strong>{ok.binhluan}</strong>,
                             star: <Rate value={ok.star} disabled />,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
+                            loadhome: <div className="action">{ok.loadhome === 1 ? <Link onClick={() => { handleLoadhome(ok.loadhome, ok.id) }}><i className="fas fa-check text-success "></i></Link> : <Link onClick={() => handleLoadhome(ok.loadhome, ok.id)}><i className="fas fa-times text-danger"></i></Link>}</div>,
                             action:
                                 <div className="action">
                                     <Link onClick={() => hangdleInfor(ok.id)}><i className="fas fa-info-circle mr-4"></i></Link>

@@ -5,6 +5,7 @@ import Home from './features/components/Home';
 import store from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import Stripe from './features/teststripe/Stripe';
 
 ReactDOM.render(
   <React.StrictMode>

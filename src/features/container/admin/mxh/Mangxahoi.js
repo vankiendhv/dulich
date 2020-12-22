@@ -82,7 +82,7 @@ function Mangxahoi(props) {
                         {
                             key: index + 1,
                             name: <span>{ok.name}</span>,
-                            icon: <span>{ok.icon}</span>,
+                            icon: <span className={`${ok.icon}`} style={{ fontSize: "1.5rem", color: ok.color }}></span>,
                             color: <span>{ok.color}</span>,
                             link: <span>{ok.link}</span>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,

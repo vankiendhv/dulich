@@ -12,7 +12,7 @@ function Tourtrongnuoc(props) {
       sort.unshift(tours[i])
     }
     for (let i = 0; i < sort.length; i++) {
-      if (sort[i].status === 1 && tour.length < 6) {
+      if (sort[i].status === 1 && sort[i].vitri === 1 && tour.length < 6) {
         tour.push(sort[i])
       }
     }

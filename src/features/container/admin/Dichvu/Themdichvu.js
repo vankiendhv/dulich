@@ -8,7 +8,7 @@ import { adddichvu, dichvuData, updatedichvu } from './dichvuSlice';
 function Themdichvu(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [state, setState] = useState({ status: 1, name: '', mota: '', idsua: '' });
+    const [state, setState] = useState({ status: 1, name: '', mota: '', loadhome: 0, icon: '', idsua: '' });
     const onChange = e => {
         setState({
             ...state,
@@ -24,11 +24,13 @@ function Themdichvu(props) {
                 status: dichvu.status,
                 name: dichvu.name,
                 mota: dichvu.mota,
+                icon: dichvu.icon,
+                loadhome: dichvu.loadhome,
                 idsua: id
             })
         }
     }, [])
-    const { name, mota } = state;
+    const { name, mota, icon } = state;
     const onSubmit = e => {
         e.preventDefault();
         if (mota === '' || name === "") {
@@ -57,6 +59,10 @@ function Themdichvu(props) {
                     <div className="form-group">
                         <label htmlFor="">Tên dịch vụ</label>
                         <input type="text" name="name" value={name} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Icon</label>
+                        <input type="text" name="icon" value={icon} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Mô tả dịch vụ</label>

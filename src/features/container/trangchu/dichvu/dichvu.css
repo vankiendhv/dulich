@@ -1,7 +1,7 @@
 #dichvu .icon span {
   font-size: 28px;
   line-height: 60px;
-  color: #0fc39b;
+  color: #0abf54;
 }
 #dichvu .icon {
   width: 60px;
@@ -9,8 +9,8 @@
   margin: 0 auto;
   margin-top: 2rem;
   margin-bottom: 1rem;
-  border-radius: 50%;
-  border: 1px solid #bdbdbd;
+  border-radius: 100%;
+  border: 1px solid #0abf54;
 }
 #dichvu .content-dv strong {
   font-size: 1.2rem;
@@ -21,11 +21,12 @@
   margin-bottom: 2rem;
 }
 #dichvu .content-dv p {
-  font-size: 0.9rem;
+  font-size: 1rem;
   width: 100%;
   margin: 0 auto;
   max-width: 80%;
 }
+
 .border-left-top {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }

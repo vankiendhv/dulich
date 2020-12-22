@@ -57,7 +57,6 @@ function Danhgia(props) {
         e.preventDefault();
         var tourId = props.id;
         var user = taikhoans.find(x => x.email === localStorage.getItem("user"))
-        console.log(user);
         var userId = user.id;
         if (binhluans.find(x => x.tourId === +tourId && x.userId === +userId)) {
 

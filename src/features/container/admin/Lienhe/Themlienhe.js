@@ -8,7 +8,7 @@ import { addlienhe, lienheData, updatelienhe } from './lienheSlice';
 function Themlienhe(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [state, setState] = useState({ status: 1, sdt: '', email: '', diachi: '', idsua: '' });
+    const [state, setState] = useState({ status: 1, sdt: '', email: '', content: '', diachi: '', idsua: '' });
     const onChange = e => {
         setState({
             ...state,
@@ -25,11 +25,12 @@ function Themlienhe(props) {
                 email: lienhe.email,
                 diachi: lienhe.diachi,
                 sdt: lienhe.sdt,
+                content: lienhe.content,
                 idsua: id
             })
         }
     }, [])
-    const { sdt, email, diachi } = state;
+    const { sdt, email, diachi, content } = state;
     const onSubmit = e => {
         e.preventDefault();
         if (email === "" || sdt === "" || diachi === "") {
@@ -66,6 +67,10 @@ function Themlienhe(props) {
                     <div className="form-group">
                         <label htmlFor="">Địa chỉ</label>
                         <input type="text" name="diachi" value={diachi} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Giới thiệu</label>
+                        <textarea name="content" value={content} max="500" onChange={onChange} className="form-control w-50" id="" cols="30" rows="10"></textarea>
                     </div>
                     <div className="text-center mtb"><Button type="submit" color="primary" variant="contained">{id ? "Sửa liên hệ" : "Thêm liên hệ"}</Button></div>
                 </form>

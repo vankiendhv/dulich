@@ -11,6 +11,8 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/pickers": "^3.2.10",
     "@reduxjs/toolkit": "^1.4.0",
+    "@stripe/react-stripe-js": "^1.1.2",
+    "@stripe/stripe-js": "^1.11.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -41,6 +43,7 @@
     "react-scripts": "4.0.1",
     "react-scroll": "^1.8.1",
     "react-sticky": "^6.0.3",
+    "react-stripe-checkout": "^2.6.3",
     "react-trailer": "^1.2.2",
     "swiper": "^6.3.5"
   },

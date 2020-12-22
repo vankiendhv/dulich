@@ -28,24 +28,28 @@ function Login(props) {
     const dispatch = useDispatch()
     const onsubmit = async (e) => {
         e.preventDefault();
-        if (username === "" || password === "") {
-            message.warning("Bạn chưa nhập đầy đủ thông tin!");
+        //console.log();
+        if (!validateEmail(username)) {
+            message.warning("Email không đúng định dạng!")
         } else {
-            // loginApi.login({ username: username, password: password })
-            const token = await axios.post("http://localhost:666/login", { email: `${username}`, password: password }).then(data => {
-                //localStorage.setItem('token', `${data.data}`)
-                var check = data.data;
-                if (check === "ok") {
-                    message.success("Đăng nhập thành công!");
-                    localStorage.setItem("user", username);
-                    console.log(username);
-                    actionuser()
-                    history.push('/')
-                    //return <Redirect to='/' />
-                } else {
-                    message.error("Tài khoản hoặc mật khẩu không chính xác!");
-                }
-            })
+            if (username === "" || password === "") {
+                message.warning("Bạn chưa nhập đầy đủ thông tin!");
+            } else {
+                // loginApi.login({ username: username, password: password })
+                const token = await axios.post("http://localhost:666/login", { email: `${username}`, password: password }).then(data => {
+                    //localStorage.setItem('token', `${data.data}`)
+                    var check = data.data;
+                    if (check === "ok") {
+                        message.success("Đăng nhập thành công!");
+                        localStorage.setItem("user", username);
+                        actionuser()
+                        history.push('/')
+                        //return <Redirect to='/' />
+                    } else {
+                        message.error("Tài khoản hoặc mật khẩu không chính xác!");
+                    }
+                })
+            }
         }
     }
     const onchange = (e) => {
@@ -57,6 +61,10 @@ function Login(props) {
     const history = useHistory()
     const hangdleDK = () => {
         history.push('/dangky')
+    }
+    const validateEmail = (email) => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
     }
     return (
         <Router>
@@ -70,7 +78,7 @@ function Login(props) {
                                     <img src={tk} className="img-login float-left" alt="" />
                                 </span>
                             </div>
-                            <input type="email" className="form-control" placeholder="Tài khoản" value={username} name='username' onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
+                            <input type="text" className="form-control" placeholder="Tài khoản" value={username} name='username' onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
                         </div>
 
                         <div className="input-group flex-nowrap mt-3 mb-3">
