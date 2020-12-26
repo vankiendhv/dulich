@@ -17,8 +17,31 @@ function Tourtrongnuoc(props) {
       }
     }
   }
+  const binhluans = useSelector(state => state.binhluans.binhluan.data);
+
+  const tinhdiem = (id) => {
+    var binhluanload = []
+    if (binhluans) {
+      for (let i = 0; i < binhluans.length; i++) {
+        if (binhluans[i].status === +1 && binhluans[i].tourId === id) {
+          binhluanload.push(binhluans[i]);
+        }
+      }
+    }
+    var tong = new Number()
+    if (binhluans) {
+      for (let i = 0; i < binhluanload.length; i++) {
+        tong += binhluanload[i].star
+      }
+    }
+    var diem = Math.round((tong / +binhluanload.length) * 10) / 10
+    if (isNaN(diem)) {
+      diem = 0
+    }
+    return diem
+  }
   return (
-    <div className="mt-5 mb-5 tour" id="tour">
+    <div className="mt-5 mb-5 tour " id="tour">
       <div className="heading text-center">
         <span>du lịch trong nước</span>
         <div className="hr"></div>
@@ -30,18 +53,18 @@ function Tourtrongnuoc(props) {
       <div className="container">
         <div className="row justify-content-center">
           {tour.map(ok => (
-            <div className="col-md-4 mb-2">
+            <div className="col-md-4 mb-2" key={ok.id}>
               <Link to={`/tour/${ok.id}`}>
                 <div className="img rounded">
                   <img src={ok.avatar} className="img-fluid" alt="" />
                 </div>
                 <div className="content_tour">
-                  <div className="title_tour">{ok.name}</div>
+                  <div className="title_tour text-capitalize">{ok.name}</div>
                   <div className="star float-left">
-                    <Rate value="4" disabled />
+                    <Rate value={tinhdiem(ok.id)} disabled />
                   </div>
                   <div className="money float-left ml-3 text-warning">
-                    {ok.gianguoilon} VNĐ<br />
+                    {(ok.gianguoilon).toLocaleString()} VNĐ<br />
                     <del> 4.000.000 VNĐ</del>
                   </div>
                 </div>

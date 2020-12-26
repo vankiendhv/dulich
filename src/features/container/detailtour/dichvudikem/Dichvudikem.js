@@ -19,7 +19,7 @@ function Dichvudikem(props) {
             <div className="container">
                 <div className="dichvudikem">
                     {tour[0].map(ok => (
-                        <p>
+                        <p key={ok.id}>
                             • {ok.name}
                         </p>
                     ))}

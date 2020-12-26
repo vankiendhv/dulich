@@ -5,7 +5,7 @@
 }
 .navbar-brand{
   font-family: 'Galada', cursive;
-  color: #03175f !important;
+  color: #0ac054 !important;
   /* text-shadow: 2px 2px 2px gray; */
 }
 nav {
@@ -13,7 +13,7 @@ nav {
   letter-spacing: 0.1rem;
 }
 .nav-link.active {
-  color: #cac531 !important;
+  color: #0abf54 !important;
   font-weight: 700;
 }
 .navbar-light .navbar-nav .nav-link {
@@ -29,5 +29,15 @@ nav {
   background-color: rgba(0, 0, 0, 0.5) !important;
 }
 .drawer-menu .ant-drawer-content-wrapper{
-  width: 410px !important;
+  width: 35% !important;
+}
+@media (max-width: 768px) {
+  .drawer-menu .ant-drawer-content-wrapper{
+    width: 45% !important;
+  }
+}
+@media (max-width: 576px) {
+  .drawer-menu .ant-drawer-content-wrapper{
+    width: 100% !important;
+  }
 }

@@ -52,35 +52,35 @@ function Footer(props) {
 
               <ul className="list-unstyled">
                 <li>
-                  <a href="#!">
+                  <Link to="#">
                     <span className="fa fa-angle-double-right mr-2"></span>
                   Trang chủ
-                </a>
+               </Link>
                 </li>
                 <li>
-                  <a href="#!">
+                  <Link to="#">
                     <span className="fa fa-angle-double-right mr-2"></span>
                     Tin tức
-                </a>
+               </Link>
                 </li>
                 <li>
-                  <a href="#!">
+                  <Link to="#">
                     <span className="fa fa-angle-double-right mr-2"></span>
                   Dịch vụ
-                </a>
+               </Link>
                 </li>
                 <li>
-                  <a href="#!">
+                  <Link to="#">
                     <span className="fa fa-angle-double-right mr-2"></span>
                   Khuyến mãi
-                </a>
+               </Link>
                 </li>
               </ul>
             </div>
-            <div className="col-md-3 mb-md-0 mb-3 mxh">
-              <h5 className="text-uppercase text-danger">Mạng xã hội</h5>
+            <div className="col-md-3 mb-md-0 mb-3 mxh ">
+              <h5 className="text-uppercase text-danger ">Mạng xã hội</h5>
               {mxh.map(ok => (
-                <Link key={ok.id}>
+                <Link to={ok.link} key={ok.id}>
                   <div className="icon_footer" style={{
                     background: `${ok.color}`
                   }}>
@@ -93,9 +93,9 @@ function Footer(props) {
         </div>
         <div className="footer-copyright text-center py-3">
           © 2020 Copyright:
-        <a href="https://mdbootstrap.com/">
+        <Link to="https://mdbootstrap.com/">
             Công ty thương mại Vinhtravel.
-        </a>
+       </Link>
         </div>
       </footer>
     </div >

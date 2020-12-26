@@ -7,7 +7,7 @@ import { Button } from '@material-ui/core';
 import firebase from "firebase"
 import { StyledFirebaseAuth } from 'react-firebaseui'
 import { message } from 'antd'
-import { checklogin } from "./loginSlice"
+import { checklogin, inforData } from "./inforSlice"
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import loginApi from '../../../api/loginApi'
@@ -22,33 +22,30 @@ const uiConfig = {
     ]
 };
 function Login(props) {
-    const [state, setState] = useState({ username: '', password: '' })
-    const { username, password } = state
+    const [state, setState] = useState({ email: '', password: '' })
+    const { email, password } = state
     const actionuser = async () => { await dispatch(userData()) }
     const dispatch = useDispatch()
+    const actioninfor = async () => { await dispatch(inforData()) }
     const onsubmit = async (e) => {
         e.preventDefault();
-        //console.log();
-        if (!validateEmail(username)) {
+        if (!validateEmail(email)) {
             message.warning("Email không đúng định dạng!")
         } else {
-            if (username === "" || password === "") {
+            if (email.trim() === "" || password.trim() === "") {
                 message.warning("Bạn chưa nhập đầy đủ thông tin!");
             } else {
-                // loginApi.login({ username: username, password: password })
-                const token = await axios.post("http://localhost:666/login", { email: `${username}`, password: password }).then(data => {
-                    //localStorage.setItem('token', `${data.data}`)
-                    var check = data.data;
-                    if (check === "ok") {
-                        message.success("Đăng nhập thành công!");
-                        localStorage.setItem("user", username);
-                        actionuser()
-                        history.push('/')
-                        //return <Redirect to='/' />
-                    } else {
-                        message.error("Tài khoản hoặc mật khẩu không chính xác!");
-                    }
+                var token = await loginApi.login({ email: email, password: password }).then(data => {
+                    return data
                 })
+                if (token !== "err") {
+                    localStorage.setItem("token", token)
+                    actioninfor()
+                    message.success("Đăng nhập thành công!");
+                    history.push('/')
+                } else {
+                    message.warning("Sai tên đăng nhập hoặc mật khẩu!")
+                }
             }
         }
     }
@@ -78,7 +75,7 @@ function Login(props) {
                                     <img src={tk} className="img-login float-left" alt="" />
                                 </span>
                             </div>
-                            <input type="text" className="form-control" placeholder="Tài khoản" value={username} name='username' onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
+                            <input type="text" className="form-control" placeholder="Tài khoản" value={email} name='email' onChange={onchange} aria-label="email" aria-describedby="addon-wrapping" />
                         </div>
 
                         <div className="input-group flex-nowrap mt-3 mb-3">
@@ -87,7 +84,7 @@ function Login(props) {
                                     <img src={mk} className="img-login float-left" alt="" />
                                 </span>
                             </div>
-                            <input type="password" className="form-control" placeholder="Mật khẩu" value={password} name="password" onChange={onchange} aria-label="Username" aria-describedby="addon-wrapping" />
+                            <input type="password" className="form-control" placeholder="Mật khẩu" value={password} name="password" onChange={onchange} aria-label="email" aria-describedby="addon-wrapping" />
                         </div>
 
                         <div className="form-group form-check">

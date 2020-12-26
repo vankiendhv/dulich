@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useParams,
   useRouteMatch
 } from "react-router-dom";
 
@@ -18,8 +16,6 @@ import Tintucdetail from "../container/tintuc/tintucdetail/Tintucdetail";
 import Listtour from "../container/Listtour/Listtour";
 import Dattour from "../container/detailtour/dattour/Dattour";
 import Listtintuc from "../container/tintuc/listtintuc/Listtintuc";
-import tintucApi from "../../api/tintucApi";
-import firebase from '../../firebase';
 import { useDispatch } from "react-redux";
 import { getMe } from "../../app/userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -39,15 +35,7 @@ import { lienheData } from "../container/admin/Lienhe/lienheSlice";
 import { ngaydiData } from "../container/admin/Ngaydi/ngaydiSlice";
 import { tourData } from "../container/admin/Tour/tourSlice";
 import { camnangdulichData } from "../container/admin/Camnangdulich/camnangdulichSlice";
-
-// Configure Firebase.
-// const config = {
-//   apiKey: 'AIzaSyB62z_vI77NAuEAVE5mQ3Uqu3qag8a7Jos',
-//   authDomain: 'test-8b330.firebaseapp.com',
-//   // ...
-// };
-// firebase.initializeApp(config);
-
+import { inforData } from "../container/login/inforSlice";
 function Empty() {
   return ''
 }
@@ -56,7 +44,6 @@ function menu(ok) {
 }
 
 export default function NestingExample() {
-  const [tintuc, settintuc] = useState([]);
   const dispatch = useDispatch();
   // useEffect(() => {
   //   const fetchTintucList = async () => {
@@ -85,8 +72,9 @@ export default function NestingExample() {
   const actionngaydi = async () => { await dispatch(ngaydiData()) }
   const actiontour = async () => { await dispatch(tourData()) }
   const actioncamnang = async () => { await dispatch(camnangdulichData()) }
-
+  const actioninfor = async () => { await dispatch(inforData()) }
   useEffect(() => {
+
     // const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
     //   if (!user) {
     //     console.log("log out");
@@ -113,6 +101,7 @@ export default function NestingExample() {
     actionngaydi();
     actiontour();
     actioncamnang();
+    actioninfor();
     // }
     // );
     // return () => unregisterAuthObserver();
@@ -164,12 +153,16 @@ export default function NestingExample() {
 }
 
 function Ldangnhap() {
-  let { path, url } = useRouteMatch();
+  let { url } = useRouteMatch();
   return (
     <Login url={url} />
   );
 }
 function Ladmin() {
   let { path, url } = useRouteMatch();
-  return <Admin path={path} url={url} />
+  if (localStorage.getItem("user")) {
+    return <Admin path={path} url={url} />
+  } else {
+    return Empty()
+  }
 }

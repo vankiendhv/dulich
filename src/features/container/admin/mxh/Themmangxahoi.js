@@ -32,7 +32,7 @@ function Themmangxahoi(props) {
     const history = useHistory()
     const onSubmit = e => {
         e.preventDefault();
-        if (name === "" || color === "" || link === "" || icon === "") {
+        if (name.trim() === "" || color.trim() === "" || link.trim() === "" || icon.trim() === "") {
             message.error("Xin hãy nhập đầy đủ thông tin!");
         } else {
             if (id) {

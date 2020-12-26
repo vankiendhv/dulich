@@ -20,7 +20,7 @@ function Chitiettour(props) {
             <div className="container">
                 <div className="content-tour">
                     {tour.map(ok => (
-                        <p>{renderHTML(ok.chitiettour)}</p>
+                        <div key={ok.id}>{renderHTML(ok.chitiettour)}</div>
                     ))}
                 </div>
             </div>

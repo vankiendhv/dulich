@@ -22,8 +22,16 @@ function Themdiadiem(props) {
             })
         }
     }, [])
-    const [state, setState] = useState({ name: '', quocgiaId: 9, status: 1, idsua: '' });
+    const [state, setState] = useState({ name: '', quocgiaId: '', status: 1, idsua: '' });
     const quocgias = useSelector(state => state.quocgias.quocgia.data);
+    var quocgia = []
+    if (quocgias) {
+        for (let i = 0; i < quocgias.length; i++) {
+            if (quocgias[i].status === 1) {
+                quocgia.push(quocgias[i])
+            }
+        }
+    }
     const loading = useSelector(state => state.quocgias.loading);
     const onChange = e => {
         setState({
@@ -36,20 +44,20 @@ function Themdiadiem(props) {
     const history = useHistory()
     const onSubmit = e => {
         e.preventDefault();
-        if (state.name !== '') {
+        if (name.trim() === '' || quocgiaId.trim() === "") {
+            message.error("Xin hãy nhập đầy đủ thông tin!");
+        } else {
             if (id) {
                 dispatch(updatediadiem(state));
             } else {
                 dispatch(adddiadiem(state))
             }
-        } else {
-            message.error("Xin hãy nhập thông tin!");
+            setTimeout(() => {
+                actionResult();
+                actionQuocgia();
+            }, 700);
+            history.push("/admin/diadiem");
         }
-        setTimeout(() => {
-            actionResult();
-            actionQuocgia();
-        }, 700);
-        history.push("/admin/diadiem");
     }
     const onId = e => {
         setState({
@@ -75,8 +83,8 @@ function Themdiadiem(props) {
                             </span>
                             :
                             <Select value={quocgiaId} onChange={onId} className="w-25 ml-4" >
-                                {quocgias.map(ok => (
-                                    <Option value={ok.id} > {ok.name}</Option>
+                                {quocgia.map(ok => (
+                                    <Option key={ok.id} value={ok.id} > {ok.name}</Option>
                                 ))}
                             </Select>
                         }

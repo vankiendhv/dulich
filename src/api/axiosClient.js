@@ -1,4 +1,3 @@
-// api/axiosClient.js
 import axios from 'axios';
 import queryString from 'query-string';
 import firebase from "firebase"
@@ -27,7 +26,7 @@ const getFirebasetoken = async () => {
 const axiosClient = axios.create({
     baseURL: `http://localhost:666`,
     headers: {
-        'content-type': 'application/json',
+        'content-type': "application/json",
     },
     paramsSerializer: params => queryString.stringify(params),
 });

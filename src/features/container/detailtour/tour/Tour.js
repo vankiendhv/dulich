@@ -12,6 +12,7 @@ import Dieukhoan from './Dieukhoan'
 import { binhluanData } from '../../admin/Binhluan/binhluanSlice';
 import { addhoadon } from '../../admin/Hoadon/hoadonSlice';
 function Tour(props) {
+  localStorage.setItem("menu", "nothome");
   const { id } = useParams()
 
   const binhluans = useSelector(state => state.binhluans.binhluan.data);
@@ -41,6 +42,9 @@ function Tour(props) {
       }
     }
     var diem = Math.round((tong / +binhluanload.length) * 10) / 10
+    if (isNaN(diem)) {
+      diem = 0
+    }
     return diem
   }
 
@@ -170,7 +174,7 @@ function Tour(props) {
         </nav>
       </div>
       { tour.map(ok => (
-        <div className="box-tour">
+        <div className="box-tour" key={ok.id}>
           <div className="container bg-white">
             <div className="row justify-content-center" >
               <div className="col-lg-8">
@@ -290,7 +294,7 @@ function Tour(props) {
         </div>
         <h4 className="text-center text-primary">Thành tiền</h4>
         {tour.map(ok => (
-          <p>Số tiền cần phải trả: <strong className="text-danger">{thanhtien(ok.gianguoilon, ok.giatreem, ok.giaembe)}</strong></p>
+          <p key={ok.id}>Số tiền cần phải trả: <strong className="text-danger">{thanhtien(ok.gianguoilon, ok.giatreem, ok.giaembe)}</strong></p>
         ))}
       </Modal>
       <Modal

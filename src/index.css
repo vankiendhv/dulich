@@ -1,16 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,700&display=swap");
 body {
   margin: 0;
-  font-family: "Nunito", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Nunito', sans-serif !important;
   background-color: #f4f4f4;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
 .heading span {
   font-size: 2rem;
   padding-top: 2rem;
@@ -22,7 +15,7 @@ code {
 .hr {
   height: 2px;
   width: 200px;
-  background-color: slateblue;
+  background-color: #0abf54;
   margin: 0 auto;
 }
 .xem-them {

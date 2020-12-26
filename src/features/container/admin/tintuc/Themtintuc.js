@@ -57,13 +57,13 @@ function Themtintuc(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         setState({ ...state, load: true })
-        // if (name === "" || tenanh === "" || tacgia === "" || facebook === "" || twitch === "" || instagram === "" || content === "" || tomtat === "") {
+        // if (name.trim() === "" || tenanh.trim() === "" || tacgia.trim() === "" || facebook.trim() === "" || twitch.trim() === "" || instagram.trim() === "" || content.trim() === "" || tomtat.trim() === "") {
         //     message.error("Xin hãy nhập đầy đủ thông tin!");
         // } else {
         if (id) {
             if (img !== undefined) {
-                await storage.ref(`images/${img.name}`).put(img);
-                const anh = await storage.ref("images").child(img.name).getDownloadURL();
+                await storage.ref(`imagestintuc/${img.name}`).put(img);
+                const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
                 if (checktag === tag_id) {
                     console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
                     dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
@@ -93,8 +93,8 @@ function Themtintuc(props) {
                 }
             }
         } else {
-            await storage.ref(`images/${img.name}`).put(img);
-            const anh = await storage.ref("images").child(img.name).getDownloadURL();
+            await storage.ref(`imagestintuc/${img.name}`).put(img);
+            const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
             var TintucTags = []
             for (let i = 0; i < tag_id.length; i++) {
                 TintucTags.push({ tagId: tag_id[i] })

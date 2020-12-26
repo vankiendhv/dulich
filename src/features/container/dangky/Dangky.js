@@ -18,7 +18,7 @@ function Dangky(props) {
     const users = useSelector(state => state.taikhoan.user.data)
     const onsubmit = (e) => {
         e.preventDefault();
-        if (password === "" || repassword === "" || name === "" || email === "") {
+        if (password.trim() === "" || repassword.trim() === "" || name.trim() === "" || email.trim() === "") {
             message.error("Bạn chưa nhập đầy đủ thông tin!");
         } else {
             if (password.length > 5) {

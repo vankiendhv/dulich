@@ -22,7 +22,7 @@ function Chitietquocgia(props) {
                             <p>Trailer:</p>
                             <div className="text-center">
                                 <div class="embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src={tour.trailer} allowfullscreen></iframe>
+                                    {renderHTML(tour.trailer)}
                                 </div>
                             </div>
                             <p>Giá tiền người lớn:&emsp; <b><i>{tour.gianguoilon}</i></b></p>
@@ -33,7 +33,7 @@ function Chitietquocgia(props) {
                             ))}
                             <p>Bản đồ:&emsp; </p>
                             <div id="map-container-google-1" className="z-depth-1-half map-container mb-3">
-                                <iframe className="w-100" src={tour.bando} frameBorder={0} style={{ border: 0 }} allowFullScreen />
+                                {renderHTML(tour.bando)}
                             </div>
                             <p className="text-justify">Chi tiết tour:&emsp; {renderHTML(tour.chitiettour)}</p>
                             <p className="text-justify">Lưu ý:&emsp; {renderHTML(tour.luuy)}</p>

@@ -1,13 +1,23 @@
 import React from 'react'
 import './Tintucdetail.css'
-import img from "./../../../images/cauvang.png";
 import { Link, useParams } from 'react-router-dom';
 import Footer from '../../trangchu/footer/Footer';
 import { useSelector } from 'react-redux';
 import renderHTML from 'react-render-html';
 function Tintucdetail(props) {
+    localStorage.setItem("menu", "nothome");
     const { id } = useParams()
     const tintucs = useSelector(state => state.tintucs.tintuc.data);
+    var sx = []
+    if (tintucs) {
+        for (let i = 0; i < tintucs.length; i++) {
+            if (tintucs[i].id !== +id) {
+                if (tintucs[i].status === 1 && sx.length < 4) {
+                    sx.unshift(tintucs[i])
+                }
+            }
+        }
+    }
     const tintuc = [];
     if (tintucs) {
         for (let i = 0; i < tintucs.length; i++) {
@@ -16,14 +26,24 @@ function Tintucdetail(props) {
             }
         }
     }
+    const formatdate = e => {
+        if (e) {
+            var ngay = e.substr(8, 2)
+            var thang = e.substr(5, 2)
+            var nam = e.substr(0, 4)
+            var gio = e.substr(11, 2);
+            var phut = e.substr(14, 2);
+            return ngay + '/' + thang + '/' + nam + " " + gio + ":" + phut;
+        }
+    }
     return (
         <div id="new-detail">
             <div className="breadcrumb">
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb">
-                        <li className="breadcrumb-item"><Link to="home"><i className="fas fa-home mr-2"></i>Trang chủ</Link></li>
-                        <li className="breadcrumb-item"><Link to="/list-tour">Tour du lịch</Link></li>
-                        <li className="breadcrumb-item active" aria-current="page">Tên tour</li>
+                        <li className="breadcrumb-item"><Link to="/"><i className="fas fa-home mr-2"></i>Trang chủ</Link></li>
+                        <li className="breadcrumb-item"><Link to="/listtintuc">Tin tức</Link></li>
+                        <li className="breadcrumb-item active" aria-current="page">{tintucs ? tintucs.find(x => x.id === +id).name : ''}</li>
                     </ol>
                 </nav>
             </div>
@@ -31,7 +51,7 @@ function Tintucdetail(props) {
                 <div className="container bg-white">
                     <div className="row mt-5 mb-5">
                         {tintuc.map(ok => (
-                            <div className="col-md-9">
+                            <div className="col-md-9" key={ok.id}>
                                 <div className="name-new mb-4">
                                     <h2>{ok.name}</h2>
                                 </div>
@@ -54,7 +74,7 @@ function Tintucdetail(props) {
                                     </Link>
                                     <div className="text-right">
                                         <p><i>Tác giả:</i> <strong><i>{ok.tacgia}</i></strong></p>
-                                        <p>Ngày đăng: <i><strong>20/10/2020</strong></i></p>
+                                        <p>Ngày đăng: <i><strong>{formatdate(ok.createdAt)}</strong></i></p>
                                     </div>
                                     <div>
                                         <div className="tags mb-4 font-weight-bold">
@@ -67,48 +87,25 @@ function Tintucdetail(props) {
                                     </div>
                                 </div>
                             </div>
-
                         ))}
-                        <div className="col-md-3">
-                            <h3>Tin tức hot</h3>
-                            <div className="box-tinhot">
-                                <div className="img-new">
-                                    <img
-                                        src={img}
-                                        className="img-fluid"
-                                        alt=""
-                                    />
+                        <div className="col-md-3" >
+                            <h3 className="border-bottom">Tin mới</h3>
+
+                            {sx.map(ok => (
+                                <div className="box-tinhot" key={ok.id}>
+                                    <div className="img-new">
+                                        <img
+                                            src={ok.anh}
+                                            className="img-fluid"
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="title-new">
+                                        <p className="mb-2"><Link to={`/detail-new/${ok.id}`} className="title-new-hot">{ok.name}</Link></p>
+                                        <span><i className="far fa-clock"></i> {formatdate(ok.createdAt)}</span>
+                                    </div>
                                 </div>
-                                <div className="title-new">
-                                    <p className="mb-2"><Link className="title-new-hot">6 bãi biển đẹp nhất Phú Quốc</Link></p>
-                                    <span><i className="far fa-clock"></i> 3/07/2020 17:09</span>
-                                </div>
-                            </div>
-                            <div className="box-tinhot">
-                                <div className="img-new">
-                                    <img
-                                        src={img}
-                                        className="img-fluid"
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="title-new">
-                                    <p className="mb-2"><Link className="title-new-hot">6 bãi biển đẹp nhất Phú Quốc</Link></p>
-                                    <span><i className="far fa-clock"></i> 3/07/2020 17:09</span>
-                                </div>
-                            </div> <div className="box-tinhot">
-                                <div className="img-new">
-                                    <img
-                                        src={img}
-                                        className="img-fluid"
-                                        alt=""
-                                    />
-                                </div>
-                                <div className="title-new">
-                                    <p className="mb-2"><Link className="title-new-hot">6 bãi biển đẹp nhất Phú Quốc</Link></p>
-                                    <span><i className="far fa-clock"></i> 3/07/2020 17:09</span>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -118,9 +115,4 @@ function Tintucdetail(props) {
 
     )
 }
-
-Tintucdetail.propTypes = {
-
-}
-
 export default Tintucdetail

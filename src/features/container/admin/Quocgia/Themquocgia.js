@@ -30,7 +30,7 @@ function Themquocgia(props) {
     const history = useHistory()
     const onSubmit = e => {
         e.preventDefault();
-        if (name === "") {
+        if (name.trim() === "") {
             message.error("Xin hãy nhập đầy đủ thông tin!");
         } else {
             if (id) {

@@ -37,8 +37,19 @@
     top: 15px;
 }
 .ant-drawer-content-wrapper{
-    width: 580px!important;
+    width: 40%!important;
 }
+@media (max-width: 768px) {
+    .ant-drawer-content-wrapper{
+      width: 45% !important;
+    }
+  }
+  @media (max-width: 576px) {
+    .ant-drawer-content-wrapper{
+      width: 100% !important;
+    }
+  }
+  
 .tt-user{
     color: gray;
 }

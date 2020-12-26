@@ -30,7 +30,7 @@ function Themloaitour(props) {
     const { name } = state;
     const onSubmit = e => {
         e.preventDefault();
-        if (name === "") {
+        if (name.trim() === "") {
             message.error("Xin hãy nhập đầy đủ thông tin!");
         } else {
             if (id) {

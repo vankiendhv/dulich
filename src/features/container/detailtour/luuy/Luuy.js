@@ -20,7 +20,7 @@ function Luuy(props) {
             <div className="container">
                 <div className="luuy">
                     {tour.map(ok => (
-                        <div>{renderHTML(ok.luuy)}</div>
+                        <div key={ok.id}>{renderHTML(ok.luuy)}</div>
                     ))}
                 </div>
             </div>

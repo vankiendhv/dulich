@@ -33,7 +33,7 @@ function Themdichvu(props) {
     const { name, mota, icon } = state;
     const onSubmit = e => {
         e.preventDefault();
-        if (mota === '' || name === "") {
+        if (mota.trim() === '' || name.trim() === "") {
             message.error("Xin hãy nhập đầy đủ thông tin!");
         } else {
             if (id) {

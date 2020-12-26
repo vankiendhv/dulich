@@ -14,9 +14,6 @@ export class Container extends Component {
                         <Route exact path="/">
                             <Home />
                         </Route>
-                        <Route exact path="/home">
-                            <Home />
-                        </Route>
                         <Route exact path="/login">
                             <Login />
                         </Route>

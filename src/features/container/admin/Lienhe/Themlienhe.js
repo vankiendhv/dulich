@@ -33,7 +33,7 @@ function Themlienhe(props) {
     const { sdt, email, diachi, content } = state;
     const onSubmit = e => {
         e.preventDefault();
-        if (email === "" || sdt === "" || diachi === "") {
+        if (email.trim() === "" || sdt.trim() === "" || diachi.trim() === "") {
             message.error("Xin hãy nhập đầy đủ thông tin!");
         } else {
             if (id) {

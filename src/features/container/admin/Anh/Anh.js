@@ -76,7 +76,7 @@ function Anh(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    {/* <Link to={`${props.url}/themanh`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link> */}
+                    {/* <Link to={`${props.url}/`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link> */}
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={anhs.map((ok, index) => (

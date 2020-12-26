@@ -27,7 +27,6 @@ import Chitietbinhluan from '../Binhluan/Chitietbinhluan';
 import Tag from "../Tag/Tag";
 import Themtag from "../Tag/Themtag";
 import Anh from "../Anh/Anh";
-import Themanh from "../Anh/Themanh";
 import Dichvu from "../Dichvu/Dichvu";
 import Themdichvu from "../Dichvu/Themdichvu"
 import Hoadon from "../Hoadon/Hoadon";
@@ -197,9 +196,6 @@ export default class Nav extends Component {
                                 <Route path={`${this.props.path}/themdichvu`}  >
                                     <Themdichvu />
                                 </Route>
-                                <Route path={`${this.props.path}/themanh`}  >
-                                    <Themanh />
-                                </Route>
                                 <Route path={`${this.props.path}/chitiettintuc/:id`}  >
                                     <Chitiettintuc />
                                 </Route>
@@ -232,9 +228,6 @@ export default class Nav extends Component {
                                 </Route>
                                 <Route path={`${this.props.path}/suadichvu/:id`}  >
                                     <Themdichvu />
-                                </Route>
-                                <Route path={`${this.props.path}/suaanh/:id`}  >
-                                    <Themanh />
                                 </Route>
                                 <Route path={`${this.props.path}/sualoaitour/:id`}  >
                                     <Themloaitour />

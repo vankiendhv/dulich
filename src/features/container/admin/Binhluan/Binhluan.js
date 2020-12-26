@@ -4,6 +4,7 @@ import { Popconfirm, Rate, Spin, Table } from 'antd'
 import { binhluanData, removebinhluan, updatebinhluan } from './binhluanSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
+import "./binhluan.css";
 function Binhluan(props) {
     const columns = [
         {
@@ -88,8 +89,8 @@ function Binhluan(props) {
                             key: index + 1,
                             user: <span>{ok.User.name}</span>,
                             tour: <span>{ok.Tour.name}</span>,
-                            binhluan: <strong>{ok.binhluan}</strong>,
-                            star: <Rate value={ok.star} disabled />,
+                            binhluan: <p className="text-justify"><b>{ok.binhluan}</b></p>,
+                            star: <div className="size-binhluan"><Rate className="rate-binhluan" value={ok.star} disabled /></div>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             loadhome: <div className="action">{ok.loadhome === 1 ? <Link onClick={() => { handleLoadhome(ok.loadhome, ok.id) }}><i className="fas fa-check text-success "></i></Link> : <Link onClick={() => handleLoadhome(ok.loadhome, ok.id)}><i className="fas fa-times text-danger"></i></Link>}</div>,
                             action:

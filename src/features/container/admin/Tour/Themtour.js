@@ -42,7 +42,7 @@ function Themtour(props) {
     const { vitri, linkImg, dichvuId, name, diadiemId, loaitourId, load, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, tenanh, img, previewVisible, previewImage, fileList, previewTitle } = state;
     const onSubmit = async (e) => {
         e.preventDefault();
-        // if (name === "" || tenanh === "" || tacgia === "" || facebook === "" || twitch === "" || instagram === "" || content === "" || tomtat === "") {
+        // if (name.trim() === "" || tenanh.trim() === "" || tacgia.trim() === "" || facebook.trim() === "" || twitch.trim() === "" || instagram.trim() === "" || content.trim() === "" || tomtat.trim() === "") {
         //     message.error("Xin hãy nhập đầy đủ thông tin!");
         // } else {
         //     if (id) {
@@ -87,7 +87,6 @@ function Themtour(props) {
         for (let i = 0; i < ngaydiId.length; i++) {
             TourNgaydis.push({ ngaydiId: ngaydiId[i] });
         }
-        console.log(TourDiadiems, TourLoaitours);
         await dispatch(addtour({ name, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
         //     }
         setTimeout(() => {
@@ -130,7 +129,6 @@ function Themtour(props) {
             tenanh: e.target.files[0].name,
             img: e.target.files[0],
         });
-        console.log(e.target.files[0]);
     }
 
     const handleCancel = () => setState({ ...state, previewVisible: false });
@@ -187,7 +185,6 @@ function Themtour(props) {
     const quocgiaData = tenquocgia;
     const [laydiadiem, setlaydiadiem] = useState([]);
     const handlequocgiaChange = value => {
-        console.log(value);
         setlaydiadiem(dd.find(x => x.qg === +value).diadiem)
     };
     var selectdiadiem = []
@@ -282,7 +279,7 @@ function Themtour(props) {
                                 <Checkbox.Group style={{ width: '100%' }} onChange={onchangeNgaydi}>
                                     {loadingngaydi ? <div className="spin"><Spin className="mt-5" /></div> :
                                         ngaydi.map(ok => (
-                                            <Row>
+                                            <Row key={ok.id}>
                                                 <Col span={8}>
                                                     <Checkbox value={ok.id}>{ok.ngay}</Checkbox>
                                                 </Col>

@@ -14,7 +14,14 @@ function Tour(props) {
     const tours = useSelector(state => state.tours.tour.data);
     const ngaydi = useSelector(state => state.ngaydis.ngaydi.data);
     const loadingngaydi = useSelector(state => state.ngaydis.loading);
-
+    var tour = [];
+    if (tours) {
+        var sort = []
+        for (let i = 0; i < tours.length; i++) {
+            sort.unshift(tours[i])
+        }
+        tour = sort
+    }
     const loading = useSelector(state => state.tours.Loading);
     const history = useHistory();
     const actionResult = async () => await dispatch(tourData());
@@ -24,29 +31,23 @@ function Tour(props) {
         actionngaydi();
     }, [])
 
-    const columns = [{
-        title: 'Mã',
-        dataIndex: 'id',
-        sorter: {
-            compare: (a, b) => b.id - a.id,
+    const columns = [
+        {
+            title: 'Tên tour',
+            dataIndex: 'name',
         },
-    },
-    {
-        title: 'Tên tour',
-        dataIndex: 'name',
-    },
-    {
-        title: "Ảnh",
-        dataIndex: "anh"
-    },
-    {
-        title: 'tình trạng',
-        dataIndex: 'status',
-    },
-    {
-        title: 'Action',
-        dataIndex: 'action'
-    }
+        {
+            title: "Ảnh",
+            dataIndex: "anh"
+        },
+        {
+            title: 'tình trạng',
+            dataIndex: 'status',
+        },
+        {
+            title: 'Action',
+            dataIndex: 'action'
+        }
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -102,12 +103,11 @@ function Tour(props) {
                     <Link to={`${props.url}/themtour`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
-                    <Table columns={columns} dataSource={tours.map((ok, index) => (
+                    <Table columns={columns} dataSource={tour.map((ok, index) => (
                         {
                             key: index + 1,
-                            id: ok.id,
                             name: <Link to={`${props.url}/chitiettour/${ok.id}`}>{ok.name}</Link>,
-                            anh: <img src={ok.avatar} width="200px" height="150px" alt="" />,
+                            anh: <img src={ok.avatar} width="150px" height="200px" alt="" />,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">
@@ -127,7 +127,7 @@ function Tour(props) {
                     <Checkbox.Group style={{ width: '100%' }} onChange={onchangeNgaydi}>
                         {loadingngaydi ? <div className="spin"><Spin className="mt-5" /></div> :
                             ngaydi.map(ok => (
-                                <Row>
+                                <Row key={ok.id}>
                                     <Col span={8}>
                                         <Checkbox value={ok.id}>{ok.ngay}</Checkbox>
                                     </Col>

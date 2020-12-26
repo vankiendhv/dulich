@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
+import renderHTML from 'react-render-html'
 import './map.css'
 function Maps(props) {
     const tours = useSelector(state => state.tours.tour.data);
@@ -14,7 +15,9 @@ function Maps(props) {
     return (
         <div id="map-container-google-1" className="z-depth-1-half map-container mb-3">
             {tour.map(ok => (
-                <iframe className="w-100" src={ok.bando} frameBorder={0} style={{ border: 0 }} allowFullScreen />
+                <div key={ok.id}>
+                    {renderHTML(ok.bando)}
+                </div>
             ))}
         </div>
     )

@@ -12,6 +12,12 @@ function Tintuc(props) {
     const tintucs = useSelector(state => state.tintucs.tintuc.data);
     const loading = useSelector(state => state.tintucs.Loading);
 
+    var sort = []
+    if (tintucs) {
+        for (let i = 0; i < tintucs.length; i++) {
+            sort.unshift(tintucs[i])
+        }
+    }
     const actionResult = async () => await dispatch(tintucData());
     const columns = [
         {
@@ -68,7 +74,7 @@ function Tintuc(props) {
                 <div className="add">
                     <Link to={`${props.url}/themtintuc`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
-                {loading ? <div className="spin"><Spin className="mt-5" /></div> : <Table columns={columns} dataSource={tintucs.map((ok, index) => (
+                {loading ? <div className="spin"><Spin className="mt-5" /></div> : <Table columns={columns} dataSource={sort.map((ok, index) => (
                     {
                         key: index + 1,
                         name: <Link to={`${props.url}/chitiettintuc/${ok.id}`}>{ok.name}</Link>,

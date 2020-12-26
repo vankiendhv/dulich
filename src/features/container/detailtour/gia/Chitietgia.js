@@ -18,7 +18,7 @@ function Chitietgia(props) {
             <div className="container">
                 <div className="Chitietgia">
                     {tour.map(ok => (
-                        <div>
+                        <div key={ok.id}>
                             <p>
                                 - Giá tiền người lớn: {ok.gianguoilon}
                             </p>

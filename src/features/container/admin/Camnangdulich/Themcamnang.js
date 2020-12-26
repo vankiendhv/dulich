@@ -32,7 +32,7 @@ function Themcamnangdulich(props) {
     const history = useHistory()
     const onSubmit = e => {
         e.preventDefault();
-        if (name !== '' || content !== '' || icon !== '') {
+        if (name.trim() !== '' || content.trim() !== '' || icon.trim() !== '') {
             if (id) {
                 dispatch(updatecamnangdulich(state));
             } else {

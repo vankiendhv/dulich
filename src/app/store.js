@@ -17,6 +17,8 @@ import roleReducer from "../features/container/admin/Role/roleSlice";
 import lienheReducer from "../features/container/admin/Lienhe/lienheSlice"
 import ngaydiReducer from "../features/container/admin/Ngaydi/ngaydiSlice"
 import camnangReducer from "../features/container/admin/Camnangdulich/camnangdulichSlice"
+import userroleReducer from "../features/container/admin/header/userroleSlice"
+import inforReducer from "../features/container/login/inforSlice"
 
 const rootReducer = {
   tintucs: tintucReducer,
@@ -36,7 +38,9 @@ const rootReducer = {
   roles: roleReducer,
   lienhes: lienheReducer,
   ngaydis: ngaydiReducer,
-  camnangdulichs: camnangReducer
+  camnangdulichs: camnangReducer,
+  userroles: userroleReducer,
+  infor: inforReducer
 }
 
 export default configureStore({

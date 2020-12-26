@@ -16,16 +16,40 @@ function Tournuocngoai(props) {
       }
     }
   }
+  const binhluans = useSelector(state => state.binhluans.binhluan.data);
+
+  const tinhdiem = (id) => {
+    var binhluanload = []
+    if (binhluans) {
+      for (let i = 0; i < binhluans.length; i++) {
+        if (binhluans[i].status === +1 && binhluans[i].tourId === id) {
+          binhluanload.push(binhluans[i]);
+        }
+      }
+    }
+    var tong = new Number()
+    if (binhluans) {
+      for (let i = 0; i < binhluanload.length; i++) {
+        tong += binhluanload[i].star
+      }
+    }
+    var diem = Math.round((tong / +binhluanload.length) * 10) / 10
+    if (isNaN(diem)) {
+      diem = 0
+    }
+    return diem
+  }
   return (
     <div className="mt-5 mb-5 tour" id="tour">
+
       <div className="heading text-center">
         <span>du lịch nước ngoài</span>
         <div className="hr"></div>
         <p className="mb-4">
-          Du lịch trong nước luôn là lựa chọn tuyệt vời. Những thành phố nhộn
-          nhịp, nền văn hóa độc đáo và hấp dẫn.
+          Du lịch nước ngoài đem lại cho mọi người sự mới mẻ về một đất nước khác và hiểu rõ về các quốc gia hơn.
       </p>
       </div>
+
       <div className="container">
         <div className="row justify-content-center">
           {tour.map(ok => (
@@ -37,10 +61,10 @@ function Tournuocngoai(props) {
                 <div className="content_tour">
                   <div className="title_tour">{ok.name}</div>
                   <div className="star float-left">
-                    <Rate value="4" disabled />
+                    <Rate value={tinhdiem(ok.id)} disabled />
                   </div>
                   <div className="money float-left ml-3 text-warning">
-                    {ok.gianguoilon} VNĐ<br />
+                    {(ok.gianguoilon).toLocaleString()} VNĐ<br />
                     <del> 4.000.000 VNĐ</del>
                   </div>
                 </div>
