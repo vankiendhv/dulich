@@ -91,7 +91,7 @@ function Login(props) {
                             <label className="form-check-label">
                                 <input className="form-check-input" type="checkbox" onChange="onclick" /> <span className="text-light">Nhớ mật khẩu</span>
                             </label>
-                            <Link onClick={hangdleDK} className="float-right text-light">Chưa có tài khoản?</Link>
+                            <Link to="#" onClick={hangdleDK} className="float-right text-light">Chưa có tài khoản?</Link>
                         </div>
                         <Button type="submit" variant="contained" color="primary" className="w-100 mb-4">Đăng nhập</Button>
                     </form>

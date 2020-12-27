@@ -7,7 +7,7 @@ export class Doanhthu extends Component {
         time: ""
     }
     componentDidMount() {
-        this.clock();
+        //this.clock();
     }
     clock = () => {
         setInterval(() => {

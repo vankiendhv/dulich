@@ -8,7 +8,15 @@ class TaikhoanApi {
     };
     getOne = (params) => {
         const url = `/users/${params}`;
-        return axiosClient.get(url);
+        return axiosClient.get(url).then(data => {
+            return data.data
+        });
+    };
+    getOneAdmin = (params) => {
+        const url = `/userroles/${params}`;
+        return axiosClient.get(url).then(data => {
+            return data.data
+        });
     };
     postuser = (params) => {
         const url = '/users';
@@ -30,7 +38,7 @@ class TaikhoanApi {
         const url = `/users/${params.idsua}`;
         console.log(params, url);
         return axiosClient.patch(url, params).then(data => {
-            message.success("Sửa thành công!");
+            return data.data
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });

@@ -16,6 +16,7 @@ import Tintucdetail from "../container/tintuc/tintucdetail/Tintucdetail";
 import Listtour from "../container/Listtour/Listtour";
 import Dattour from "../container/detailtour/dattour/Dattour";
 import Listtintuc from "../container/tintuc/listtintuc/Listtintuc";
+import Error from "./Error";
 import { useDispatch } from "react-redux";
 import { getMe } from "../../app/userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -160,9 +161,9 @@ function Ldangnhap() {
 }
 function Ladmin() {
   let { path, url } = useRouteMatch();
-  if (localStorage.getItem("user")) {
+  if (localStorage.getItem("token")) {
     return <Admin path={path} url={url} />
   } else {
-    return Empty()
+    return <Error />
   }
 }
