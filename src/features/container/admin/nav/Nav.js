@@ -175,9 +175,6 @@ export default function Nav(props) {
             <Route path={`${props.path}/chitietquocgia/:id`}  >
                 <Chitietquocgia />
             </Route>
-            <Route path={`${props.path}/suatintuc/:id`}  >
-                <Themtintuc />
-            </Route>
             <Route path={`${props.path}/suacamnangdulich/:id`}  >
                 <Themcamnang />
             </Route>
@@ -233,6 +230,112 @@ export default function Nav(props) {
             </Route>
         </div>
     )
+    const menu_quanlytintuc = (
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+            <Menu.Item key="1" icon={state.collapsed === true ? <span className="fas fa-tachometer-alt" ></span> : <span className="fas fa-tachometer-alt mr-2"></span>}>
+                <Link to="/admin">Doanh thu</Link>
+            </Menu.Item>
+            <Menu.Item key="4" icon={state.collapsed === true ? <span className="far fa-newspaper" ></span> : <span className="far fa-newspaper mr-2"></span>}>
+                <Link to={`${props.url}/tintuc`}>Quản lý tin tức</Link>
+            </Menu.Item>
+        </Menu>
+    )
+    const menu_quanlybinhluan = (
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+            <Menu.Item key="1" icon={state.collapsed === true ? <span className="fas fa-tachometer-alt" ></span> : <span className="fas fa-tachometer-alt mr-2"></span>}>
+                <Link to="/admin">Doanh thu</Link>
+            </Menu.Item>
+            <Menu.Item key="9" icon={state.collapsed === true ? <span className="fas fa-comments" ></span> : <span className="fas fa-comments mr-2"></span>}>
+                <Link to={`${props.url}/binhluan`}>Quản lý bình luận</Link>
+            </Menu.Item>
+        </Menu>
+    )
+    const menu_quanlytour = (
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+            <Menu.Item key="1" icon={state.collapsed === true ? <span className="fas fa-tachometer-alt" ></span> : <span className="fas fa-tachometer-alt mr-2"></span>}>
+                <Link to="/admin">Doanh thu</Link>
+            </Menu.Item>
+            <Menu.Item key="2" icon={state.collapsed === true ? <span className="fas fa-luggage-cart" ></span> : <span className="fas fa-luggage-cart mr-2"></span>}>
+                <Link to={`${props.url}/tour`}>Quản lý tour</Link>
+            </Menu.Item>
+        </Menu>
+    )
+    const menu_quanlyadmin = (
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+            <Menu.Item key="1" icon={state.collapsed === true ? <span className="fas fa-tachometer-alt" ></span> : <span className="fas fa-tachometer-alt mr-2"></span>}>
+                <Link to="/admin">Doanh thu</Link>
+            </Menu.Item>
+            <Menu.Item key="2" icon={state.collapsed === true ? <span className="fas fa-luggage-cart" ></span> : <span className="fas fa-luggage-cart mr-2"></span>}>
+                <Link to={`${props.url}/tour`}>Quản lý tour</Link>
+            </Menu.Item>
+            <Menu.Item key="3" icon={state.collapsed === true ? <span className="fas fa-users" ></span> : <span className="fas fa-users mr-2"></span>}>
+                <Link to={`${props.url}/taikhoan`}>Quản lý tài khoản</Link>
+            </Menu.Item>
+            <Menu.Item key="4" icon={state.collapsed === true ? <span className="far fa-newspaper" ></span> : <span className="far fa-newspaper mr-2"></span>}>
+                <Link to={`${props.url}/tintuc`}>Quản lý tin tức</Link>
+            </Menu.Item>
+            <Menu.Item key="5" icon={state.collapsed === true ? <span className="fas fa-flag-usa" ></span> : <span className="fas fa-flag-usa mr-2"></span>}>
+                <Link to={`${props.url}/quocgia`}>Quản lý quốc gia</Link>
+            </Menu.Item>
+            <Menu.Item key="6" icon={state.collapsed === true ? <span className="fas fa-atlas" ></span> : <span className="fas fa-atlas mr-2"></span>}>
+                <Link to={`${props.url}/loaitour`}>Quản lý loại tour</Link>
+            </Menu.Item>
+            <Menu.Item key="7" icon={state.collapsed === true ? <span className="fas  fa-share-alt" ></span> : <span className="fas  fa-share-alt mr-2"></span>}>
+                <Link to={`${props.url}/mangxahoi`}>Quản lý mạng xã hội</Link>
+            </Menu.Item>
+            <Menu.Item key="8" icon={state.collapsed === true ? <span className="fas fa-place-of-worship" ></span> : <span className="fas fa-place-of-worship mr-2"></span>}>
+                <Link to={`${props.url}/diadiem`}>Quản lý địa điểm</Link>
+            </Menu.Item>
+            <Menu.Item key="9" icon={state.collapsed === true ? <span className="fas fa-comments" ></span> : <span className="fas fa-comments mr-2"></span>}>
+                <Link to={`${props.url}/binhluan`}>Quản lý bình luận</Link>
+            </Menu.Item>
+            <Menu.Item key="10" icon={state.collapsed === true ? <span className="fas fa-tags" ></span> : <span className="fas fa-tags mr-2"></span>}>
+                <Link to={`${props.url}/tag`}>Quản lý tag</Link>
+            </Menu.Item>
+            <Menu.Item key="11" icon={state.collapsed === true ? <span className="fas fa-images" ></span> : <span className="fas fa-images mr-2"></span>}>
+                <Link to={`${props.url}/anh`}>Quản lý ảnh</Link>
+            </Menu.Item>
+            <Menu.Item key="12" icon={state.collapsed === true ? <span className="fab fa-phoenix-framework" ></span> : <span className="fab fa-phoenix-framework mr-2"></span>}>
+                <Link to={`${props.url}/dichvu`}>Quản lý dịch vụ</Link>
+            </Menu.Item>
+            <Menu.Item key="13" icon={state.collapsed === true ? <span className="fas fa-file-alt" ></span> : <span className="fas fa-file-alt mr-2"></span>}>
+                <Link to={`${props.url}/hoadon`}>Quản lý hoá đơn</Link>
+            </Menu.Item>
+            <Menu.Item key="14" icon={state.collapsed === true ? <span className="fas fa-user-tag" ></span> : <span className="fas fa-user-tag mr-2"></span>}>
+                <Link to={`${props.url}/role`}>Quản lý phân quyền</Link>
+            </Menu.Item>
+            <Menu.Item key="15" icon={state.collapsed === true ? <span className="fas fa-id-card" ></span> : <span className="fas fa-id-card mr-2"></span>}>
+                <Link to={`${props.url}/lienhe`}>Quản lý liên hệ</Link>
+            </Menu.Item>
+            <Menu.Item key="16" icon={state.collapsed === true ? <span className="fas fa-clock" ></span> : <span className="fas fa-clock mr-2"></span>}>
+                <Link to={`${props.url}/ngaydi`}>Quản lý Ngày đi</Link>
+            </Menu.Item>
+            <Menu.Item key="17" icon={state.collapsed === true ? <span className="fas fa-book" ></span> : <span className="fas fa-book mr-2"></span>}>
+                <Link to={`${props.url}/camnangdulich`}>Cẩm nang du lịch</Link>
+            </Menu.Item>
+        </Menu>
+    )
+    const Menu_Authentication = (role) => {
+        switch (role) {
+            case "admin":
+                return menu_quanlyadmin
+                break;
+            case "quản lý tin tức":
+                return menu_quanlytintuc
+                break;
+            case "biên tập viên":
+                return menu_quanlytintuc
+                break;
+            case "quản lý bình luận":
+                return menu_quanlybinhluan
+                break;
+            case "quản lý tour":
+                return menu_quanlytour
+                break;
+            default:
+                break;
+        }
+    }
     const Authentication = (role) => {
         switch (role) {
             case "admin":
@@ -265,59 +368,7 @@ export default function Nav(props) {
                             </p>
                         </Link>
                     </div>
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                        <Menu.Item key="1" icon={state.collapsed === true ? <span className="fas fa-tachometer-alt" ></span> : <span className="fas fa-tachometer-alt mr-2"></span>}>
-                            <Link to="/admin">Doanh thu</Link>
-                        </Menu.Item>
-                        <Menu.Item key="2" icon={state.collapsed === true ? <span className="fas fa-luggage-cart" ></span> : <span className="fas fa-luggage-cart mr-2"></span>}>
-                            <Link to={`${props.url}/tour`}>Quản lý tour</Link>
-                        </Menu.Item>
-                        <Menu.Item key="3" icon={state.collapsed === true ? <span className="fas fa-users" ></span> : <span className="fas fa-users mr-2"></span>}>
-                            <Link to={`${props.url}/taikhoan`}>Quản lý tài khoản</Link>
-                        </Menu.Item>
-                        <Menu.Item key="4" icon={state.collapsed === true ? <span className="far fa-newspaper" ></span> : <span className="far fa-newspaper mr-2"></span>}>
-                            <Link to={`${props.url}/tintuc`}>Quản lý tin tức</Link>
-                        </Menu.Item>
-                        <Menu.Item key="5" icon={state.collapsed === true ? <span className="fas fa-flag-usa" ></span> : <span className="fas fa-flag-usa mr-2"></span>}>
-                            <Link to={`${props.url}/quocgia`}>Quản lý quốc gia</Link>
-                        </Menu.Item>
-                        <Menu.Item key="6" icon={state.collapsed === true ? <span className="fas fa-atlas" ></span> : <span className="fas fa-atlas mr-2"></span>}>
-                            <Link to={`${props.url}/loaitour`}>Quản lý loại tour</Link>
-                        </Menu.Item>
-                        <Menu.Item key="7" icon={state.collapsed === true ? <span className="fas  fa-share-alt" ></span> : <span className="fas  fa-share-alt mr-2"></span>}>
-                            <Link to={`${props.url}/mangxahoi`}>Quản lý mạng xã hội</Link>
-                        </Menu.Item>
-                        <Menu.Item key="8" icon={state.collapsed === true ? <span className="fas fa-place-of-worship" ></span> : <span className="fas fa-place-of-worship mr-2"></span>}>
-                            <Link to={`${props.url}/diadiem`}>Quản lý địa điểm</Link>
-                        </Menu.Item>
-                        <Menu.Item key="9" icon={state.collapsed === true ? <span className="fas fa-comments" ></span> : <span className="fas fa-comments mr-2"></span>}>
-                            <Link to={`${props.url}/binhluan`}>Quản lý bình luận</Link>
-                        </Menu.Item>
-                        <Menu.Item key="10" icon={state.collapsed === true ? <span className="fas fa-tags" ></span> : <span className="fas fa-tags mr-2"></span>}>
-                            <Link to={`${props.url}/tag`}>Quản lý tag</Link>
-                        </Menu.Item>
-                        <Menu.Item key="11" icon={state.collapsed === true ? <span className="fas fa-images" ></span> : <span className="fas fa-images mr-2"></span>}>
-                            <Link to={`${props.url}/anh`}>Quản lý ảnh</Link>
-                        </Menu.Item>
-                        <Menu.Item key="12" icon={state.collapsed === true ? <span className="fab fa-phoenix-framework" ></span> : <span className="fab fa-phoenix-framework mr-2"></span>}>
-                            <Link to={`${props.url}/dichvu`}>Quản lý dịch vụ</Link>
-                        </Menu.Item>
-                        <Menu.Item key="13" icon={state.collapsed === true ? <span className="fas fa-file-alt" ></span> : <span className="fas fa-file-alt mr-2"></span>}>
-                            <Link to={`${props.url}/hoadon`}>Quản lý hoá đơn</Link>
-                        </Menu.Item>
-                        <Menu.Item key="14" icon={state.collapsed === true ? <span className="fas fa-user-tag" ></span> : <span className="fas fa-user-tag mr-2"></span>}>
-                            <Link to={`${props.url}/role`}>Quản lý phân quyền</Link>
-                        </Menu.Item>
-                        <Menu.Item key="15" icon={state.collapsed === true ? <span className="fas fa-id-card" ></span> : <span className="fas fa-id-card mr-2"></span>}>
-                            <Link to={`${props.url}/lienhe`}>Quản lý liên hệ</Link>
-                        </Menu.Item>
-                        <Menu.Item key="16" icon={state.collapsed === true ? <span className="fas fa-clock" ></span> : <span className="fas fa-clock mr-2"></span>}>
-                            <Link to={`${props.url}/ngaydi`}>Quản lý Ngày đi</Link>
-                        </Menu.Item>
-                        <Menu.Item key="17" icon={state.collapsed === true ? <span className="fas fa-book" ></span> : <span className="fas fa-book mr-2"></span>}>
-                            <Link to={`${props.url}/camnangdulich`}>Cẩm nang du lịch</Link>
-                        </Menu.Item>
-                    </Menu>
+                    {user ? Menu_Authentication(user.role) : ''}
                 </Sider>
 
                 <Layout className="site-layout">

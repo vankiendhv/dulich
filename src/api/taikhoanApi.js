@@ -6,6 +6,12 @@ class TaikhoanApi {
         const url = '/users';
         return axiosClient.get(url, { params });
     };
+    checkEmail = (email) => {
+        const url = `/checkemail/${email}`;
+        return axiosClient.get(url).then(data => {
+            return data.data;
+        });
+    };
     getOne = (params) => {
         const url = `/users/${params}`;
         return axiosClient.get(url).then(data => {

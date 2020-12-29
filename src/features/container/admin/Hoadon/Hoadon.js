@@ -81,7 +81,7 @@ function Hoadon(props) {
                             action:
                                 <div className="action">
                                     <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                        <Link ><i className="far fa-trash-alt" ></i></Link>
+                                        <i className="far fa-trash-alt" ></i>
                                     </Popconfirm>
                                 </div>
                         }))}

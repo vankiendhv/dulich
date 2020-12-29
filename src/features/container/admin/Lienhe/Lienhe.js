@@ -30,10 +30,6 @@ function Lienhe(props) {
             dataIndex: 'action'
         }
     ];
-
-    function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-    }
     const lienhe = useSelector(state => state.lienhes.lienhe.data);
     const loading = useSelector(state => state.lienhes.loading)
     const dispatch = useDispatch();
@@ -74,21 +70,20 @@ function Lienhe(props) {
                         {
                             key: index + 1,
                             sdt: <span>{ok.sdt}</span>,
-                            name: <Link to={`${props.url}/chitietlienhe/${ok.id}`}>{ok.name}</Link>,
+                            name: <span>{ok.name}</span>,
                             email: <span>{ok.email}</span>,
                             diachi: <span>{ok.diachi}</span>,
-                            status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
+                            status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
                             action:
                                 <div className="action">
                                     <Popconfirm title="Bạn có muốn sửa？" onConfirm={() => { hangdleEdit(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'green' }} />}>
-                                        <Link ><i className="far fa-edit mr-4"></i></Link>
+                                        <i className="far fa-edit mr-4"></i>
                                     </Popconfirm>
                                     <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                        <Link ><i className="far fa-trash-alt" ></i></Link>
+                                        <i className="far fa-trash-alt" ></i>
                                     </Popconfirm>
                                 </div>
-                        }))}
-                        onChange={onChange} />
+                        }))} />
                 }
             </div>
         </div>

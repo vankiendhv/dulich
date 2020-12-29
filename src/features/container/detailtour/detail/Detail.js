@@ -8,6 +8,7 @@ import Dichvudikem from '../dichvudikem/Dichvudikem';
 import Luuy from '../luuy/Luuy';
 import Maps from './../map/Maps'
 import Chitietgia from '../gia/Chitietgia';
+import "./detail.css"
 function Detail(props) {
     const { TabPane } = Tabs;
     const renderTabBar = (props, DefaultTabBar) => (

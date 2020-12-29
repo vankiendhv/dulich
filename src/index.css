@@ -57,3 +57,6 @@ svg{
   align-items: center;
   justify-content: center;
 }
+#admin .content i{
+  cursor: pointer;
+}

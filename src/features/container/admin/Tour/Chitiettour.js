@@ -21,7 +21,7 @@ function Chitietquocgia(props) {
                             <p>Avatar:&emsp;<img width="350px" height="393px" src={tour.avatar} alt="" /></p>
                             <p>Trailer:</p>
                             <div className="text-center">
-                                <div class="embed-responsive embed-responsive-16by9">
+                                <div className="embed-responsive embed-responsive-16by9">
                                     {renderHTML(tour.trailer)}
                                 </div>
                             </div>
@@ -41,7 +41,7 @@ function Chitietquocgia(props) {
                     }
                 </div>
             </div>
-        </div>
+        </div >
 
     )
 }

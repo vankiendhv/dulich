@@ -3,7 +3,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Popconfirm, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { anhData, removeanh, updateanh } from './anhSlice';
 function Anh(props) {
 
@@ -75,22 +75,18 @@ function Anh(props) {
                 <div className="hr"></div>
             </div>
             <div className="content">
-                <div className="add">
-                    {/* <Link to={`${props.url}/`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link> */}
-                </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={anhs.map((ok, index) => (
                         {
                             key: index + 1,
                             name: <span>{ok.Tour.name}</span>,
                             link: <img src={ok.link} width="200px" height="150px" alt="" />,
-                            banner: <div className="action">{ok.banner === 1 ? <Link onClick={() => { handleBanner(ok.banner, ok.id) }}><i className="fas fa-check text-success"></i></Link> : <Link onClick={() => handleBanner(ok.banner, ok.id)}><i className="fas fa-times text-danger"></i></Link>}</div>,
-                            status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
+                            banner: <div className="action">{ok.banner === 1 ? <span onClick={() => { handleBanner(ok.banner, ok.id) }}><i className="fas fa-check text-success"></i></span> : <span onClick={() => handleBanner(ok.banner, ok.id)}><i className="fas fa-times text-danger"></i></span>}</div>,
+                            status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
                             action:
                                 <div className="action">
-
                                     <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                        <Link ><i className="far fa-trash-alt" ></i></Link>
+                                        <i className="far fa-trash-alt" ></i>
                                     </Popconfirm>
                                 </div>
                         }))}

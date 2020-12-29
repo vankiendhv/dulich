@@ -84,10 +84,10 @@ function Tintuc(props) {
                         action:
                             <div className="action">
                                 <Popconfirm title="Bạn có muốn sửa？" onConfirm={() => { hangdleEdit(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'green' }} />}>
-                                    <Link ><i className="far fa-edit mr-4"></i></Link>
+                                    <i className="far fa-edit mr-4"></i>
                                 </Popconfirm>
                                 <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                    <Link ><i className="far fa-trash-alt" ></i></Link>
+                                    <i className="far fa-trash-alt" ></i>
                                 </Popconfirm>
                             </div>
                     }))}

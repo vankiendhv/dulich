@@ -49,10 +49,6 @@ function Tour(props) {
             dataIndex: 'action'
         }
     ];
-
-    const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra);
-    }
     const hangdleDelete = e => {
         dispatch(removetour(e));
         setTimeout(() => {
@@ -108,7 +104,7 @@ function Tour(props) {
                             key: index + 1,
                             name: <Link to={`${props.url}/chitiettour/${ok.id}`}>{ok.name}</Link>,
                             anh: <img src={ok.avatar} width="150px" height="200px" alt="" />,
-                            status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
+                            status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
                             action:
                                 <div className="action">
                                     <span className="text-warning" onClick={() => showModal(ok.id)}>
@@ -121,8 +117,7 @@ function Tour(props) {
                                         <i className="far fa-trash-alt" style={{ cursor: "pointer" }}></i>
                                     </Popconfirm>
                                 </div>
-                        }))}
-                        onChange={onChange} />}
+                        }))} />}
                 <Modal title="Chọn ngày khởi hành" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                     <Checkbox.Group style={{ width: '100%' }} onChange={onchangeNgaydi}>
                         {loadingngaydi ? <div className="spin"><Spin className="mt-5" /></div> :

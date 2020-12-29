@@ -1,43 +1,75 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
-.logo {
+#menu .logo {
   width: 4rem;
 }
-.navbar-brand{
+#menu .navbar-brand{
   font-family: 'Galada', cursive;
   color: #0ac054 !important;
   /* text-shadow: 2px 2px 2px gray; */
 }
-nav {
+#menu nav {
   font-size: 1rem;
   letter-spacing: 0.1rem;
 }
-.nav-link.active {
+#menu .nav-link.active {
   color: #0abf54 !important;
   font-weight: 700;
 }
-.navbar-light .navbar-nav .nav-link {
+#menu .navbar-light .navbar-nav .nav-link {
   color: white;
 }
-.nav-link {
+#menu .nav-link {
   margin-left: 0.5rem;
 }
-.navbar-light .navbar-nav .nav-link:hover {
+#menu .navbar-light .navbar-nav .nav-link:hover {
   color: teal;
 }
-.bg-dark {
+#menu .bg-dark {
   background-color: rgba(0, 0, 0, 0.5) !important;
 }
-.drawer-menu .ant-drawer-content-wrapper{
+#menu .drawer-menu .ant-drawer-content-wrapper{
   width: 35% !important;
 }
+#menu2 .bg-dark {
+  border-bottom: 1px solid silver;
+}
+#menu2 .navbar-dark .navbar-nav .nav-link {
+  color: white !important;
+  font-size: 1rem;
+  padding-left: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  font-weight: bold;
+}
+#menu2 .navbar{
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+#menu2 .background {
+   background: url("https://2.bp.blogspot.com/-kHAk-Udrcw8/UMyFoK7crZI/AAAAAAAAJD0/jmyOuixbpxQ/s1600/HINH-NEN-NUI-DEP-CHO-MAY-TINH-WALLPAPER.jpg") center repeat-x  !important;
+   background-size: cover;
+}
+#menu2 .span.ant-dropdown-trigger.nav-link {
+  text-align: right;
+}
 @media (max-width: 768px) {
-  .drawer-menu .ant-drawer-content-wrapper{
+  #menu .drawer-menu .ant-drawer-content-wrapper{
     width: 45% !important;
   }
 }
 @media (max-width: 576px) {
-  .drawer-menu .ant-drawer-content-wrapper{
+  #menu .drawer-menu .ant-drawer-content-wrapper{
     width: 100% !important;
+  }
+  #menu2 .navbar-dark .navbar-nav .nav-link {
+    color: white !important;
+    font-size: 1rem;
+    padding-left: .5rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    font-weight: bold;
+  }
+  #menu2 .span.ant-dropdown-trigger.nav-link {
+    text-align: left;
   }
 }

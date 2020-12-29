@@ -2,9 +2,9 @@ import { message } from "antd";
 import axiosClient from "./axiosClient";
 
 class UserroleApi {
-    getAll = (params) => {
+    getAll = async (params) => {
         const url = '/userroles';
-        return axiosClient.get(url, { params });
+        return await axiosClient.get(url, { params });
     };
     postuserrole = (params) => {
         const url = '/userroles';
@@ -24,12 +24,28 @@ class UserroleApi {
     };
     edituserrole = (params) => {
         const url = `/userroles/${params.idsua}`;
+        console.log(params);
         return axiosClient.patch(url, params).then(data => {
-            message.success("Sửa thành công!");
+            message.success("Cấp quyền thành công!");
         }).catch(err => {
             message.error("Có lỗi xảy ra!");
         });
     }
+    edituserroleHeader = (params) => {
+        const url = `/userroles/${params.idsua}`;
+        console.log(params);
+        return axiosClient.patch(url, params).then(data => {
+            return data.data
+        }).catch(err => {
+            message.error("Có lỗi xảy ra!");
+        });
+    }
+    getuserrole = () => {
+        const url = '/userroles';
+        return axiosClient.get(url).then(data => {
+            return data.data
+        });
+    };
 }
 const userroleApi = new UserroleApi();
 export default userroleApi;

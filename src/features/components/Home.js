@@ -8,6 +8,7 @@ import {
 
 import Login from "../container/login/Login";
 import Menu from "../container/trangchu/menu/Menu";
+import Menu2 from "../container/trangchu/menu/Menu2";
 import Trangchu from './Trangchu'
 import Admin from './Admin'
 import Dangky from '../container/dangky/Dangky'
@@ -37,12 +38,6 @@ import { ngaydiData } from "../container/admin/Ngaydi/ngaydiSlice";
 import { tourData } from "../container/admin/Tour/tourSlice";
 import { camnangdulichData } from "../container/admin/Camnangdulich/camnangdulichSlice";
 import { inforData } from "../container/login/inforSlice";
-function Empty() {
-  return ''
-}
-function menu(ok) {
-  console.log(ok);
-}
 
 export default function NestingExample() {
   const dispatch = useDispatch();
@@ -60,7 +55,7 @@ export default function NestingExample() {
   const actionquocgia = async () => { await dispatch(quocgiaData()) }
   const actiontintuc = async () => { await dispatch(tintucData()) }
   const actionloaitour = async () => { await dispatch(loaitourData()) }
-  const actionuser = async () => { await dispatch(userData()) }
+
   const actiondiadiem = async () => { await dispatch(diadiemData()) }
   const actionmangxahoi = async () => { await dispatch(mangxahoiData()) }
   const actionbinhluan = async () => { await dispatch(binhluanData()) }
@@ -89,7 +84,7 @@ export default function NestingExample() {
     actionquocgia();
     actiontintuc();
     actionloaitour();
-    actionuser();
+
     actiondiadiem();
     actionmangxahoi();
     actionbinhluan();
@@ -112,16 +107,19 @@ export default function NestingExample() {
     <Router>
       <div>
         <Switch>
-          <Route path="/dangnhap" component={Empty} />
-          <Route path="/dangky" component={Empty} />
-          <Route path="/admin" component={Empty} />
-          <Route>
+          <Route path="/dangnhap" component="" />
+          <Route path="/dangky" component="" />
+          <Route path="/admin" component="" />
+          <Route exact path="/">
             <Menu />
+          </Route>
+          <Route path="/">
+            <Menu2 />
           </Route>
         </Switch>
         <Switch>
           <Route exact path="/">
-            <Trangchu hidemenu={menu} />
+            <Trangchu />
           </Route>
           <Route path="/admin">
             <Ladmin />

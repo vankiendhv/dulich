@@ -4,39 +4,39 @@ import tk from './../../images/tk.png'
 import mk from './../../images/mk.png'
 import { BrowserRouter as Router, Link, useHistory } from 'react-router-dom'
 import { Button } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
-import { Input, message, Space } from 'antd'
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { message } from 'antd'
 import taikhoanApi from '../../../api/taikhoanApi'
-import { userData } from '../admin/taikhoan/taikhoanSlice'
 
 function Dangky(props) {
     const [state, setState] = useState({ password: '', repassword: '', name: '', status: 1, email: '' });
     const { password, repassword, status, name, email } = state
-    const dispatch = useDispatch();
-    const actionuser = async () => await (dispatch(userData()))
-    const users = useSelector(state => state.taikhoan.user.data)
-    const onsubmit = (e) => {
+    const validateEmail = (email) => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+    const onsubmit = async (e) => {
         e.preventDefault();
-        if (password.trim() === "" || repassword.trim() === "" || name.trim() === "" || email.trim() === "") {
-            message.error("Bạn chưa nhập đầy đủ thông tin!");
+        if (!validateEmail(email)) {
+            message.warning("Email không đúng định dạng!")
         } else {
-            if (password.length > 5) {
-                if (password === repassword) {
-                    if (users.find(x => x.email === email)) {
-                        message.error("Email đã được sử dụng!");
+            if (password.trim() === "" || repassword.trim() === "" || name.trim() === "" || email.trim() === "") {
+                message.error("Bạn chưa nhập đầy đủ thông tin!");
+            } else {
+                if (password.length > 5) {
+                    if (password === repassword) {
+                        if (await taikhoanApi.checkEmail(email).then(data => { return data; }) !== null) {
+                            message.error("Email đã được sử dụng!");
+                        } else {
+                            var UserRoles = [{ roleId: 6 }]
+                            taikhoanApi.postuser({ name, status, email, password, UserRoles });
+                            history.push('/dangnhap')
+                        }
                     } else {
-                        taikhoanApi.postuser({ name, status, email, password });
-                        setTimeout(() => {
-                            actionuser()
-                        }, 500);
-                        history.push('/dangnhap')
+                        message.error("Mật khẩu không trùng khớp!")
                     }
                 } else {
-                    message.error("Mật khẩu không trùng khớp!")
+                    message.error("Mật khẩu phải ít nhất 6 ký tự!")
                 }
-            } else {
-                message.error("Mật khẩu phải ít nhất 6 ký tự!")
             }
         }
     }
@@ -45,9 +45,6 @@ function Dangky(props) {
             ...state,
             [e.target.name]: e.target.value
         })
-    }
-    const onclick = (e) => {
-        console.log(e.target.value);
     }
     const history = useHistory()
     const handgleLG = () => {

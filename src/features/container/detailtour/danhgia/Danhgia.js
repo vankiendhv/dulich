@@ -52,14 +52,13 @@ function Danhgia(props) {
             [e.target.name]: e.target.value
         })
     }
-    const checklogin = localStorage.getItem("user");
+    const checklogin = useSelector(state => state.infor.infor.data);
     const onSubmit = e => {
         e.preventDefault();
         var tourId = props.id;
         var user = taikhoans.find(x => x.email === localStorage.getItem("user"))
         var userId = user.id;
         if (binhluans.find(x => x.tourId === +tourId && x.userId === +userId)) {
-
             var binhluanid = binhluans.find(x => x.tourId === +tourId && x.userId === +userId);
             var idsua = binhluanid.id
             dispatch(updatebinhluan({ idsua, tourId, binhluan, userId, star, status }))
@@ -173,7 +172,7 @@ function Danhgia(props) {
                     </div>
                 </div>
                 <div className="container"><hr /></div>
-                {checklogin === null ? '' :
+                {checklogin === undefined ? '' :
                     <div className="container">
                         <h3>Đánh giá tour</h3>
                         <div className="container mb-5">

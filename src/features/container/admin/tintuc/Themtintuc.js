@@ -10,6 +10,7 @@ import { storage } from "../../../../firebase"
 import { addtintuctag, removetintuctag, tintuctagData } from './tintuctagSlice'
 import axios from "axios";
 import JoditEditor from "jodit-react";
+import tintuctagApi from '../../../../api/tintuctagApi'
 function Themtintuc(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
@@ -46,67 +47,60 @@ function Themtintuc(props) {
             })
             setcontent(tintuc.content)
         }
-        // return (
-        //     setState({
-        //         ...state,
-        //         tag: data
-        //     })
-        // )
     }, [])
     const { load, tenanh, linkImg, img, name, tacgia, anh, idsua, facebook, twitch, instagram, status, tomtat, tag_id, checktag } = state;
     const onSubmit = async (e) => {
         e.preventDefault();
         setState({ ...state, load: true })
-        // if (name.trim() === "" || tenanh.trim() === "" || tacgia.trim() === "" || facebook.trim() === "" || twitch.trim() === "" || instagram.trim() === "" || content.trim() === "" || tomtat.trim() === "") {
-        //     message.error("Xin hãy nhập đầy đủ thông tin!");
-        // } else {
-        if (id) {
-            if (img !== undefined) {
-                await storage.ref(`imagestintuc/${img.name}`).put(img);
-                const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
-                if (checktag === tag_id) {
-                    console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
-                    dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
-                } else {
-                    console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id);
-                    await dispatch(removetintuctag(idsua))
-                    for (let i = 0; i < tag_id.length; i++) {
-                        var tintucId = idsua;
-                        const tagId = tag_id[i];
-                        await dispatch(addtintuctag({ tintucId, tagId }))
+        if (name.trim() === "" || tenanh.trim() === "" || tacgia.trim() === "" || facebook.trim() === "" || twitch.trim() === "" || instagram.trim() === "" || content.trim() === "" || tomtat.trim() === "") {
+            message.error("Xin hãy nhập đầy đủ thông tin!");
+        } else {
+            if (id) {
+                if (img !== undefined) {
+                    await storage.ref(`imagestintuc/${img.name}`).put(img);
+                    const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
+                    if (checktag === tag_id) {
+                        console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
+                        dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                    } else {
+                        console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id);
+                        await dispatch(removetintuctag(idsua))
+                        for (let i = 0; i < tag_id.length; i++) {
+                            var tintucId = idsua;
+                            const tagId = tag_id[i];
+                            await dispatch(addtintuctag({ tintucId, tagId }))
+                        }
+                        await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                     }
-                    await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                } else {
+                    if (checktag === tag_id) {
+                        console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
+                        dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                    } else {
+                        console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id);
+                        await dispatch(removetintuctag(idsua))
+                        tag_id.map(async (ok) => {
+                            await tintuctagApi.posttintuctag({ tintucId: idsua, tagId: ok })
+                        }
+                        )
+                        await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                    }
                 }
             } else {
-                if (checktag === tag_id) {
-                    console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
-                    dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
-                } else {
-                    console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id);
-                    await dispatch(removetintuctag(idsua))
-                    for (let i = 0; i < tag_id.length; i++) {
-                        var tintucId = idsua;
-                        const tagId = tag_id[i];
-                        await dispatch(addtintuctag({ tintucId, tagId }))
-                    }
-                    await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                await storage.ref(`imagestintuc/${img.name}`).put(img);
+                const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
+                var TintucTags = []
+                for (let i = 0; i < tag_id.length; i++) {
+                    TintucTags.push({ tagId: tag_id[i] })
                 }
+                console.log(tag_id);
+                dispatch(addtintuc({ name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh, TintucTags }));
             }
-        } else {
-            await storage.ref(`imagestintuc/${img.name}`).put(img);
-            const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
-            var TintucTags = []
-            for (let i = 0; i < tag_id.length; i++) {
-                TintucTags.push({ tagId: tag_id[i] })
-            }
-            console.log(tag_id);
-            dispatch(addtintuc({ name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh, TintucTags }));
+            setTimeout(() => {
+                actionResult();
+            }, 800);
+            history.push("/admin/tintuc");
         }
-        setTimeout(() => {
-            actionResult();
-        }, 800);
-        history.push("/admin/tintuc");
-        // }
     }
     const tags = useSelector(state => state.tags.tag.data);
     const data = [];

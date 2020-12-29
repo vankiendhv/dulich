@@ -34,10 +34,6 @@ function Dichvu(props) {
             dataIndex: 'action'
         }
     ];
-
-    function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-    }
     const dichvus = useSelector(state => state.dichvus.dichvu.data);
     const loading = useSelector(state => state.dichvus.loading)
     const dispatch = useDispatch();
@@ -91,15 +87,15 @@ function Dichvu(props) {
                             name: <span>{ok.name}</span>,
                             mota: <span>{ok.mota}</span>,
                             icon: <span className={`${ok.icon} text-success`} style={{ fontSize: "1.5rem" }}></span>,
-                            loadhome: <div className="action">{ok.loadhome === 1 ? <Link onClick={() => { handleLoadhome(ok.loadhome, ok.id) }}><i className="fas fa-check text-success "></i></Link> : <Link onClick={() => handleLoadhome(ok.loadhome, ok.id)}><i className="fas fa-times text-danger"></i></Link>}</div>,
-                            status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
+                            loadhome: <div className="action">{ok.loadhome === 1 ? <span onClick={() => { handleLoadhome(ok.loadhome, ok.id) }}><i className="fas fa-check text-success "></i></span> : <span onClick={() => handleLoadhome(ok.loadhome, ok.id)}><i className="fas fa-times text-danger"></i></span>}</div>,
+                            status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
                             action:
                                 <div className="action">
                                     <Popconfirm title="Bạn có muốn sửa？" onConfirm={() => { hangdleEdit(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'green' }} />}>
-                                        <Link ><i className="far fa-edit mr-4"></i></Link>
+                                        <i className="far fa-edit mr-4"></i>
                                     </Popconfirm>
                                     <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                        <Link ><i className="far fa-trash-alt" ></i></Link>
+                                        <i className="far fa-trash-alt" ></i>
                                     </Popconfirm>
                                 </div>
                         }))}

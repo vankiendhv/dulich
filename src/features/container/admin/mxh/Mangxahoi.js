@@ -34,17 +34,10 @@ function Mangxahoi(props) {
             dataIndex: 'action'
         }
     ];
-
-    function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-    }
     const mangxahois = useSelector(state => state.mangxahois.mangxahoi.data);
     const loading = useSelector(state => state.mangxahois.loading)
     const dispatch = useDispatch();
     const actionResult = async () => { await dispatch(mangxahoiData()) }
-    function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-    }
     const history = useHistory()
     const hangdleDelete = e => {
         dispatch(removemangxahoi(e));
@@ -85,18 +78,17 @@ function Mangxahoi(props) {
                             icon: <span className={`${ok.icon}`} style={{ fontSize: "1.5rem", color: ok.color }}></span>,
                             color: <span>{ok.color}</span>,
                             link: <span>{ok.link}</span>,
-                            status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
+                            status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
                             action:
                                 <div className="action">
                                     <Popconfirm title="Bạn có muốn sửa？" onConfirm={() => { hangdleEdit(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'green' }} />}>
-                                        <Link ><i className="far fa-edit mr-4"></i></Link>
+                                        <i className="far fa-edit mr-4"></i>
                                     </Popconfirm>
                                     <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                        <Link ><i className="far fa-trash-alt" ></i></Link>
+                                        <i className="far fa-trash-alt" ></i>
                                     </Popconfirm>
                                 </div>
-                        }))}
-                        onChange={onChange} />
+                        }))} />
                 }
             </div>
         </div>

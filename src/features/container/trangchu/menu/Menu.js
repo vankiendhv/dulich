@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-scroll";
-import { Link as Linkrt, useRouteMatch } from "react-router-dom";
+import { Link as Linkrt } from "react-router-dom";
 import "./menu.css";
 import Avatar from "antd/lib/avatar/avatar";
-import { Menu, Dropdown, Drawer, message, Space, DatePicker } from 'antd';
+import { Menu, Dropdown, Drawer, message } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { Button, IconButton } from "@material-ui/core";
 import { storage } from "../../../../firebase"
-import { updateuser, userData } from "../../admin/taikhoan/taikhoanSlice";
 import { inforData } from "../../login/inforSlice";
-import inforApi from "../../../../api/inforApi";
 import taikhoanApi from "../../../../api/taikhoanApi";
 
 function ListMenu(props) {
@@ -50,15 +48,6 @@ function ListMenu(props) {
       message.error("Bạn cần phải đăng nhập trước!")
     }
   };
-  // const taikhoan = useSelector(state => state.taikhoan.user.data);
-  // var user = []
-  // if (taikhoan) {
-  //   for (let i = 0; i < taikhoan.length; i++) {
-  //     if (taikhoan[i].email === localStorage.getItem("user")) {
-  //       user.push(taikhoan[i])
-  //     }
-  //   }
-  // }
   const users = useSelector(state => state.infor.infor.data);
   const [user, setUser] = useState()
 
@@ -130,7 +119,6 @@ function ListMenu(props) {
     </Menu>
   );
   const dispatch = useDispatch()
-  const actionResult = async () => { await dispatch(userData()) }
   const onSubmit = async (e) => {
     e.preventDefault();
     var idsua = user.id

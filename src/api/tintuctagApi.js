@@ -8,7 +8,6 @@ class TintuctagApi {
     };
     posttintuctag = async (params) => {
         const url = '/tintuctags';
-        console.log(params);
         return await axiosClient.post(url, params)
     };
     deletetintuctag = async (id) => {

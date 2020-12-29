@@ -1,13 +1,9 @@
-
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Button } from '@material-ui/core';
-import { Popconfirm, Spin, Table } from 'antd';
+import { Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
-import { roleData, removerole, updaterole } from './roleSlice';
+import { userroleData } from '../header/userroleSlice';
+import { roleData, updaterole } from './roleSlice';
 function Role(props) {
-
     const columns = [
         {
             title: 'quyền',
@@ -17,29 +13,71 @@ function Role(props) {
             title: 'Tình trạng',
             dataIndex: 'status',
         },
-        {
-            title: 'Action',
-            dataIndex: 'action'
-        }
-    ];
 
-    function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-    }
+        {
+            title: 'Số lượng',
+            dataIndex: 'amount',
+        },
+    ];
     const roles = useSelector(state => state.roles.role.data);
     const loading = useSelector(state => state.roles.loading)
     const dispatch = useDispatch();
-    const actionResult = async () => { await dispatch(roleData()) }
 
-    const history = useHistory()
-    const hangdleDelete = e => {
-        dispatch(removerole(e));
-        setTimeout(() => {
-            actionResult();
-        }, 500);
-    }
-    const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suarole/${id}`)
+    const actionResult = async () => { await dispatch(roleData()) }
+    const actionUserrole = async () => { await dispatch(userroleData()) }
+    useEffect(() => {
+        actionUserrole()
+    }, [])
+    const userrole = useSelector(state => state.userroles.userrole.data);
+
+    const countRole = (id) => {
+        var admin = [];
+        var quanlytintuc = [];
+        var quanlybinhluan = [];
+        var quanlytour = [];
+        var bientapvien = [];
+        var nguoidung = [];
+        for (let i = 0; i < userrole.length; i++) {
+            if (userrole[i].roleId === 1) {
+                admin.push(userrole[i]);
+            }
+            if (userrole[i].roleId === 2) {
+                quanlytintuc.push(userrole[i]);
+            }
+            if (userrole[i].roleId === 3) {
+                quanlybinhluan.push(userrole[i]);
+            }
+            if (userrole[i].roleId === 4) {
+                quanlytour.push(userrole[i]);
+            }
+            if (userrole[i].roleId === 5) {
+                bientapvien.push(userrole[i]);
+            }
+            if (userrole[i].roleId === 6) {
+                nguoidung.push(userrole[i]);
+            }
+        }
+        switch (id) {
+            case 1:
+                return admin.length;
+                break;
+            case 2:
+                return quanlytintuc.length;
+                break;
+            case 3:
+                return quanlybinhluan.length;
+                break;
+            case 4:
+                return quanlytour.length;
+                break;
+            case 5:
+                return bientapvien.length;
+                break;
+            case 6:
+                return nguoidung.length;
+                break;
+        }
+
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -59,24 +97,14 @@ function Role(props) {
                 <div className="hr"></div>
             </div>
             <div className="content">
-                <div className="add">
-                    <Link to={`${props.url}/themrole`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
-                </div>
+
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={roles.map((ok, index) => (
                         {
                             key: index + 1,
                             name: <span>{ok.name}</span>,
-                            status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
-                            action:
-                                <div className="action">
-                                    <Popconfirm title="Bạn có muốn sửa？" onConfirm={() => { hangdleEdit(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'green' }} />}>
-                                        <Link ><i className="far fa-edit mr-4"></i></Link>
-                                    </Popconfirm>
-                                    <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                        <Link ><i className="far fa-trash-alt" ></i></Link>
-                                    </Popconfirm>
-                                </div>
+                            status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
+                            amount: <span><b>{userrole ? countRole(ok.id) : ""}</b></span>
                         }))}
                     />
                 }
