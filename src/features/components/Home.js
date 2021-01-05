@@ -139,6 +139,9 @@ export default function NestingExample() {
           <Route path="/detail-new/:id">
             <Tintucdetail />
           </Route>
+          <Route path="/list-tour/:id">
+            <Listtour />
+          </Route>
           <Route path="/list-tour">
             <Listtour />
           </Route>

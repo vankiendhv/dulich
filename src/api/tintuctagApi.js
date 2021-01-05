@@ -8,11 +8,16 @@ class TintuctagApi {
     };
     posttintuctag = async (params) => {
         const url = '/tintuctags';
-        return await axiosClient.post(url, params)
+        console.log(params);
+        return await axiosClient.post(url, params).then(data => {
+            message.success("Sửa thành công!");
+        }).catch(err => {
+            console.log(err.message);
+        });
     };
-    deletetintuctag = async (id) => {
+    deletetintuctag = (id) => {
         const url = `/tintuctags/${id}`;
-        return await axiosClient.delete(url);
+        return axiosClient.delete(url);
     };
     edittintuctag = (params) => {
         const url = `/tintuctags/${params.idsua}`;

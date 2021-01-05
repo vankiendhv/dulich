@@ -1,10 +1,9 @@
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button } from '@material-ui/core';
-import { Popconfirm, Popover, Spin, Table } from 'antd';
+import { Popconfirm, Popover, Spin, Table, Tooltip } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
 import { hoadonData, removehoadon, updatehoadon } from './hoadonSlice';
 function Hoadon(props) {
 
@@ -32,10 +31,10 @@ function Hoadon(props) {
         }
     ];
 
-    function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-    }
     const hoadons = useSelector(state => state.hoadons.hoadon.data);
+    const soluong = (nguoilon, treem, embe) => {
+        return nguoilon + treem + embe
+    }
     const loading = useSelector(state => state.hoadons.loading)
     const dispatch = useDispatch();
     const actionResult = async () => { await dispatch(hoadonData()) }
@@ -46,18 +45,18 @@ function Hoadon(props) {
             actionResult();
         }, 500);
     }
-
-    const handleStatus = (e, id) => {
-        if (e === 1) {
-            dispatch(updatehoadon({ status: 0, idsua: id }))
-        } else {
-            dispatch(updatehoadon({ status: 1, idsua: id }))
-        }
-        setTimeout(() => {
-            actionResult();
-        }, 500);
+    const tongtien = (nguoilon, treem, embe, gnl, gte, geb) => {
+        return (nguoilon * gnl + treem * gte + embe * geb).toLocaleString();
     }
-
+    const title = (nguoilon, treem, embe) => {
+        return (
+            <div>
+                <span>Người lớn: {nguoilon}</span><br />
+                <span>Trẻ em: {treem}</span><br />
+                <span>Em bé: {embe}</span>
+            </div>
+        )
+    }
     return (
         <div id="admin">
             <div className="heading">
@@ -71,13 +70,10 @@ function Hoadon(props) {
                             key: index + 1,
                             name: <span>{ok.User.name}</span>,
                             tour: <span>{ok.Tour.name}</span>,
-                            soluong: <Popover content={<div>
-                                <p>Người lớn: {ok.soluong}</p>
-                                <p>Trẻ em: {ok.soluong}</p>
-                                <p>Em bé: {ok.soluong}</p></div>} title="Số lượng cụ thể">
-                                <span>{ok.soluong}</span>
-                            </Popover>,
-                            tien: <span>10000</span>,
+                            soluong: <Tooltip title={title(ok.nguoilon, ok.treem, ok.embe)}>
+                                <span>{soluong(ok.nguoilon, ok.treem, ok.embe)}</span>
+                            </Tooltip>,
+                            tien: <span>{tongtien(ok.nguoilon, ok.treem, ok.embe, ok.Tour.gianguoilon, ok.Tour.giatreem, ok.Tour.giaembe)} vnđ</span>,
                             action:
                                 <div className="action">
                                     <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
@@ -92,8 +88,5 @@ function Hoadon(props) {
     )
 }
 
-Hoadon.propTypes = {
-
-}
 
 export default Hoadon

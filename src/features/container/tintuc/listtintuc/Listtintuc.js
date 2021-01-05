@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./listtintuc.css";
 import { Link } from "react-router-dom";
 import { Spin } from "antd";
 import { useSelector } from "react-redux";
 export default function Listtintuc() {
-  localStorage.setItem("menu", "nothome");
   const tintucs = useSelector(state => state.tintucs.tintuc.data);
   var tintuc = []
   if (tintucs) {
@@ -14,6 +13,9 @@ export default function Listtintuc() {
       }
     }
   }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  })
   const tomtat = e => {
     var chu = ''
     for (let i = 0; i < e.length; i++) {
@@ -70,7 +72,6 @@ export default function Listtintuc() {
                     </div>
                   </div>
                 ))}
-
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { Carousel, message, Rate } from 'antd'
+import { Carousel, message, Popover, Radio, Rate } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import './tour.css'
@@ -10,13 +10,30 @@ import Modal from 'antd/lib/modal/Modal';
 import Hinhthucthanhtoan from './Hinhthucthanhtoan'
 import Dieukhoan from './Dieukhoan'
 import { binhluanData } from '../../admin/Binhluan/binhluanSlice';
-import { addhoadon } from '../../admin/Hoadon/hoadonSlice';
+import { addhoadon, hoadonData } from '../../admin/Hoadon/hoadonSlice';
+import taikhoanApi from '../../../../api/taikhoanApi';
+import { ngaydiData } from '../../admin/Ngaydi/ngaydiSlice';
 function Tour(props) {
-  localStorage.setItem("menu", "nothome");
   const { id } = useParams()
-
+  const [state, setState] = useState({
+    listdate: '',
+    visible: false,
+    visible2: false,
+    visible3: false,
+    name: "",
+    email: "",
+    sdt: "",
+    diachi: "",
+    nguoilon: 1,
+    treem: 0,
+    embe: 0,
+    dieukhoan: false,
+    valueDate: "",
+    date: "",
+    loadlaihoadon: 1,
+  })
   const binhluans = useSelector(state => state.binhluans.binhluan.data);
-  var binhluanload = []
+  var binhluanload = [];
   if (binhluans) {
     for (let i = 0; i < binhluans.length; i++) {
       if (binhluans[i].tourId === +id && binhluans[i].status === +1) {
@@ -24,16 +41,7 @@ function Tour(props) {
       }
     }
   }
-  const users = useSelector(state => state.taikhoan.user.data);
 
-  // useEffect(() => {
-  //   if (users) {
-  //     console.log("ok");
-  //     if (emailLocal) {
-  //       console.log(users.find(x => x.email === emailLocal));
-  //     }
-  //   }
-  // }, [])
   const tinhdiem = () => {
     var tong = new Number()
     if (binhluans) {
@@ -50,36 +58,96 @@ function Tour(props) {
 
   const dispatch = useDispatch();
   const actionbinhluan = async () => { await dispatch(binhluanData()) }
-  useEffect(() => {
-    actionbinhluan();
-  }, [])
+  const actionhoadon = async () => { await dispatch(hoadonData()) }
+  const actionngaydi = async () => { await dispatch(ngaydiData()) }
+
   const tours = useSelector(state => state.tours.tour.data);
+  const ngaydis = useSelector(state => state.ngaydis.ngaydi.data);
+
   const tour = [];
   if (tours) {
     for (let i = 0; i < tours.length; i++) {
       if (tours[i].id === +id) {
-        tour.push(tours[i])
+        tour.push(tours[i].Ngaydis)
       }
     }
   }
+  const formatdate = e => {
+    if (e) {
+      var ngay = e.substr(0, 2)
+      var thang = e.substr(3, 2)
+      var nam = e.substr(6, 4)
+      return nam + '-' + thang + '-' + ngay;
+    }
+  }
+  const checkngaydi = () => {
+    if (tour.length !== 0) {
+      var ngaydi = tour[0];
+      var ngaymin = formatdate(ngaydi[0].ngay);
+      var date = new Date();
+      var dateToday = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+      for (let i = 0; i < ngaydi.length; i++) {
+        if (ngaymin > formatdate(ngaydi[i].ngay) && dateToday <= formatdate(ngaydi[i].ngay)) {
+          ngaymin = formatdate(ngaydi[i].ngay)
+        }
+      }
+      return ngaymin;
+    }
+  }
+  const fillDate = () => {
+    if (tour.length !== 0) {
+      var ngaydi = tour[0];
+      var date = new Date();
+      var dates = []
+      var dateToday = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+      for (let i = 0; i < ngaydi.length; i++) {
+        if (dateToday <= formatdate(ngaydi[i].ngay)) {
+          dates.push({ id: i + 1, ngay: ngaydi[i].ngay })
+        }
+      }
+      return dates
+    }
+  }
 
-  const [state, setState] = useState({
-    visible: false,
-    visible2: false,
-    name: "",
-    email: "",
-    sdt: "",
-    diachi: "",
-    nguoilon: 1,
-    treem: 0,
-    embe: 0,
-    dieukhoan: false
-  })
-  const showModal = () => {
-    if (localStorage.getItem("user")) {
-      var user = users.find(x => x.email === localStorage.getItem("user"));
+  const formatlaidate = (e) => {
+    if (e) {
+      var ngay = e.substr(8, 2)
+      var thang = e.substr(5, 2)
+      var nam = e.substr(0, 4)
+      return ngay + "/" + thang + "/" + nam
+    }
+  }
+  var tour_ngay = [];
+  if (ngaydis && formatlaidate(checkngaydi())) {
+    tour_ngay.push(ngaydis.find(x => x.ngay === formatlaidate(checkngaydi())).Tours.find(x => x.id === +id))
+  }
+
+  const hide = () => {
+    setState({
+      ...state,
+      visible3: false,
+    });
+  };
+
+  const handleVisibleChange = () => {
+    setState({ ...state, visible3: true, listdate: fillDate() });
+  };
+  const users = useSelector(state => state.infor.infor.data);
+  useEffect(() => {
+    actionngaydi();
+    actionbinhluan();
+    actionhoadon();
+    window.scrollTo(0, 0);
+
+  }, [state.loadlaihoadon])
+  const showModal = async () => {
+    if (users) {
+      var user = await taikhoanApi.getOne(+users.id).then(data => {
+        return data;
+      })
       setState({
         ...state,
+        visible3: false,
         visible: true,
         name: user.name,
         diachi: user.diachi,
@@ -95,7 +163,7 @@ function Tour(props) {
     if (name === "" || sdt === "" || diachi === "" || email === "" || !name || !sdt || !diachi || !email) {
       message.warning('Bạn cần cập nhật thông tin cho tài khoản!');
     } else {
-      var songuoi = tour[0].songuoi;
+      var songuoi = tours.find(x => x.id === +id).songuoi;
       if (songuoiconlai(songuoi) === 0) {
         message.warning("Đã hết chỗ quý khách vui lòng chọn thời gian khác!")
       } else {
@@ -117,20 +185,24 @@ function Tour(props) {
       visible: false,
     });
   };
-  const handleOk2 = e => {
+
+  const handleOk2 = async (e) => {
     if (state.dieukhoan === false) {
       message.warning("Bạn chưa đồng ý điều khoản của chúng tôi!")
     } else {
-      var userId = users.find(x => x.email === localStorage.getItem("user")).id;
+      var userId = await taikhoanApi.getOne(+users.id).then(data => {
+        return data.id;
+      })
       var tourId = id
-      console.log(userId, +tourId);
-      dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe }));
+      await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
       setState({
         ...state,
         visible2: false,
-        visible: false
+        visible: false,
+        loadlaihoadon: state.loadlaihoadon + 1
       });
     }
+
   };
 
   const handleCancel2 = e => {
@@ -140,11 +212,15 @@ function Tour(props) {
     });
   };
   const onchange = (e) => {
+
     setState({
       ...state,
       [e.target.name]: e.target.value
     })
   }
+  const onChangedate = e => {
+    setState({ ...state, valueDate: e.target.value });
+  };
   const hoadons = useSelector(state => state.hoadons.hoadon.data);
   const songuoiconlai = (e) => {
     var tonghd = new Number();
@@ -160,6 +236,17 @@ function Tour(props) {
   const thanhtien = (gia_nl, gia_te, gia_eb) => {
     return ((gia_nl * nguoilon) + (gia_te * treem) + (gia_eb * embe)).toLocaleString();
   }
+  const radioStyle = {
+    display: 'block',
+    height: '30px',
+    lineHeight: '30px',
+  };
+  const adddate = (e) => {
+    setState({
+      ...state,
+      date: state.listdate.find(x => x.id === +e).ngay
+    })
+  }
   const { name, sdt, diachi, email, nguoilon, treem, embe } = state
   var tong = Number(nguoilon) + Number(treem) + Number(embe);
   return (
@@ -173,13 +260,13 @@ function Tour(props) {
           </ol>
         </nav>
       </div>
-      { tour.map(ok => (
+      { tour_ngay.map(ok => (
         <div className="box-tour" key={ok.id}>
           <div className="container bg-white">
             <div className="row justify-content-center" >
               <div className="col-lg-8">
                 <Carousel autoplay>
-                  {ok.Anhs.map(oki => (
+                  {tours.find(x => x.id === +id).Anhs.map(oki => (
                     <div>
                       <img src={oki.link} width="760px" height="430px" alt="" />
                     </div>
@@ -192,7 +279,7 @@ function Tour(props) {
                     <Rate value={tinhdiem()} disabled />
                   </div>
                   <div className="icon-comment">
-                    <span><strong>{tinhdiem()}/5</strong> điểm với <strong>{binhluanload.length}</strong> đánh giá</span>
+                    <span><strong> &emsp; {tinhdiem()}/5</strong> điểm với <strong>{binhluanload.length}</strong> đánh giá</span>
                   </div>
                   <div className="view">
                     <span className="mr-3"><i className="far fa-thumbs-up mr-1"></i> 200</span>
@@ -204,8 +291,33 @@ function Tour(props) {
                     <table className="w-100">
                       <tr>
                         <td><span>Khởi hành:</span></td>
-                        <td><span>13/02/2020</span></td>
-                        <td><Link>Đổi ngày</Link></td>
+                        <td><span>{state.date === "" ? formatlaidate(checkngaydi()) : state.date}</span></td>
+                        <td>
+                          <Popover
+                            content={
+                              <div>
+                                <Radio.Group onChange={onChangedate} value={state.valueDate}>
+                                  {state.listdate === "" ? "" :
+                                    state.listdate.map(ok => (
+                                      <Radio style={radioStyle} key={ok.id} value={ok.id}>
+                                        <span onClick={() => { adddate(ok.id) }}>{ok.ngay}</span><br />
+                                      </Radio>
+                                    ))}
+                                </Radio.Group>
+                                <hr />
+                                <div className="text-center">
+                                  <strong className="text-danger" style={{ cursor: "pointer" }} onClick={hide}>Close</strong>
+                                </div>
+                              </div>
+                            }
+                            title="Chọn ngày khác"
+                            trigger="click"
+                            visible={state.visible3}
+                            onVisibleChange={handleVisibleChange}
+                          >
+                            <span className="text-primary" style={{ cursor: "pointer" }}>Đổi ngày</span>
+                          </Popover>
+                        </td>
                       </tr>
                       <tr>
                         <td><span>Thời gian:</span></td>
@@ -218,7 +330,7 @@ function Tour(props) {
                     </table>
                   </div>
                   <Button className="float-right position-absolute btn-dt" onClick={showModal} variant="contained" color="secondary">
-                    <Link >Đặt tour</Link>
+                    Đặt tour
                   </Button>
                   <div className="price position-absolute">
                     <span><strong className="text-danger">{(ok.gianguoilon).toLocaleString()}</strong> vnd</span>
@@ -261,6 +373,11 @@ function Tour(props) {
           <input type="text"
             className="form-control" name="diachi" disabled value={diachi} onChange={onchange} aria-describedby="helpId" placeholder="" />
         </div>
+        <div className="form-group">
+          <label htmlFor="">Ngày đi</label>
+          <input type="text"
+            className="form-control" name="diachi" disabled value={state.date === "" ? formatlaidate(checkngaydi()) : state.date} onChange={onchange} aria-describedby="helpId" placeholder="" />
+        </div>
         <h4 className="text-center text-primary">Số người</h4>
         <div className="row">
           <div className="col-md-3">
@@ -293,7 +410,7 @@ function Tour(props) {
           </div>
         </div>
         <h4 className="text-center text-primary">Thành tiền</h4>
-        {tour.map(ok => (
+        {tour_ngay.map(ok => (
           <p key={ok.id}>Số tiền cần phải trả: <strong className="text-danger">{thanhtien(ok.gianguoilon, ok.giatreem, ok.giaembe)}</strong></p>
         ))}
       </Modal>
@@ -312,13 +429,10 @@ function Tour(props) {
         <input type="checkbox" onChange={onchange} className="mt-3" name="dieukhoan" id="dk" />
         <label htmlFor="dk" className="ml-3"><strong>Tôi đồng ý với điều khoản ở trên</strong></label>
       </Modal>
+
     </div>
 
   )
-}
-
-Tour.propTypes = {
-
 }
 
 export default Tour

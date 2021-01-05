@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { Button, IconButton } from '@material-ui/core'
-import { Checkbox, Col, Row, Select, Spin, Upload } from 'antd'
+import { Checkbox, Col, Image, Row, Select, Spin, Upload } from 'antd'
 import { Option } from 'antd/lib/mentions'
 import { useDispatch, useSelector } from 'react-redux'
 import JoditEditor from "jodit-react";
@@ -10,7 +10,7 @@ import "./tour.css"
 import Modal from 'antd/lib/modal/Modal'
 import { storage } from "../../../../firebase"
 import { PlusOutlined } from '@ant-design/icons'
-import { addtour, tourData } from './tourSlice'
+import { addtour, tourData, updatetour } from './tourSlice'
 import { loaitourData } from '../Loaitour/loaitourSlice'
 function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -27,80 +27,157 @@ function Themtour(props) {
             vitri: e
         })
     }
-    // const { id } = useParams();
+    const { id } = useParams();
+    const tours = useSelector(state => state.tours.tour.data);
+    const [state, setState] = useState({ vitri: 1, ngaydiId: "", checkdichvu: "", checkloaitour: "", checkngaydi: "", dichvuId: [], diadiemId: [], thoigian: "", soluong: "", loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
+    const { vitri, linkImg, dichvuId, name, diadiemId, loaitourId, load, thoigian, soluong, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, tenanh, img, previewVisible, previewImage, fileList, previewTitle } = state;
     const dispatch = useDispatch();
     const history = useHistory();
     const actionResult = async () => { await dispatch(tourData()) }
     const actionloaitour = async () => { await dispatch(loaitourData()) }
     useEffect(() => {
-        //actionloaitour()
-    }, [])
+        if (id && tours) {
+            var tour = tours.find(x => x.id === +id);
+            var suadichvu = [];
+            for (let i = 0; i < tour.Dichvus.length; i++) {
+                suadichvu.push(`${tour.Dichvus[i].id}`);
+            }
+            var sualoaitour = [];
+            for (let i = 0; i < tour.Loaitours.length; i++) {
+                sualoaitour.push(`${tour.Loaitours[i].id}`);
+            }
+            var suangaydi = [];
+            for (let i = 0; i < tour.Ngaydis.length; i++) {
+                suangaydi.push(tour.Ngaydis[i].id);
+            }
+            var suadiadiem = [];
+            for (let i = 0; i < tour.Diadiems.length; i++) {
+                suadiadiem.push(`${tour.Diadiems[i].id}`);
+            }
+            console.log(suadiadiem);
+            setState({
+                ...state,
+                vitri: tour.vitri,
+                thoigian: tour.thoigian,
+                soluong: tour.songuoi,
+                name: tour.name,
+                avatar: tour.avatar,
+                gianguoilon: tour.gianguoilon,
+                giatreem: tour.giatreem,
+                giaembe: tour.giaembe,
+                trailer: tour.trailer,
+                bando: tour.bando,
+                status: tour.status,
+                dichvuId: suadichvu,
+                loaitourId: sualoaitour,
+                ngaydiId: suangaydi,
+                checkdichvu: suadichvu,
+                checkloaitour: sualoaitour,
+                checkngaydi: suangaydi
+
+            })
+            setluuy(tour.luuy);
+            setchitiettour(tour.chitiettour);
+        }
+    }, [tours])
     const loaitour = useSelector(state => state.loaitours.loaitour.data)
     const dichvu = useSelector(state => state.dichvus.dichvu.data)
     const loadloaitour = useSelector(state => state.loaitours.loading)
-    const [state, setState] = useState({ vitri: 1, dichvuId: [], diadiemId: [], loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
-    const { vitri, linkImg, dichvuId, name, diadiemId, loaitourId, load, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, tenanh, img, previewVisible, previewImage, fileList, previewTitle } = state;
     const onSubmit = async (e) => {
         e.preventDefault();
+        setState({ ...state, load: true })
+
         // if (name.trim() === "" || tenanh.trim() === "" || tacgia.trim() === "" || facebook.trim() === "" || twitch.trim() === "" || instagram.trim() === "" || content.trim() === "" || tomtat.trim() === "") {
         //     message.error("Xin hãy nhập đầy đủ thông tin!");
         // } else {
-        //     if (id) {
-        //         if (img != undefined) {
-        //             storage.ref(`images/${img.name}`).put(img);
-        //             const anh = await storage.ref("images").child(img.name).getDownloadURL();
-        //             var tourTags = []
-        //             for (let i = 0; i < tagId.length; i++) {
-        //                 tourTags.push({ tagId: tagId[i] })
-        //             }
-        //             dispatch(updatetour({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh, tourTags }));
-        //         } else {
-        //             var tourTags = []
-        //             for (let i = 0; i < tagId.length; i++) {
-        //                 tourTags.push({ tagId: tagId[i] })
-        //             }
-        //             dispatch(updatetour({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh, tourTags }));
-        //         }
-        //     } else {
-        setState({ ...state, load: true })
-        await storage.ref(`imagestour/${img.name}`).put(img)
-        const avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
-        var Anhs = [];
-        for (let i = 0; i < fileList.length; i++) {
-            await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
-            const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
-            Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
+        if (id) {
+            var avatar = ""
+            var Anhs = [];
+            if (img !== "" || fileList.length > 0) {
+                if (img && fileList.length > 0) {
+                    await storage.ref(`imagestour/${img.name}`).put(img)
+                    avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
+                    for (let i = 0; i < fileList.length; i++) {
+                        await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
+                        const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
+                        Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
+                    }
+                } else {
+                    if (fileList.length > 0) {
+                        for (let i = 0; i < fileList.length; i++) {
+                            await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
+                            const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
+                            Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
+                        }
+                    } else {
+                        await storage.ref(`imagestour/${img.name}`).put(img)
+                        avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
+                    }
+                }
+            }
+        } else {
+            console.log("ko co anh");
         }
-        var TourLoaitours = [];
-        for (let i = 0; i < loaitourId.length; i++) {
-            TourLoaitours.push({ loaitourId: loaitourId[i] })
-        }
-        var DichvuTours = [];
-        for (let i = 0; i < dichvuId.length; i++) {
-            DichvuTours.push({ dichvuId: dichvuId[i] })
-        }
-        var TourDiadiems = [];
-        for (let i = 0; i < diadiemId.length; i++) {
-            TourDiadiems.push({ diadiemId: diadiemId[i] })
-        }
-        var TourNgaydis = [];
-        for (let i = 0; i < ngaydiId.length; i++) {
-            TourNgaydis.push({ ngaydiId: ngaydiId[i] });
-        }
-        await dispatch(addtour({ name, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
+
+        // await storage.ref(`imagestour/${img.name}`).put(img)
+        // const avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
+        // var Anhs = [];
+        // for (let i = 0; i < fileList.length; i++) {
+        //     await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
+        //     const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
+        //     Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
+        // }
+        // var TourLoaitours = [];
+        // for (let i = 0; i < loaitourId.length; i++) {
+        //     TourLoaitours.push({ loaitourId: loaitourId[i] })
+        // }
+        // var DichvuTours = [];
+        // for (let i = 0; i < dichvuId.length; i++) {
+        //     DichvuTours.push({ dichvuId: dichvuId[i] })
+        // }
+        // var TourDiadiems = [];
+        // for (let i = 0; i < diadiemId.length; i++) {
+        //     TourDiadiems.push({ diadiemId: diadiemId[i] })
+        // }
+        // var TourNgaydis = [];
+        // for (let i = 0; i < ngaydiId.length; i++) {
+        //     TourNgaydis.push({ ngaydiId: ngaydiId[i] });
+        // }
+        // await dispatch(updatetour({ name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
+        //} else {
+        // await storage.ref(`imagestour/${img.name}`).put(img)
+        // const avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
+        // var Anhs = [];
+        // for (let i = 0; i < fileList.length; i++) {
+        //     await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
+        //     const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
+        //     Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
+        // }
+        // var TourLoaitours = [];
+        // for (let i = 0; i < loaitourId.length; i++) {
+        //     TourLoaitours.push({ loaitourId: loaitourId[i] })
+        // }
+        // var DichvuTours = [];
+        // for (let i = 0; i < dichvuId.length; i++) {
+        //     DichvuTours.push({ dichvuId: dichvuId[i] })
+        // }
+        // var TourDiadiems = [];
+        // for (let i = 0; i < diadiemId.length; i++) {
+        //     TourDiadiems.push({ diadiemId: diadiemId[i] })
+        // }
+        // var TourNgaydis = [];
+        // for (let i = 0; i < ngaydiId.length; i++) {
+        //     TourNgaydis.push({ ngaydiId: ngaydiId[i] });
+        // }
+        // await dispatch(addtour({ name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
         //     }
-        setTimeout(() => {
-            actionResult();
-        }, 800);
-        history.push("/admin/tour");
+        //}
+        // setTimeout(() => {
+        //     actionResult();
+        // }, 800);
+        // history.push("/admin/tour");
         // }
     }
-    //const children = [];
-    // for (let i = 10; i < 36; i++) {
-    //     children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-    // }
-    // const tour = useSelector(state => state.tours.find(x => x.id === id))
-    // console.log({ tour });
 
     const onChange = (e) => {
         setState({
@@ -118,7 +195,6 @@ function Themtour(props) {
     for (let i = 0; i < dichvu.length; i++) {
         dichvudata.push(<Option key={dichvu[i].id}>{dichvu[i].name}</Option>);
     }
-
     const [luuy, setluuy] = useState('')
     const [chitiettour, setchitiettour] = useState('')
 
@@ -216,7 +292,7 @@ function Themtour(props) {
     return (
         <div id="admin">
             <div className="heading">
-                <h4>Thêm tour</h4>
+                <h4>{id ? "Sửa tour" : "Thêm tour"}</h4>
                 <div className="hr"></div>
             </div>
             <div className="content">
@@ -241,15 +317,13 @@ function Themtour(props) {
                                     <i className="fas fa-camera-retro"></i>
                                 </IconButton>
                             </label>
-                            {linkImg ? <img src={linkImg} className="ml-5" height="150px" width="100px" alt="" /> : ''}
+                            {linkImg ? <Image src={linkImg} className="ml-5" height="150px" width="100px" alt="" /> : avatar ? <Image src={avatar} className="ml-5" height="150px" width="100px" alt="" /> : ''}
                             <br />
-                            <span>{tenanh}</span>
                         </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Banner</label>
                         <Upload
-                            // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                             listType="picture-card"
                             fileList={fileList}
                             onPreview={handlePreview}
@@ -268,7 +342,6 @@ function Themtour(props) {
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Ngày đi</label>
-
                         <span className="text-warning" onClick={showModal}>
                             <IconButton color="primary" className="mr-5 ml-4" aria-label="upload picture" component="span">
                                 <i className="far fa-calendar-alt" ></i>
@@ -296,7 +369,7 @@ function Themtour(props) {
                                 </Select><Spin />
                             </span>
                             :
-                            <Select mode="tags" onChange={ondichvu} className="w-50" placeholder="Tags Mode">
+                            <Select mode="tags" value={dichvuId} onChange={ondichvu} className="w-50" placeholder="Tags Mode">
                                 {dichvudata}
                             </Select>
                         }
@@ -305,8 +378,7 @@ function Themtour(props) {
                         <label htmlFor="">Loại tour</label><br />
                         {loadloaitour ?
                             <span>
-                                <Select className="w-25 ml-4" >
-                                </Select><Spin />
+                                <Spin />
                             </span>
                             :
                             <Select mode="tags" onChange={onId} className="w-50" placeholder="Tags Mode">
@@ -328,20 +400,28 @@ function Themtour(props) {
                         </Select>
                     </div>
                     <div className="form-group">
+                        <label htmlFor="">Số lượng</label>
+                        <input type="number" min="0" name="soluong" value={soluong} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Số ngày đi</label>
+                        <input type="number" min="0" name="thoigian" value={thoigian} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="">Trailer</label>
                         <input type="text" name="trailer" value={trailer} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Giá người lớn</label>
-                        <input type="number" name="gianguoilon" value={gianguoilon} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                        <input type="number" min="0" name="gianguoilon" value={gianguoilon} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Giá trẻ em</label>
-                        <input type="number" name="giatreem" value={giatreem} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                        <input type="number" min="0" name="giatreem" value={giatreem} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Giá em bé</label>
-                        <input type="number" name="giaembe" value={giaembe} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                        <input type="number" min="0" name="giaembe" value={giaembe} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Bản đồ</label>
@@ -366,7 +446,7 @@ function Themtour(props) {
 
                     <div className="text-center mtb">
                         {load ? <div className="spinner-border text-success" role="status"><span className="sr-only">Loading...</span></div> : ''}
-                        <Button type="submit" variant="contained" color="primary">Thêm tour</Button>
+                        <Button type="submit" variant="contained" color="primary">{id ? "Sửa tour" : "Thêm tour"}</Button>
                     </div>
                 </form>
             </div>
@@ -375,8 +455,5 @@ function Themtour(props) {
     )
 }
 
-Themtour.propTypes = {
-
-}
 
 export default Themtour

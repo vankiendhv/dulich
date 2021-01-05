@@ -10,7 +10,8 @@ function Danhgia(props) {
     const [text, setText] = useState(renderHTML("<span className='text-success'>Cực kỳ hài lòng</span>"))
     const [state, setState] = useState({ binhluan: '', star: 5, status: 1, diem: '' })
     const binhluans = useSelector(state => state.binhluans.binhluan.data);
-    var binhluanload = []
+    const infor = useSelector(state => state.infor.infor.data);
+    var binhluanload = [];
     if (binhluans) {
         for (let i = 0; i < binhluans.length; i++) {
             if (binhluans[i].tourId === +props.id && binhluans[i].status === +1) {
@@ -18,7 +19,7 @@ function Danhgia(props) {
             }
         }
     }
-    const taikhoans = useSelector(state => state.taikhoan.user.data)
+    const taikhoans = useSelector(state => state.taikhoan.user.data);
     const load = useSelector(state => state.binhluans.loading);
     const { binhluan, star, status } = state
     const dispatch = useDispatch();
@@ -56,19 +57,18 @@ function Danhgia(props) {
     const onSubmit = e => {
         e.preventDefault();
         var tourId = props.id;
-        var user = taikhoans.find(x => x.email === localStorage.getItem("user"))
-        var userId = user.id;
+        var userId = infor.id;
         if (binhluans.find(x => x.tourId === +tourId && x.userId === +userId)) {
             var binhluanid = binhluans.find(x => x.tourId === +tourId && x.userId === +userId);
             var idsua = binhluanid.id
             dispatch(updatebinhluan({ idsua, tourId, binhluan, userId, star, status }))
             setTimeout(() => {
-                actionbinhluan()
+                actionbinhluan();
             }, 500);
         } else {
             dispatch(addbinhluan({ tourId, binhluan, userId, star, status }))
             setTimeout(() => {
-                actionbinhluan()
+                actionbinhluan();
             }, 500);
         }
         setState({

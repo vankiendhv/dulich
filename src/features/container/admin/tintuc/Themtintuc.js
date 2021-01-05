@@ -60,15 +60,15 @@ function Themtintuc(props) {
                     await storage.ref(`imagestintuc/${img.name}`).put(img);
                     const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
                     if (checktag === tag_id) {
-                        console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
                         dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                     } else {
-                        console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id);
                         await dispatch(removetintuctag(idsua))
                         for (let i = 0; i < tag_id.length; i++) {
                             var tintucId = idsua;
                             const tagId = tag_id[i];
-                            await dispatch(addtintuctag({ tintucId, tagId }))
+                            console.log(tintucId + ":" + tagId);
+                            //await tintuctagApi.posttintuctag({ tintucId, tagId })
+                            // await dispatch(addtintuctag({ tintucId, tagId }))
                         }
                         await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                     }
@@ -77,13 +77,24 @@ function Themtintuc(props) {
                         console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
                         dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                     } else {
-                        console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id);
-                        await dispatch(removetintuctag(idsua))
-                        tag_id.map(async (ok) => {
-                            await tintuctagApi.posttintuctag({ tintucId: idsua, tagId: ok })
+                        console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id.length);
+                        await tintuctagApi.deletetintuctag(idsua);
+                        var data = [];
+                        for (let i = 0; i < tag_id.length; i++) {
+                            var tintucId = idsua;
+                            const tagId = tag_id[i];
+                            //console.log(tintucId + ":" + tagId);
+                            data.push({ tintucId, tagId })
+                            //await tintuctagApi.posttintuctag({ tintucId, tagId })
+                            // await dispatch(addtintuctag({ tintucId, tagId }))
                         }
-                        )
-                        await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                        await tintuctagApi.posttintuctag(data)
+                        // await axios.post("http://localhost:666/tintuctags", data).then(data => {
+                        //     console.log(data.data);
+                        // }).catch(err => {
+                        //     console.log(err);
+                        // })
+                        //await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                     }
                 }
             } else {
@@ -152,7 +163,7 @@ function Themtintuc(props) {
                                     <i className="fas fa-camera-retro"></i>
                                 </IconButton>
                             </label>
-                            {linkImg ? <img src={linkImg} className="ml-5" height="150px" width="250px" alt="" /> : ''}
+                            {linkImg ? <img src={linkImg} className="ml-5" height="150px" width="250px" alt="" /> : anh ? <img src={anh} className="ml-5" height="150px" width="250px" alt="" /> : ''}
                             <br />
                             <span>{tenanh}</span>
                         </div>

@@ -1,151 +1,276 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Badge, Breadcrumb, Carousel, Pagination, Rate, Select } from 'antd'
-import { HomeOutlined, BoldOutlined, CommentOutlined } from "@ant-design/icons";
-import { Button, TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react'
+import { Rate, Select, Spin } from 'antd'
 import { Option } from 'antd/lib/mentions';
 import Search from 'antd/lib/input/Search';
-import g1 from './../../images/g1.jpg'
 import { Link } from 'react-router-dom';
 import Footer from '../trangchu/footer/Footer'
 import './listtour.css'
-
-export class Listtour extends Component {
-    state = {
-        list: "trong"
-    }
-    handleChange = (value) => {
-        this.setState({
-            list: value
+import { useSelector } from 'react-redux';
+export default function Listtour() {
+    const binhluans = useSelector(state => state.binhluans.binhluan.data);
+    const tours = useSelector(state => state.tours.tour.data);
+    const [state, setState] = useState({
+        check: "trong",
+        star: "",
+        statetrongnuoc: "",
+        statenuocngoai: ""
+    })
+    const checkstar = value => {
+        setState({
+            ...state,
+            star: value
         })
     }
-    render() {
-        return (
-            <div id="list-tour">
-                <div className="breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                            <li className="breadcrumb-item"><Link to="/"><i className="fas fa-home mr-2"></i>Trang chủ</Link></li>
-                            <li className="breadcrumb-item"><Link to="/list-tour" disabled>Tour du lịch</Link></li>
-                        </ol>
-                    </nav>
-                </div>
-                <div className="container">
-                    <div className="row mb-4 bg-white rounded">
-                        <div className="col-md-4 border-right pb-3 bg ">
-                            <h4 className="pt-4">Tìm Kiếm tour</h4>
-                            <Search placeholder="Tìm kiếm tour" onSearch={value => console.log(value)} enterButton />
+    const formatdate = e => {
+        if (e) {
+            var ngay = e.substr(0, 2)
+            var thang = e.substr(3, 2)
+            var nam = e.substr(6, 4)
+            return nam + '-' + thang + '-' + ngay;
+        }
+    }
+    const maxDate = e => {
+        if (e) {
+            var ngayMax = formatdate(e[0].ngay)
+            for (let i = 0; i < e.length; i++) {
+                if (ngayMax <= formatdate(e[i].ngay)) {
+                    ngayMax = formatdate(e[i].ngay)
+                }
+            }
+            return ngayMax
+        }
+    }
+    const tinhdiem = (id) => {
+        var binhluanload = [];
+        if (binhluans) {
+            for (let i = 0; i < binhluans.length; i++) {
+                if (binhluans[i].status === +1 && binhluans[i].tourId === id) {
+                    binhluanload.push(binhluans[i]);
+                }
+            }
+        }
+        var tong = new Number();
+        if (binhluans) {
+            for (let i = 0; i < binhluanload.length; i++) {
+                tong += binhluanload[i].star;
+            }
+        }
+        var diem = Math.round((tong / +binhluanload.length) * 10) / 10;
+        if (isNaN(diem)) {
+            diem = 0;
+        }
+        return diem;
+    }
+    var tourtrongnuoc = []
+    if (tours) {
+        var sort = []
+        for (let i = 0; i < tours.length; i++) {
+            sort.unshift(tours[i])
+        }
+        var date = new Date();
+        var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+        for (let i = 0; i < sort.length; i++) {
+            if (sort[i].status === 1 && sort[i].vitri === 1 && tinhdiem(sort[i].id) <= state.star && maxDate(sort[i].Ngaydis) >= today) {
+                tourtrongnuoc.push(sort[i])
+            }
+        }
+    }
+    var tournuocngoai = []
+    if (tours) {
+        var sort = []
+        for (let i = 0; i < tours.length; i++) {
+            sort.unshift(tours[i])
+        }
+        var date = new Date();
+        var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+        for (let i = 0; i < sort.length; i++) {
+            if (sort[i].status === 1 && sort[i].vitri === 2 && tinhdiem(sort[i].id) <= state.star && maxDate(sort[i].Ngaydis) >= today) {
+                tournuocngoai.push(sort[i])
+            }
+        }
+    }
+    useEffect(() => {
+        //actionNgaydi();
+        window.scrollTo(0, 0);
 
-                            <h4 className="mt-3">Loại tour</h4>
-                            <Select className="w-100" defaultValue="trong" style={{ width: 120 }} onChange={this.handleChange}>
-                                <Option value="trong">Tour trong nước</Option>
-                                <Option value="ngoai">Tour nước ngoài</Option>
-                            </Select>
-                            <h4 className="mt-3">Đánh giá</h4>
-                            <div className="star-mid">
-                                <Link><Rate value="5" disabled /><span className="ml-2">từ 5 sao</span><br /></Link>
-                                <Link><Rate value="4" disabled /><span className="ml-2">từ 4 sao</span><br /></Link>
-                                <Link><Rate value="3" disabled /><span className="ml-2">từ 3 sao</span><br /></Link>
-                                <Link><Rate value="2" disabled /><span className="ml-2">từ 2 sao</span><br /></Link>
-                            </div>
+    }, [])
+
+    const handleChange = (value) => {
+        setState({
+            ...state,
+            check: value
+        })
+    }
+    const search = e => {
+        const { check } = state
+        if (check === "trong") {
+            var tourtrongnuoc = []
+            if (tours) {
+                var sort = []
+                for (let i = 0; i < tours.length; i++) {
+                    sort.unshift(tours[i])
+                }
+                var date = new Date();
+                var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+                for (let i = 0; i < sort.length; i++) {
+                    if (sort[i].status === 1 && sort[i].vitri === 1 && tinhdiem(sort[i].id) <= state.star && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
+                        tourtrongnuoc.push(sort[i])
+                    }
+                }
+            }
+            setState({
+                ...state,
+                statetrongnuoc: tourtrongnuoc
+            })
+        } else {
+            var tournuocngoai = []
+            if (tours) {
+                var sort = []
+                for (let i = 0; i < tours.length; i++) {
+                    sort.unshift(tours[i])
+                }
+                var date = new Date();
+                var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+                for (let i = 0; i < sort.length; i++) {
+                    if (sort[i].status === 1 && sort[i].vitri === 2 && tinhdiem(sort[i].id) <= state.star && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
+                        tournuocngoai.push(sort[i])
+                    }
+                }
+            }
+            setState({
+                ...state,
+                statenuocngoai: tournuocngoai
+            })
+        }
+    }
+
+
+    return (
+        <div id="list-tour">
+            <div className="breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item"><Link to="/"><i className="fas fa-home mr-2"></i>Trang chủ</Link></li>
+                        <li className="breadcrumb-item"><Link to="/list-tour" disabled>Tour du lịch</Link></li>
+                    </ol>
+                </nav>
+            </div>
+            <div className="container">
+                <div className="row mb-4 bg-white rounded">
+                    <div className="col-md-3 border-right pb-3 bg ">
+                        <h4 className="pt-4">Tìm Kiếm tour</h4>
+                        <Search placeholder="Tìm kiếm tour" onSearch={search} enterButton />
+
+                        <h4 className="mt-3">Loại tour</h4>
+                        <Select className="w-100" defaultValue="trong" style={{ width: 120 }} onChange={handleChange}>
+                            <Option value="trong">Tour trong nước</Option>
+                            <Option value="ngoai">Tour nước ngoài</Option>
+                        </Select>
+                        <h4 className="mt-3">Đánh giá</h4>
+                        <div className="star-mid text-primary">
+                            <span onClick={() => checkstar(5)} style={{ cursor: "pointer" }}><Rate value="5" disabled /><span className="ml-2">từ 5 sao</span><br /></span>
+                            <span onClick={() => checkstar(4)} style={{ cursor: "pointer" }}><Rate value="4" disabled /><span className="ml-2">từ 4 sao</span><br /></span>
+                            <span onClick={() => checkstar(3)} style={{ cursor: "pointer" }}><Rate value="3" disabled /><span className="ml-2">từ 3 sao</span><br /></span>
+                            <span onClick={() => checkstar(2)} style={{ cursor: "pointer" }}><Rate value="2" disabled /><span className="ml-2">từ 2 sao</span><br /></span>
+                            <span onClick={() => checkstar(1)} style={{ cursor: "pointer" }}><Rate value="1" disabled /><span className="ml-2">từ 1 sao</span><br /></span>
                         </div>
-                        <div className="col-md-8">
-                            <div className="title text-center mt-3">
-                                {this.state.list === 'trong' ? <h3>Tour trong nước</h3> : <h3>Tour nước ngoài</h3>}
-                                <div className="hr w-25"></div>
-                            </div>
-                            <div className="box-tour">
-                                <div className="container">
-                                    <div className="row mt-4">
-                                        <div className="col-md-6 mb-3">
-                                            <Link to="/tour">
-                                                <div className="img ">
-                                                    <img src={g1} className="img-fluid rounded" alt="" />
+                    </div>
+                    <div className="col-md-9">
+                        <div className="title text-center mt-3">
+                            {state.check === 'trong' ? <h3>Tour trong nước</h3> : <h3>Tour nước ngoài</h3>}
+                            <div className="hr w-25"></div>
+                        </div>
+                        <div className="box-tour">
+                            <div className="container">
+                                <div className="row mt-4 ">
+                                    {state.check === 'trong' ?
+                                        state.statetrongnuoc === "" ?
+                                            tourtrongnuoc.map((ok, index) => (
+                                                <div className="col-md-6 mb-3">
+                                                    <Link to={`/tour/${ok.id}`}>
+                                                        <div className="img rounded">
+                                                            <img src={ok.avatar} className="img-fluid" alt="" />
+                                                        </div>
+                                                        <div className="content_tour">
+                                                            <div className="title_tour text-capitalize">{ok.name}</div>
+                                                            <div className="star float-left">
+                                                                <Rate value={tinhdiem(ok.id)} disabled />
+                                                            </div>
+                                                            <div className="money float-left ml-3 text-warning">
+                                                                {(ok.gianguoilon).toLocaleString()} VNĐ<br />
+                                                                <del> 4.000.000 VNĐ</del>
+                                                            </div>
+                                                        </div>
+                                                    </Link>
                                                 </div>
-                                                <div className="content_tour">
-                                                    <div className="title_tour">Hà Nội</div>
-                                                    <div className="time"><i className="far fa-clock mr-2"></i>20/7/2020<i className="fas fa-car ml-2"></i></div>
-                                                    <div className="star float-left">
-                                                        <Rate value="4" disabled />
-                                                    </div>
-                                                    <div className="money float-left ml-3 text-warning">
-                                                        <del>3.000.000 VNĐ</del> <br />
-                                                        4.000.000 VNĐ
-                                                    </div>
+                                            )) :
+                                            state.statetrongnuoc.map((ok, index) => (
+                                                <div className="col-md-6 mb-3">
+                                                    <Link to={`/tour/${ok.id}`}>
+                                                        <div className="img rounded">
+                                                            <img src={ok.avatar} className="img-fluid" alt="" />
+                                                        </div>
+                                                        <div className="content_tour">
+                                                            <div className="title_tour text-capitalize">{ok.name}</div>
+                                                            <div className="star float-left">
+                                                                <Rate value={tinhdiem(ok.id)} disabled />
+                                                            </div>
+                                                            <div className="money float-left ml-3 text-warning">
+                                                                {(ok.gianguoilon).toLocaleString()} VNĐ<br />
+                                                                <del> 4.000.000 VNĐ</del>
+                                                            </div>
+                                                        </div>
+                                                    </Link>
                                                 </div>
-                                            </Link>
-                                        </div>
-                                        <div className="col-md-6 mb-3">
-                                            <Link to="/tour">
-                                                <div className="img ">
-                                                    <img src={g1} className="img-fluid rounded" alt="" />
+                                            ))
+                                        :
+                                        state.statenuocngoai === "" ?
+                                            tournuocngoai.map((ok, index) => (
+                                                <div className="col-md-6 mb-3">
+                                                    <Link to={`/tour/${ok.id}`}>
+                                                        <div className="img rounded">
+                                                            <img src={ok.avatar} className="img-fluid" alt="" />
+                                                        </div>
+                                                        <div className="content_tour">
+                                                            <div className="title_tour text-capitalize">{ok.name}</div>
+                                                            <div className="star float-left">
+                                                                <Rate value={tinhdiem(ok.id)} disabled />
+                                                            </div>
+                                                            <div className="money float-left ml-3 text-warning">
+                                                                {(ok.gianguoilon).toLocaleString()} VNĐ<br />
+                                                                <del> 4.000.000 VNĐ</del>
+                                                            </div>
+                                                        </div>
+                                                    </Link>
                                                 </div>
-                                                <div className="content_tour">
-                                                    <div className="title_tour">Hà Nội</div>
-                                                    <div className="star float-left">
-                                                        <Rate value="4" disabled />
-                                                    </div>
-                                                    <div className="money float-left ml-3 text-warning">
-                                                        <del>3.000.000 VNĐ</del> <br />
-                                                        4.000.000 VNĐ
-                                                    </div>
+                                            )) :
+                                            state.statenuocngoai.map((ok, index) => (
+                                                <div className="col-md-6 mb-3">
+                                                    <Link to={`/tour/${ok.id}`}>
+                                                        <div className="img rounded">
+                                                            <img src={ok.avatar} className="img-fluid" alt="" />
+                                                        </div>
+                                                        <div className="content_tour">
+                                                            <div className="title_tour text-capitalize">{ok.name}</div>
+                                                            <div className="star float-left">
+                                                                <Rate value={tinhdiem(ok.id)} disabled />
+                                                            </div>
+                                                            <div className="money float-left ml-3 text-warning">
+                                                                {(ok.gianguoilon).toLocaleString()} VNĐ<br />
+                                                                <del> 4.000.000 VNĐ</del>
+                                                            </div>
+                                                        </div>
+                                                    </Link>
                                                 </div>
-                                            </Link>
-                                        </div>
-                                        <div className="col-md-6 mb-3">
-                                            <Link to="/tour">
-                                                <div className="img ">
-                                                    <img src={g1} className="img-fluid rounded" alt="" />
-                                                </div>
-                                                <div className="content_tour">
-                                                    <div className="title_tour">Hà Nội</div>
-                                                    <div className="star float-left">
-                                                        <Rate value="4" disabled />
-                                                    </div>
-                                                    <div className="money float-left ml-3 text-warning">
-                                                        <del>3.000.000 VNĐ</del> <br />
-                                                        4.000.000 VNĐ
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        </div>
-                                        <div className="col-md-6 mb-3">
-                                            <Link to="/tour">
-                                                <div className="img ">
-                                                    <img src={g1} className="img-fluid rounded" alt="" />
-                                                </div>
-                                                <div className="content_tour">
-                                                    <div className="title_tour">Hà Nội</div>
-                                                    <div className="star float-left">
-                                                        <Rate value="4" disabled />
-                                                    </div>
-                                                    <div className="money float-left ml-3 text-warning">
-                                                        <del>3.000.000 VNĐ</del> <br />
-                                                        4.000.000 VNĐ
-                                                    </div>
-                                                </div>
-                                            </Link>
-                                        </div>
-
-                                    </div>
-                                    <Pagination className="text-right" size="small" total={50} />
+                                            ))
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
-        )
-    }
+            <Footer />
+        </div>
+    )
 }
-
-const mapStateToProps = (state) => ({
-
-})
-
-const mapDispatchToProps = {
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Listtour)

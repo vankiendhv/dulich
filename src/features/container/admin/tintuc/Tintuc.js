@@ -1,7 +1,7 @@
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button } from '@material-ui/core';
-import { Popconfirm, Spin, Table } from 'antd'
+import { message, Popconfirm, Spin, Table } from 'antd'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom';
@@ -41,27 +41,38 @@ function Tintuc(props) {
             dataIndex: 'action'
         }
     ];
-
-
     const history = useHistory()
     const hangdleDelete = e => {
-        dispatch(removetintuc(e));
-        setTimeout(() => {
-            actionResult();
-        }, 500);
+        if (users.role === "biên tập viên") {
+            message.warning("Bạn không có đủ quyền để thực thi!")
+        } else {
+            dispatch(removetintuc(e));
+            setTimeout(() => {
+                actionResult();
+            }, 500);
+        }
     }
+    const users = useSelector(state => state.infor.infor.data);
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suatintuc/${id}`)
+        if (users.role === "biên tập viên") {
+            message.warning("Bạn không có đủ quyền để thực thi!")
+        } else {
+            history.replace(`${props.url}/suatintuc/${id}`)
+        }
     }
     const handleStatus = (e, id) => {
-        if (e === 1) {
-            dispatch(updatetintuc({ status: 0, idsua: id }))
+        if (users.role === "biên tập viên") {
+            message.warning("Bạn không có đủ quyền để thực thi!")
         } else {
-            dispatch(updatetintuc({ status: 1, idsua: id }))
+            if (e === 1) {
+                dispatch(updatetintuc({ status: 0, idsua: id }))
+            } else {
+                dispatch(updatetintuc({ status: 1, idsua: id }))
+            }
+            setTimeout(() => {
+                actionResult();
+            }, 500);
         }
-        setTimeout(() => {
-            actionResult();
-        }, 500);
     }
 
     return (

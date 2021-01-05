@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Tintucdetail.css'
 import { Link, useParams } from 'react-router-dom';
 import Footer from '../../trangchu/footer/Footer';
@@ -18,6 +18,9 @@ function Tintucdetail(props) {
             }
         }
     }
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    })
     const tintuc = [];
     if (tintucs) {
         for (let i = 0; i < tintucs.length; i++) {

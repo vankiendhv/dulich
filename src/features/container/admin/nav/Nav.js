@@ -94,6 +94,36 @@ export default function Nav(props) {
             <Route path={`${props.path}/themtour`}  >
                 <Themtour />
             </Route>
+            <Route path={`${props.path}/suatour/:id`}  >
+                <Themtour />
+            </Route>
+            <Route path={`${props.path}/sualoaitour/:id`}  >
+                <Themloaitour />
+            </Route>
+            <Route path={`${props.path}/loaitour`}  >
+                <Loaitour url={props.url} />
+            </Route>
+            <Route path={`${props.path}/themloaitour`}  >
+                <Themloaitour />
+            </Route>
+            <Route path={`${props.path}/suaquocgia/:id`}  >
+                <Themquocgia />
+            </Route>
+            <Route path={`${props.path}/quocgia`}  >
+                <Quocgia url={props.url} />
+            </Route>
+            <Route path={`${props.path}/themquocgia`}  >
+                <Themquocgia />
+            </Route>
+            <Route path={`${props.path}/diadiem`}  >
+                <Diadiem url={props.url} />
+            </Route>
+            <Route path={`${props.path}/themdiadiem`}  >
+                <Themdiadiem />
+            </Route>
+            <Route path={`${props.path}/suadiadiem/:id`}  >
+                <Themdiadiem />
+            </Route>
         </div>
     )
     const admin = (
@@ -225,6 +255,10 @@ export default function Nav(props) {
             <Route path={`${props.path}/themtour`}  >
                 <Themtour />
             </Route>
+
+            <Route path={`${props.path}/suatour/:id`}  >
+                <Themtour />
+            </Route>
             <Route path={`${props.path}/themmangxahoi`}  >
                 <Themmangxahoi />
             </Route>
@@ -257,6 +291,15 @@ export default function Nav(props) {
             </Menu.Item>
             <Menu.Item key="2" icon={state.collapsed === true ? <span className="fas fa-luggage-cart" ></span> : <span className="fas fa-luggage-cart mr-2"></span>}>
                 <Link to={`${props.url}/tour`}>Quản lý tour</Link>
+            </Menu.Item>
+            <Menu.Item key="5" icon={state.collapsed === true ? <span className="fas fa-flag-usa" ></span> : <span className="fas fa-flag-usa mr-2"></span>}>
+                <Link to={`${props.url}/quocgia`}>Quản lý quốc gia</Link>
+            </Menu.Item>
+            <Menu.Item key="6" icon={state.collapsed === true ? <span className="fas fa-atlas" ></span> : <span className="fas fa-atlas mr-2"></span>}>
+                <Link to={`${props.url}/loaitour`}>Quản lý loại tour</Link>
+            </Menu.Item>
+            <Menu.Item key="8" icon={state.collapsed === true ? <span className="fas fa-place-of-worship" ></span> : <span className="fas fa-place-of-worship mr-2"></span>}>
+                <Link to={`${props.url}/diadiem`}>Quản lý địa điểm</Link>
             </Menu.Item>
         </Menu>
     )
