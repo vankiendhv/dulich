@@ -1,8 +1,8 @@
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button } from '@material-ui/core';
-import { message, Popconfirm, Spin, Table } from 'antd'
-import React, { useEffect } from 'react'
+import { Image, message, Popconfirm, Spin, Table } from 'antd'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom';
 import './tintuc.css'
@@ -90,7 +90,7 @@ function Tintuc(props) {
                         key: index + 1,
                         name: <Link to={`${props.url}/chitiettintuc/${ok.id}`}>{ok.name}</Link>,
                         author: <span>{ok.tacgia}</span>,
-                        anh: <img src={ok.anh} width="200px" height="150px" alt="" />,
+                        anh: <Image src={ok.anh} width="200px" height="150px" alt="" />,
                         status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                         action:
                             <div className="action">

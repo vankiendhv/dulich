@@ -1,21 +1,21 @@
 import { message } from "antd";
 import axiosClient from "./axiosClient";
 
-class AnhApi {
+class DichvutourApi {
     getAll = (params) => {
-        const url = '/anhs';
+        const url = '/dichvutours';
         return axiosClient.get(url, { params });
     };
-    postanh = (params) => {
-        const url = '/anhs';
+    postdichvutour = (params) => {
+        const url = '/dichvutours';
         return axiosClient.post(url, params)
     };
-    deleteanh = (id) => {
-        const url = `/anhs/${id}`;
+    deletedichvutour = (id) => {
+        const url = `/dichvutours/${id}`;
         return axiosClient.delete(url)
     };
-    editanh = (params) => {
-        const url = `/anhs/${params.idsua}`;
+    editdichvutour = (params) => {
+        const url = `/dichvutours/${params.idsua}`;
         return axiosClient.patch(url, params).then(data => {
             message.success("Sửa thành công!");
         }).catch(err => {
@@ -23,5 +23,5 @@ class AnhApi {
         });
     }
 }
-const anhApi = new AnhApi();
-export default anhApi;
+const dichvutourApi = new DichvutourApi();
+export default dichvutourApi;

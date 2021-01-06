@@ -1,21 +1,21 @@
 import { message } from "antd";
 import axiosClient from "./axiosClient";
 
-class AnhApi {
+class TourngaydiApi {
     getAll = (params) => {
-        const url = '/anhs';
+        const url = '/tourngaydis';
         return axiosClient.get(url, { params });
     };
-    postanh = (params) => {
-        const url = '/anhs';
+    posttourngaydi = (params) => {
+        const url = '/tourngaydis';
         return axiosClient.post(url, params)
     };
-    deleteanh = (id) => {
-        const url = `/anhs/${id}`;
+    deletetourngaydi = (id) => {
+        const url = `/tourngaydis/${id}`;
         return axiosClient.delete(url)
     };
-    editanh = (params) => {
-        const url = `/anhs/${params.idsua}`;
+    edittourngaydi = (params) => {
+        const url = `/tourngaydis/${params.idsua}`;
         return axiosClient.patch(url, params).then(data => {
             message.success("Sửa thành công!");
         }).catch(err => {
@@ -23,5 +23,5 @@ class AnhApi {
         });
     }
 }
-const anhApi = new AnhApi();
-export default anhApi;
+const tourngaydiApi = new TourngaydiApi();
+export default tourngaydiApi;

@@ -1,6 +1,6 @@
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Popconfirm, Spin, Table } from 'antd';
+import { Image, Popconfirm, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -24,10 +24,6 @@ function Anh(props) {
             title: 'Banner',
             dataIndex: 'banner',
         },
-        {
-            title: 'Action',
-            dataIndex: 'action'
-        }
     ];
 
     function onChange(pagination, filters, sorter, extra) {
@@ -39,12 +35,7 @@ function Anh(props) {
     const actionResult = async () => { await dispatch(anhData()) }
 
     const history = useHistory()
-    const hangdleDelete = e => {
-        dispatch(removeanh(e));
-        setTimeout(() => {
-            actionResult();
-        }, 500);
-    }
+
     const hangdleEdit = (id) => {
         history.replace(`${props.url}/suaanh/${id}`)
     }
@@ -80,15 +71,9 @@ function Anh(props) {
                         {
                             key: index + 1,
                             name: <span>{ok.Tour.name}</span>,
-                            link: <img src={ok.link} width="200px" height="150px" alt="" />,
+                            link: <Image src={ok.link} width="200px" height="150px" alt="" />,
                             banner: <div className="action">{ok.banner === 1 ? <span onClick={() => { handleBanner(ok.banner, ok.id) }}><i className="fas fa-check text-success"></i></span> : <span onClick={() => handleBanner(ok.banner, ok.id)}><i className="fas fa-times text-danger"></i></span>}</div>,
                             status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
-                            action:
-                                <div className="action">
-                                    <Popconfirm title="Bạn có muốn xoá？" onConfirm={() => { hangdleDelete(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'red' }} />}>
-                                        <i className="far fa-trash-alt" ></i>
-                                    </Popconfirm>
-                                </div>
                         }))}
                     />
                 }

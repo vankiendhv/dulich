@@ -1,9 +1,8 @@
 
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button } from '@material-ui/core';
-import { Checkbox, Col, Popconfirm, Row, Spin, Table } from 'antd'
-import Modal from 'antd/lib/modal/Modal';
-import React, { useEffect, useState } from 'react'
+import { Image, Popconfirm, Spin, Table } from 'antd'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom';
 import { ngaydiData } from '../Ngaydi/ngaydiSlice';
@@ -12,8 +11,6 @@ import { tourData } from './tourSlice';
 function Tour(props) {
     const dispatch = useDispatch()
     const tours = useSelector(state => state.tours.tour.data);
-    const ngaydi = useSelector(state => state.ngaydis.ngaydi.data);
-    const loadingngaydi = useSelector(state => state.ngaydis.loading);
     var tour = [];
     if (tours) {
         var sort = []
@@ -68,26 +65,6 @@ function Tour(props) {
             actionResult();
         }, 500);
     }
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [idtour, setidtour] = useState('')
-
-    const showModal = (id) => {
-        setIsModalVisible(true);
-        setidtour(id)
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-        dispatch(updatetour({ idsua: idtour }))
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-    const [idngaydi, setidngaydi] = useState([])
-    const onchangeNgaydi = (e) => {
-        setidngaydi(e)
-    }
     return (
         <div id="admin">
             <div className="heading">
@@ -103,13 +80,10 @@ function Tour(props) {
                         {
                             key: index + 1,
                             name: <Link to={`${props.url}/chitiettour/${ok.id}`}>{ok.name}</Link>,
-                            anh: <img src={ok.avatar} width="150px" height="200px" alt="" />,
+                            anh: <Image src={ok.avatar} width="150px" height="200px" alt="" />,
                             status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
                             action:
                                 <div className="action">
-                                    <span className="text-warning" onClick={() => showModal(ok.id)}>
-                                        <i className="far fa-calendar-alt mr-4" style={{ cursor: "pointer" }}></i>
-                                    </span>
                                     <Popconfirm title="Bạn có muốn sửa？" onConfirm={() => { hangdleEdit(ok.id) }} icon={<QuestionCircleOutlined style={{ color: 'green' }} />}>
                                         <i className="far fa-edit mr-4" style={{ cursor: "pointer" }}></i>
                                     </Popconfirm>
@@ -118,19 +92,6 @@ function Tour(props) {
                                     </Popconfirm>
                                 </div>
                         }))} />}
-                <Modal title="Chọn ngày khởi hành" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <Checkbox.Group style={{ width: '100%' }} onChange={onchangeNgaydi}>
-                        {loadingngaydi ? <div className="spin"><Spin className="mt-5" /></div> :
-                            ngaydi.map(ok => (
-                                <Row key={ok.id}>
-                                    <Col span={8}>
-                                        <Checkbox value={ok.id}>{ok.ngay}</Checkbox>
-                                    </Col>
-                                </Row>
-                            ))
-                        }
-                    </Checkbox.Group>
-                </Modal>
             </div>
         </div>
     )

@@ -12,7 +12,6 @@ class TourApi {
     };
     posttour = (params) => {
         const url = '/tours';
-        console.log(params);
         return axiosClient.post(url, params).then(data => {
             message.success("Thêm thành công!");
         }).catch(err => {
@@ -22,7 +21,6 @@ class TourApi {
     };
     deletetour = (id) => {
         const url = `/tours/${id}`;
-        console.log(url);
         return axiosClient.delete(url).then(data => {
             message.success("Xoá thành công!");
         }).catch(err => {
@@ -30,7 +28,6 @@ class TourApi {
         });
     };
     edittour = (params) => {
-        console.log(params);
         const url = `/tours/${params.idsua}`;
         return axiosClient.patch(url, params).then(data => {
             message.success("Sửa thành công!");

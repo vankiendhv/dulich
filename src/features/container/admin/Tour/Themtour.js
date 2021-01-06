@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { Button, IconButton } from '@material-ui/core'
-import { Checkbox, Col, Image, Row, Select, Spin, Upload } from 'antd'
+import { Checkbox, Col, Image, message, Row, Select, Spin, Upload } from 'antd'
 import { Option } from 'antd/lib/mentions'
 import { useDispatch, useSelector } from 'react-redux'
 import JoditEditor from "jodit-react";
@@ -12,6 +12,12 @@ import { storage } from "../../../../firebase"
 import { PlusOutlined } from '@ant-design/icons'
 import { addtour, tourData, updatetour } from './tourSlice'
 import { loaitourData } from '../Loaitour/loaitourSlice'
+import dichvutourApi from '../../../../api/dichvuTourApi'
+import tourloaitourApi from '../../../../api/tourLoaitour'
+import tourngaydiApi from '../../../../api/tourNgaydi'
+import quocgiaApi from '../../../../api/quocgiaApi'
+import tourdiadiemApi from '../../../../api/tourDiadiem'
+import anhApi from '../../../../api/anhApi'
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -29,13 +35,13 @@ function Themtour(props) {
     }
     const { id } = useParams();
     const tours = useSelector(state => state.tours.tour.data);
-    const [state, setState] = useState({ vitri: 1, ngaydiId: "", checkdichvu: "", checkloaitour: "", checkngaydi: "", dichvuId: [], diadiemId: [], thoigian: "", soluong: "", loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
-    const { vitri, linkImg, dichvuId, name, diadiemId, loaitourId, load, thoigian, soluong, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, tenanh, img, previewVisible, previewImage, fileList, previewTitle } = state;
+    const [state, setState] = useState({ vitri: 1, quocgiaId: "", checkdichvu: "", checkloaitour: "", checkngaydi: "", checkdiadiem: "", dichvuId: [], diadiemId: [], thoigian: "", soluong: "", loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
+    const { vitri, linkImg, dichvuId, tenanh, name, quocgiaId, load, thoigian, soluong, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, img, previewVisible, previewImage, fileList, previewTitle } = state;
     const dispatch = useDispatch();
     const history = useHistory();
     const actionResult = async () => { await dispatch(tourData()) }
     const actionloaitour = async () => { await dispatch(loaitourData()) }
-    useEffect(() => {
+    useEffect(async () => {
         if (id && tours) {
             var tour = tours.find(x => x.id === +id);
             var suadichvu = [];
@@ -54,7 +60,9 @@ function Themtour(props) {
             for (let i = 0; i < tour.Diadiems.length; i++) {
                 suadiadiem.push(`${tour.Diadiems[i].id}`);
             }
-            console.log(suadiadiem);
+            const diadiemData = await quocgiaApi.getOne(tour.Diadiems[0].quocgiaId).then(data => {
+                return data.data.Diadiems;
+            })
             setState({
                 ...state,
                 vitri: tour.vitri,
@@ -70,113 +78,127 @@ function Themtour(props) {
                 status: tour.status,
                 dichvuId: suadichvu,
                 loaitourId: sualoaitour,
-                ngaydiId: suangaydi,
+                checkdiadiem: suadiadiem,
+                diadiemId: suadiadiem,
                 checkdichvu: suadichvu,
                 checkloaitour: sualoaitour,
-                checkngaydi: suangaydi
-
+                checkngaydi: suangaydi,
+                quocgiaId: `${tour.Diadiems[0].quocgiaId}`
             })
+            setngaydiId(suangaydi);
             setluuy(tour.luuy);
             setchitiettour(tour.chitiettour);
+            setlaydiadiem(diadiemData)
         }
     }, [tours])
     const loaitour = useSelector(state => state.loaitours.loaitour.data)
     const dichvu = useSelector(state => state.dichvus.dichvu.data)
-    const loadloaitour = useSelector(state => state.loaitours.loading)
+    const loadloaitour = useSelector(state => state.loaitours.loading);
+    const equar = (a, b) => {
+        if (a.length !== b.length) {
+            return false
+        } else {
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) {
+                    return false
+                }
+            }
+            return true;
+        }
+    }
     const onSubmit = async (e) => {
         e.preventDefault();
-        setState({ ...state, load: true })
-
-        // if (name.trim() === "" || tenanh.trim() === "" || tacgia.trim() === "" || facebook.trim() === "" || twitch.trim() === "" || instagram.trim() === "" || content.trim() === "" || tomtat.trim() === "") {
-        //     message.error("Xin hãy nhập đầy đủ thông tin!");
-        // } else {
-        if (id) {
-            var avatar = ""
-            var Anhs = [];
-            if (img !== "" || fileList.length > 0) {
-                if (img && fileList.length > 0) {
-                    await storage.ref(`imagestour/${img.name}`).put(img)
-                    avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
+        const { checkdichvu, checkloaitour, checkngaydi, checkdiadiem, diadiemId, dichvuId, loaitourId } = state
+        if (name.trim() === "" || diadiemId.length === 0 || dichvuId.length === 0 || loaitourId.length === 0 || ngaydiId.length === 0 || gianguoilon === "" || giatreem === "" || giaembe === "" || trailer.trim() === "" || chitiettour.trim() === "" || luuy.trim() === "" || bando.trim() === "" || thoigian === "" || soluong === "") {
+            message.warning("Xin hãy nhập đầy đủ thông tin!");
+        } else {
+            setState({ ...state, load: true })
+            if (id) {
+                if (fileList.length > 0) {
+                    await anhApi.deleteanh(id);
+                    var data = [];
                     for (let i = 0; i < fileList.length; i++) {
                         await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
                         const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
-                        Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
+                        data.push({ tourId: id, tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
                     }
-                } else {
-                    if (fileList.length > 0) {
-                        for (let i = 0; i < fileList.length; i++) {
-                            await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
-                            const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
-                            Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
-                        }
-                    } else {
-                        await storage.ref(`imagestour/${img.name}`).put(img)
-                        avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
-                    }
+                    await anhApi.postanh(data)
                 }
-            }
-        } else {
-            console.log("ko co anh");
-        }
+                var avatar = "";
+                if (img !== "") {
+                    await storage.ref(`imagestour/${img.name}`).put(img)
+                    avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
+                }
+                if (!equar(checkdichvu, dichvuId)) {
+                    await dichvutourApi.deletedichvutour(id);
+                    var data = [];
+                    for (let i = 0; i < dichvuId.length; i++) {
+                        data.push({ tourId: id, dichvuId: dichvuId[i] })
+                    }
+                    await dichvutourApi.postdichvutour(data);
+                }
+                if (!equar(checkloaitour, loaitourId)) {
+                    await tourloaitourApi.deletetourloaitour(id);
+                    var data = [];
+                    for (let i = 0; i < loaitourId.length; i++) {
+                        data.push({ tourId: id, loaitourId: loaitourId[i] })
+                    }
+                    await tourloaitourApi.posttourloaitour(data)
+                }
+                if (!equar(checkngaydi, ngaydiId)) {
+                    await tourngaydiApi.deletetourngaydi(id);
+                    var data = [];
+                    for (let i = 0; i < ngaydiId.length; i++) {
+                        data.push({ tourId: id, ngaydiId: ngaydiId[i] })
+                    }
+                    await tourngaydiApi.posttourngaydi(data)
+                }
+                if (!equar(checkdiadiem, diadiemId)) {
+                    await tourdiadiemApi.deletetourdiadiem(id);
+                    var data = [];
+                    for (let i = 0; i < diadiemId.length; i++) {
+                        data.push({ tourId: id, diadiemId: diadiemId[i] })
+                    }
+                    await tourdiadiemApi.posttourdiadiem(data)
+                }
+                if (avatar === "") {
+                    await dispatch(updatetour({ idsua: id, name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
+                } else {
+                    await dispatch(updatetour({ idsua: id, name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
+                }
+            } else {
+                await storage.ref(`imagestour/${img.name}`).put(img)
+                const avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
+                var Anhs = [];
+                for (let i = 0; i < fileList.length; i++) {
+                    await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
+                    const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
+                    Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
+                }
+                var TourLoaitours = [];
+                for (let i = 0; i < loaitourId.length; i++) {
+                    TourLoaitours.push({ loaitourId: loaitourId[i] })
+                }
+                var DichvuTours = [];
+                for (let i = 0; i < dichvuId.length; i++) {
+                    DichvuTours.push({ dichvuId: dichvuId[i] })
+                }
+                var TourDiadiems = [];
+                for (let i = 0; i < diadiemId.length; i++) {
+                    TourDiadiems.push({ diadiemId: diadiemId[i] })
+                }
+                var TourNgaydis = [];
+                for (let i = 0; i < ngaydiId.length; i++) {
+                    TourNgaydis.push({ ngaydiId: ngaydiId[i] });
+                }
+                await dispatch(addtour({ name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
 
-        // await storage.ref(`imagestour/${img.name}`).put(img)
-        // const avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
-        // var Anhs = [];
-        // for (let i = 0; i < fileList.length; i++) {
-        //     await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
-        //     const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
-        //     Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
-        // }
-        // var TourLoaitours = [];
-        // for (let i = 0; i < loaitourId.length; i++) {
-        //     TourLoaitours.push({ loaitourId: loaitourId[i] })
-        // }
-        // var DichvuTours = [];
-        // for (let i = 0; i < dichvuId.length; i++) {
-        //     DichvuTours.push({ dichvuId: dichvuId[i] })
-        // }
-        // var TourDiadiems = [];
-        // for (let i = 0; i < diadiemId.length; i++) {
-        //     TourDiadiems.push({ diadiemId: diadiemId[i] })
-        // }
-        // var TourNgaydis = [];
-        // for (let i = 0; i < ngaydiId.length; i++) {
-        //     TourNgaydis.push({ ngaydiId: ngaydiId[i] });
-        // }
-        // await dispatch(updatetour({ name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
-        //} else {
-        // await storage.ref(`imagestour/${img.name}`).put(img)
-        // const avatar = await storage.ref("imagestour").child(img.name).getDownloadURL();
-        // var Anhs = [];
-        // for (let i = 0; i < fileList.length; i++) {
-        //     await storage.ref(`imagestour/${fileList[i].originFileObj.name}`).put(fileList[i].originFileObj)
-        //     const banner = await storage.ref("imagestour").child(fileList[i].originFileObj.name).getDownloadURL();
-        //     Anhs.push({ tenanh: fileList[i].originFileObj.name, link: banner, banner: 0, status: 1 })
-        // }
-        // var TourLoaitours = [];
-        // for (let i = 0; i < loaitourId.length; i++) {
-        //     TourLoaitours.push({ loaitourId: loaitourId[i] })
-        // }
-        // var DichvuTours = [];
-        // for (let i = 0; i < dichvuId.length; i++) {
-        //     DichvuTours.push({ dichvuId: dichvuId[i] })
-        // }
-        // var TourDiadiems = [];
-        // for (let i = 0; i < diadiemId.length; i++) {
-        //     TourDiadiems.push({ diadiemId: diadiemId[i] })
-        // }
-        // var TourNgaydis = [];
-        // for (let i = 0; i < ngaydiId.length; i++) {
-        //     TourNgaydis.push({ ngaydiId: ngaydiId[i] });
-        // }
-        // await dispatch(addtour({ name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
-        //     }
-        //}
-        // setTimeout(() => {
-        //     actionResult();
-        // }, 800);
-        // history.push("/admin/tour");
-        // }
+            }
+            setTimeout(() => {
+                actionResult();
+            }, 800);
+            history.push("/admin/tour");
+        }
     }
 
     const onChange = (e) => {
@@ -349,7 +371,7 @@ function Themtour(props) {
                         </span>
                         <div className="form-group">
                             <Modal title="Chọn ngày khởi hành" visible={isModalVisible} onOk={handleOk} onCancel={handleCancelModal}>
-                                <Checkbox.Group style={{ width: '100%' }} onChange={onchangeNgaydi}>
+                                <Checkbox.Group style={{ width: '100%' }} value={ngaydiId} onChange={onchangeNgaydi}>
                                     {loadingngaydi ? <div className="spin"><Spin className="mt-5" /></div> :
                                         ngaydi.map(ok => (
                                             <Row key={ok.id}>
@@ -381,21 +403,21 @@ function Themtour(props) {
                                 <Spin />
                             </span>
                             :
-                            <Select mode="tags" onChange={onId} className="w-50" placeholder="Tags Mode">
+                            <Select mode="tags" value={state.loaitourId} onChange={onId} className="w-50" placeholder="Tags Mode">
                                 {data}
                             </Select>
                         }
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Quốc gia</label><br />
-                        <Select className="w-50" onChange={handlequocgiaChange}>
+                        <Select className="w-50" defaultValue={quocgiaId} onChange={handlequocgiaChange}>
                             {quocgiaData.map(quocgia => (
                                 <Option key={quocgia.id}>{quocgia.name}</Option>
                             ))}
                         </Select><br />
                         <label htmlFor="">Địa điểm</label><br />
 
-                        <Select mode="tags" onChange={onSeconddiadiemChange} className="w-50" placeholder="Tags Mode">
+                        <Select mode="tags" value={state.diadiemId} onChange={onSeconddiadiemChange} className="w-50" placeholder="Tags Mode">
                             {selectdiadiem}
                         </Select>
                     </div>

@@ -6,6 +6,10 @@ class QuocgiaApi {
         const url = '/quocgias';
         return axiosClient.get(url, { params });
     };
+    getOne = (id) => {
+        const url = `/quocgias/${id}`;
+        return axiosClient.get(url)
+    };
     postquocgia = (params) => {
         const url = '/quocgias';
         return axiosClient.post(url, params).then(data => {

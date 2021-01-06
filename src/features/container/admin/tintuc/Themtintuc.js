@@ -48,6 +48,18 @@ function Themtintuc(props) {
             setcontent(tintuc.content)
         }
     }, [])
+    const equar = (a, b) => {
+        if (a.length !== b.length) {
+            return false
+        } else {
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) {
+                    return false
+                }
+            }
+            return true;
+        }
+    }
     const { load, tenanh, linkImg, img, name, tacgia, anh, idsua, facebook, twitch, instagram, status, tomtat, tag_id, checktag } = state;
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -62,39 +74,29 @@ function Themtintuc(props) {
                     if (checktag === tag_id) {
                         dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                     } else {
-                        await dispatch(removetintuctag(idsua))
-                        for (let i = 0; i < tag_id.length; i++) {
-                            var tintucId = idsua;
-                            const tagId = tag_id[i];
-                            console.log(tintucId + ":" + tagId);
-                            //await tintuctagApi.posttintuctag({ tintucId, tagId })
-                            // await dispatch(addtintuctag({ tintucId, tagId }))
-                        }
-                        await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
-                    }
-                } else {
-                    if (checktag === tag_id) {
-                        console.log("ko doi", "checktag:" + checktag, "tag_id:" + tag_id);
-                        dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
-                    } else {
-                        console.log("thay doi", "checktag:" + checktag, "tag_id:" + tag_id.length);
                         await tintuctagApi.deletetintuctag(idsua);
                         var data = [];
                         for (let i = 0; i < tag_id.length; i++) {
                             var tintucId = idsua;
-                            const tagId = tag_id[i];
-                            //console.log(tintucId + ":" + tagId);
+                            var tagId = tag_id[i];
                             data.push({ tintucId, tagId })
-                            //await tintuctagApi.posttintuctag({ tintucId, tagId })
-                            // await dispatch(addtintuctag({ tintucId, tagId }))
                         }
                         await tintuctagApi.posttintuctag(data)
-                        // await axios.post("http://localhost:666/tintuctags", data).then(data => {
-                        //     console.log(data.data);
-                        // }).catch(err => {
-                        //     console.log(err);
-                        // })
-                        //await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                        await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                    }
+                } else {
+                    if (equar(checktag, tag_id)) {
+                        dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
+                    } else {
+                        await tintuctagApi.deletetintuctag(idsua);
+                        var data = [];
+                        for (let i = 0; i < tag_id.length; i++) {
+                            var tintucId = idsua;
+                            var tagId = tag_id[i];
+                            data.push({ tintucId, tagId })
+                        }
+                        await tintuctagApi.posttintuctag(data)
+                        await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                     }
                 }
             } else {

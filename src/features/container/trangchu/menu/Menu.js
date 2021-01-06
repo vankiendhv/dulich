@@ -3,6 +3,7 @@ import { Link } from "react-scroll";
 import { Link as Linkrt } from "react-router-dom";
 import "./menu.css";
 import Avatar from "antd/lib/avatar/avatar";
+import logo from "./../../../images/logoTravel.png"
 import { Menu, Dropdown, Drawer, message } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { Button, IconButton } from "@material-ui/core";
@@ -183,7 +184,9 @@ function ListMenu(props) {
   return (
     <div id="menu">
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-        <Linkrt className="navbar-brand" to="/" >Travel</Linkrt>
+        <Linkrt className="navbar-brand" to="/" >
+          <img src={logo} alt="" />
+        </Linkrt>
         <button
           className="navbar-toggler d-lg-none"
           type="button"

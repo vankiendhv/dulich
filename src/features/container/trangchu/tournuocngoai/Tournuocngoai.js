@@ -32,6 +32,7 @@ function Tournuocngoai(props) {
     var date = new Date();
     var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 10 ? date.getDate() : ("0" + date.getDate()));
     for (let i = 0; i < sort.length; i++) {
+
       if (sort[i].status === 1 && sort[i].vitri === 2 && tour.length < 6 && maxDate(sort[i].Ngaydis) >= today) {
         tour.push(sort[i])
       }

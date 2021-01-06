@@ -22,6 +22,9 @@ function Footer(props) {
       }
     }
   }
+  const chuyentrang = (url) => {
+    window.location.href = url;
+  }
   return (
     <div id="footer">
       <footer className="page-footer font-small blue pt-4 container">
@@ -80,13 +83,14 @@ function Footer(props) {
             <div className="col-md-3 mb-md-0 mb-3 mxh ">
               <h5 className="text-uppercase text-danger ">Mạng xã hội</h5>
               {mxh.map(ok => (
-                <Link to={ok.link} key={ok.id}>
+                <div key={ok.id} onClick={() => chuyentrang(ok.link)}>
                   <div className="icon_footer" style={{
-                    background: `${ok.color}`
+                    background: `${ok.color}`,
+                    cursor: "pointer"
                   }}>
                     <i className={`${ok.icon}`} ></i>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           </div>
