@@ -1,6 +1,6 @@
 #dangky{
     height: 100vh;
-    background: url('./../../images/anhdangky.jpg') center;
+    background: url('./../../images/dangky5.jpg') center;
     background-size: cover;
 }
 #dangky .box-login{
@@ -13,8 +13,7 @@
   width: 100%;
 }
 #dangky h3{
-    color: #e44d26 !important;
-    text-shadow:  3px 6px 7px black; 
+    text-shadow: 1px 5px 10px black;
 }
 #dangky .form-control{
     border: none;

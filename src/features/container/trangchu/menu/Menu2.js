@@ -132,7 +132,6 @@ function ListMenu(props) {
                     .then(data => {
                         return data;
                     })
-                console.log(update);
                 if (update) {
                     getprofile()
                     message.success("Sửa thông tin thành công!");
@@ -149,7 +148,6 @@ function ListMenu(props) {
                     .then(data => {
                         return data;
                     })
-                console.log(update);
                 if (update) {
                     getprofile();
                     message.success("Sửa thông tin thành công!");
@@ -200,17 +198,22 @@ function ListMenu(props) {
                         <ul className="navbar-nav m-auto">
                             <li className="nav-item ">
                                 <div className="border-bot-menu">
-                                    <Link className="nav-link">Trang chủ<span className="sr-only">(current)</span></Link>
+                                    <Linkrt className="nav-link" to="/">Trang chủ<span className="sr-only">(current)</span></Linkrt>
                                 </div>
                             </li>
                             <li className="nav-item">
                                 <div className="border-bot-menu">
-                                    <Link className="nav-link">Dịch vụ</Link>
+                                    <Linkrt className="nav-link" to="/list-tour">Tour du lịch</Linkrt>
                                 </div>
                             </li>
                             <li className="nav-item">
                                 <div className="border-bot-menu">
-                                    <Link className="nav-link">Tin tức</Link>
+                                    <Linkrt className="nav-link">Dịch vụ</Linkrt>
+                                </div>
+                            </li>
+                            <li className="nav-item">
+                                <div className="border-bot-menu">
+                                    <Linkrt className="nav-link" to="/listtintuc">Tin tức</Linkrt>
                                 </div>
                             </li>
                         </ul>

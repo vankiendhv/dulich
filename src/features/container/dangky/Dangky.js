@@ -55,7 +55,7 @@ function Dangky(props) {
             <div id="dangky">
                 <div className="box-login">
                     <form className="form" onSubmit={onsubmit}>
-                        <h3 className="text-uppercase text-white text-center pb-3">Đăng ký</h3>
+                        <h3 className="text-uppercase text-white text-center pb-3">Đăng ký </h3>
                         <div className="input-group flex-nowrap mt-3 mb-3">
                             <div className="input-group-prepend">
                                 <span className="input-group-text" id="addon-wrapping">

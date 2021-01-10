@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import './nav.css'
@@ -37,6 +37,8 @@ import Themlienhe from "../Lienhe/Themlienhe";
 import Ngaydi from "..//Ngaydi/Ngaydi";
 import Camnangdulich from "../Camnangdulich/Camnangdulich";
 import Themcamnang from "../Camnangdulich/Themcamnang";
+import Khuyenmai from "../Khuyenmai/Khuyenmai"
+import Themkhuyenmai from "../Khuyenmai/Themkhuyenmai"
 import { useSelector } from 'react-redux';
 
 export default function Nav(props) {
@@ -45,6 +47,9 @@ export default function Nav(props) {
         collapsed: true,
         visible: true
     })
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
     const toggle = () => {
         setState({
             collapsed: !state.collapsed,
@@ -64,6 +69,9 @@ export default function Nav(props) {
             </Route>
             <Route path={`${props.path}/suatintuc/:id`}  >
                 <Themtintuc />
+            </Route>
+            <Route path={`${props.path}/chitiettintuc/:id`}  >
+                <Chitiettintuc />
             </Route>
         </div>
     )
@@ -130,6 +138,18 @@ export default function Nav(props) {
         <div>
             <Route exact path={props.path}>
                 <Doanhthu />
+            </Route>
+            <Route path={`${props.path}/khuyenmai`}  >
+                <Khuyenmai url={props.url} />
+            </Route>
+            <Route path={`${props.path}/themkhuyenmai`}  >
+                <Themkhuyenmai url={props.url} />
+            </Route>
+            <Route path={`${props.path}/suakhuyenmai/:id`}  >
+                <Themkhuyenmai url={props.url} />
+            </Route>
+            <Route path={`${props.path}/chitiettintuc/:id`}  >
+                <Chitiettintuc />
             </Route>
             <Route path={`${props.path}/tintuc`}  >
                 <Tintuc url={props.url} />
@@ -355,6 +375,10 @@ export default function Nav(props) {
             </Menu.Item>
             <Menu.Item key="17" icon={state.collapsed === true ? <span className="fas fa-book" ></span> : <span className="fas fa-book mr-2"></span>}>
                 <Link to={`${props.url}/camnangdulich`}>Cẩm nang du lịch</Link>
+            </Menu.Item>
+
+            <Menu.Item key="18" icon={state.collapsed === true ? <span className="fas fa-percent" ></span> : <span className="fas fa-percent mr-2"></span>}>
+                <Link to={`${props.url}/khuyenmai`}>Khuyễn mãi</Link>
             </Menu.Item>
         </Menu>
     )

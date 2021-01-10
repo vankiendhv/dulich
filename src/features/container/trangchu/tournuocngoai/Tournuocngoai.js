@@ -1,4 +1,4 @@
-import { Rate, Spin } from "antd";
+import { Rate, Spin, Tooltip } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -61,6 +61,9 @@ function Tournuocngoai(props) {
     }
     return diem
   }
+  const tinhkhuyenmai = (money, km) => {
+    return ((money) - ((money) * (km / 100))).toLocaleString()
+  }
   return (
     <div className="mt-5 mb-5 tour" id="tour">
 
@@ -77,18 +80,38 @@ function Tournuocngoai(props) {
           {tour.length === 0 ? <div className="spin"><Spin /></div> :
             tour.map(ok => (
               <div className="col-md-4 mb-2" key={ok.id}>
+                {ok.Khuyenmais.length === 0 ? "" :
+                  ok.Khuyenmais[0].status === 0 ? "" :
+                    <Tooltip placement="right" color="#0abf55" title={ok.Khuyenmais[0].name}>
+                      <div className="ribbon-wrapper">
+                        <div className="ribbon-red">Giảm {ok.Khuyenmais[0].khuyenmai}%</div>
+                      </div>
+                    </Tooltip>
+                }
                 <Link to={`/tour/${ok.id}`}>
                   <div className="img rounded">
                     <img src={ok.avatar} className="img-fluid" alt="" />
                   </div>
                   <div className="content_tour">
-                    <div className="title_tour">{ok.name}</div>
+                    <div className="title_tour text-capitalize">{ok.name}</div>
                     <div className="star float-left">
                       <Rate value={tinhdiem(ok.id)} disabled />
                     </div>
                     <div className="money float-left ml-3 text-warning">
-                      {(ok.gianguoilon).toLocaleString()} VNĐ<br />
-                      <del> 4.000.000 VNĐ</del>
+                      {ok.Khuyenmais.length === 0 ?
+                        <div>
+                          {(ok.gianguoilon).toLocaleString()} VNĐ<br />
+                        </div> :
+                        ok.Khuyenmais[0].status === 0 ?
+                          <div>
+                            {(ok.gianguoilon).toLocaleString()} VNĐ<br />
+                          </div>
+                          :
+                          <div>
+                            {tinhkhuyenmai(ok.gianguoilon, ok.Khuyenmais[0].khuyenmai)} VNĐ<br />
+                            <del> {(ok.gianguoilon).toLocaleString()} VNĐ</del>
+                          </div>
+                      }
                     </div>
                   </div>
                 </Link>
@@ -96,6 +119,7 @@ function Tournuocngoai(props) {
             ))}
         </div>
       </div>
+
       <div className="xem-them mt-3">
         <Link to="/list-tour">Xem Thêm &gt;&gt;</Link>
       </div>

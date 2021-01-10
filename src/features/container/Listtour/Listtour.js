@@ -6,21 +6,17 @@ import { Link } from 'react-router-dom';
 import Footer from '../trangchu/footer/Footer'
 import './listtour.css'
 import { useSelector } from 'react-redux';
+import "./checkactive.js";
 export default function Listtour() {
     const binhluans = useSelector(state => state.binhluans.binhluan.data);
     const tours = useSelector(state => state.tours.tour.data);
     const [state, setState] = useState({
         check: "trong",
-        star: "",
         statetrongnuoc: "",
         statenuocngoai: ""
     })
-    const checkstar = value => {
-        setState({
-            ...state,
-            star: value
-        })
-    }
+    const [star, setstar] = useState('')
+
     const formatdate = e => {
         if (e) {
             var ngay = e.substr(0, 2)
@@ -68,9 +64,9 @@ export default function Listtour() {
             sort.unshift(tours[i])
         }
         var date = new Date();
-        var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+        var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 10 ? date.getDate() : ("0" + date.getDate()));
         for (let i = 0; i < sort.length; i++) {
-            if (sort[i].status === 1 && sort[i].vitri === 1 && tinhdiem(sort[i].id) <= state.star && maxDate(sort[i].Ngaydis) >= today) {
+            if (sort[i].status === 1 && sort[i].vitri === 1 && maxDate(sort[i].Ngaydis) >= today) {
                 tourtrongnuoc.push(sort[i])
             }
         }
@@ -82,9 +78,9 @@ export default function Listtour() {
             sort.unshift(tours[i])
         }
         var date = new Date();
-        var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+        var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 10 ? date.getDate() : ("0" + date.getDate()));
         for (let i = 0; i < sort.length; i++) {
-            if (sort[i].status === 1 && sort[i].vitri === 2 && tinhdiem(sort[i].id) <= state.star && maxDate(sort[i].Ngaydis) >= today) {
+            if (sort[i].status === 1 && sort[i].vitri === 2 && maxDate(sort[i].Ngaydis) >= today) {
                 tournuocngoai.push(sort[i])
             }
         }
@@ -92,7 +88,6 @@ export default function Listtour() {
     useEffect(() => {
         //actionNgaydi();
         window.scrollTo(0, 0);
-
     }, [])
 
     const handleChange = (value) => {
@@ -111,9 +106,10 @@ export default function Listtour() {
                     sort.unshift(tours[i])
                 }
                 var date = new Date();
-                var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+                var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 10 ? date.getDate() : ("0" + date.getDate()));
+                console.log(star);
                 for (let i = 0; i < sort.length; i++) {
-                    if (sort[i].status === 1 && sort[i].vitri === 1 && tinhdiem(sort[i].id) <= state.star && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
+                    if (sort[i].status === 1 && sort[i].vitri === 1 && tinhdiem(sort[i].id) <= star && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
                         tourtrongnuoc.push(sort[i])
                     }
                 }
@@ -130,9 +126,9 @@ export default function Listtour() {
                     sort.unshift(tours[i])
                 }
                 var date = new Date();
-                var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+                var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 10 ? date.getDate() : ("0" + date.getDate()));
                 for (let i = 0; i < sort.length; i++) {
-                    if (sort[i].status === 1 && sort[i].vitri === 2 && tinhdiem(sort[i].id) <= state.star && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
+                    if (sort[i].status === 1 && sort[i].vitri === 2 && tinhdiem(sort[i].id) <= star && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
                         tournuocngoai.push(sort[i])
                     }
                 }
@@ -144,7 +140,18 @@ export default function Listtour() {
         }
     }
 
-
+    const checkstar = value => {
+        setstar(value)
+        search()
+    }
+    let actives = document.querySelectorAll('li');
+    actives.forEach(active => {
+        active.addEventListener('click', function () {
+            console.log("ok");
+            actives.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+        })
+    })
     return (
         <div id="list-tour">
             <div className="breadcrumb">
@@ -168,12 +175,21 @@ export default function Listtour() {
                         </Select>
                         <h4 className="mt-3">Đánh giá</h4>
                         <div className="star-mid text-primary">
+                            <ul>
+                                <li className="active"><span onClick={() => checkstar(5)} style={{ cursor: "pointer" }}><Rate value="5" disabled /><span className="ml-2">từ 5 sao</span><br /></span></li>
+                                <li><span onClick={() => checkstar(4)} style={{ cursor: "pointer" }}><Rate value="4" disabled /><span className="ml-2">từ 4 sao</span><br /></span></li>
+                                <li><span onClick={() => checkstar(3)} style={{ cursor: "pointer" }}><Rate value="3" disabled /><span className="ml-2">từ 3 sao</span><br /></span></li>
+                                <li><span onClick={() => checkstar(2)} style={{ cursor: "pointer" }}><Rate value="2" disabled /><span className="ml-2">từ 2 sao</span><br /></span></li>
+                                <li><span onClick={() => checkstar(1)} style={{ cursor: "pointer" }}><Rate value="1" disabled /><span className="ml-2">từ 1 sao</span><br /></span></li>
+                            </ul>
+                        </div>
+                        {/* <div className="star-mid text-primary">
                             <span onClick={() => checkstar(5)} style={{ cursor: "pointer" }}><Rate value="5" disabled /><span className="ml-2">từ 5 sao</span><br /></span>
                             <span onClick={() => checkstar(4)} style={{ cursor: "pointer" }}><Rate value="4" disabled /><span className="ml-2">từ 4 sao</span><br /></span>
                             <span onClick={() => checkstar(3)} style={{ cursor: "pointer" }}><Rate value="3" disabled /><span className="ml-2">từ 3 sao</span><br /></span>
                             <span onClick={() => checkstar(2)} style={{ cursor: "pointer" }}><Rate value="2" disabled /><span className="ml-2">từ 2 sao</span><br /></span>
                             <span onClick={() => checkstar(1)} style={{ cursor: "pointer" }}><Rate value="1" disabled /><span className="ml-2">từ 1 sao</span><br /></span>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="col-md-9">
                         <div className="title text-center mt-3">

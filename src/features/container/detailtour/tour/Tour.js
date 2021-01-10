@@ -72,6 +72,10 @@ function Tour(props) {
       }
     }
   }
+  var giakhuyenmai
+  if (tours) {
+    giakhuyenmai = tours.find(x => x.id === +id);
+  }
   const formatdate = e => {
     if (e) {
       var ngay = e.substr(0, 2)
@@ -194,7 +198,7 @@ function Tour(props) {
         return data.id;
       })
       var tourId = id
-      await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
+      //await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
       setState({
         ...state,
         visible2: false,
@@ -233,8 +237,24 @@ function Tour(props) {
     }
     return (e - tonghd);
   }
+  const tinhkhuyenmai = (money, km) => {
+    return ((money) - ((money) * (km / 100)))
+  }
+  const { name, sdt, diachi, email, nguoilon, treem, embe } = state
+  const checkKhuyenmai = () => {
+    if (giakhuyenmai.Khuyenmais.length === 0) {
+      return giakhuyenmai.gianguoilon;
+    } else {
+      if (giakhuyenmai.Khuyenmais[0].status === 0) {
+        return giakhuyenmai.gianguoilon;
+      } else {
+        return tinhkhuyenmai(giakhuyenmai.gianguoilon, giakhuyenmai.Khuyenmais[0].khuyenmai);
+      }
+    }
+  }
   const thanhtien = (gia_nl, gia_te, gia_eb) => {
-    return ((gia_nl * nguoilon) + (gia_te * treem) + (gia_eb * embe)).toLocaleString();
+    var gianguoilon = checkKhuyenmai();
+    return ((gianguoilon * nguoilon) + (gia_te * treem) + (gia_eb * embe)).toLocaleString();
   }
   const radioStyle = {
     display: 'block',
@@ -247,8 +267,10 @@ function Tour(props) {
       date: state.listdate.find(x => x.id === +e).ngay
     })
   }
-  const { name, sdt, diachi, email, nguoilon, treem, embe } = state
-  var tong = Number(nguoilon) + Number(treem) + Number(embe);
+  var tong
+  if (giakhuyenmai) {
+    tong = Number(nguoilon) + Number(treem) + Number(embe);
+  }
   return (
     <div id="detail-tour">
       <div className="breadcrumb">
@@ -333,7 +355,7 @@ function Tour(props) {
                     Đặt tour
                   </Button>
                   <div className="price position-absolute">
-                    <span><strong className="text-danger">{(ok.gianguoilon).toLocaleString()}</strong> vnd</span>
+                    <span><strong className="text-danger">{(checkKhuyenmai()).toLocaleString()}</strong> vnd</span>
                     <br />
                     <span>Số chỗ còn lại: {songuoiconlai(ok.songuoi)}</span>
                   </div>

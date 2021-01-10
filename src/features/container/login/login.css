@@ -1,6 +1,6 @@
 #login{
     height: 100vh;
-    background: url('./../../images/anhlogin.jpg') center;
+    background: url('./../../images/dangnhap1.jpg') center ;
     background-size: cover;
 }
 #login .box-login{
@@ -13,7 +13,7 @@
   width: 100%;
 }
 #login h3{
-    text-shadow:  3px 6px 7px black; 
+    text-shadow: 1px 5px 10px black;
 }
 #login .form-control{
     border: none;

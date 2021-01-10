@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, Progress } from 'antd'
 import { Button } from '@material-ui/core';
 import './doanhthu.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { chitieuData } from './chitieuSlice';
 
 export default function Doanhthu() {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [state, setState] = useState({ chitieuthang: "", chitieungay: "", chitieunam: "" });
+    const [state, setState] = useState({ chitieuthang: "", chitieungay: "", chitieutuan: "", chitieunam: "" });
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -14,6 +16,22 @@ export default function Doanhthu() {
     const handleOk = () => {
         setIsModalVisible(false);
     };
+    const dispatch = useDispatch();
+    const actionChitiet = async () => await dispatch(chitieuData());
+    const chitieu = useSelector(state => state.chitieu.chitieu.data);
+    useEffect(() => {
+        if (chitieu) {
+            setState({
+                ...state,
+                chitieungay: chitieu[0].chitieungay,
+                chitieutuan: chitieu[0].chitieutuan,
+                chitieuthang: chitieu[0].chitieuthang,
+                chitieunam: chitieu[0].chitieunam
+            })
+        } else {
+            actionChitiet();
+        }
+    }, [chitieu])
 
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -24,7 +42,7 @@ export default function Doanhthu() {
             [e.target.name]: e.target.value
         })
     }
-    const { chitieunam, chitieuthang, chitieungay } = state
+    const { chitieunam, chitieuthang, chitieungay, chitieutuan } = state
     return (
         <div id="doanhthu">
             <h4>Doanh thu công ty</h4>
@@ -91,7 +109,7 @@ export default function Doanhthu() {
                                 <span>Tổng chi: <span className="gold">3,000,000</span></span><br />
                                 <span>Tổng thu: <span className="gold">9,000,000</span></span><br />
                                 <span>Doanh thu: <span className="gold">6,000,000</span></span><br />
-                                <span>Chỉ tiêu: <span className="gold">5,000,000</span></span><br />
+                                <span>Chỉ tiêu: <span className="gold">{chitieungay}</span></span><br />
                                 <span>Vượt chỉ tiêu: <span className="gold">1,000,000</span></span>
                             </div>
                         </div>
@@ -109,7 +127,7 @@ export default function Doanhthu() {
                                 <span>Tổng chi: <span className="gold">3,000,000</span></span><br />
                                 <span>Tổng thu: <span className="gold">9,000,000</span></span><br />
                                 <span>Doanh thu: <span className="gold">6,000,000</span></span><br />
-                                <span>Chỉ tiêu: <span className="gold">5,000,000</span></span><br />
+                                <span>Chỉ tiêu: <span className="gold">{chitieutuan}</span></span><br />
                                 <span>Vượt chỉ tiêu: <span className="gold">1,000,000</span></span>
                             </div>
                         </div>
@@ -127,7 +145,7 @@ export default function Doanhthu() {
                                 <span>Tổng chi: <span className="gold">3,000,000</span></span><br />
                                 <span>Tổng thu: <span className="gold">9,000,000</span></span><br />
                                 <span>Doanh thu: <span className="gold">6,000,000</span></span><br />
-                                <span>Chỉ tiêu: <span className="gold">5,000,000</span></span><br />
+                                <span>Chỉ tiêu: <span className="gold">{chitieuthang}</span></span><br />
                                 <span>Vượt chỉ tiêu: <span className="gold">1,000,000</span></span>
                             </div>
                         </div>
@@ -145,7 +163,7 @@ export default function Doanhthu() {
                                 <span>Tổng chi: <span className="gold">3,000,000</span></span><br />
                                 <span>Tổng thu: <span className="gold">9,000,000</span></span><br />
                                 <span>Doanh thu: <span className="gold">6,000,000</span></span><br />
-                                <span>Chỉ tiêu: <span className="gold">5,000,000</span></span><br />
+                                <span>Chỉ tiêu: <span className="gold">{chitieunam}</span></span><br />
                                 <span>Vượt chỉ tiêu: <span className="gold">1,000,000</span></span>
                             </div>
                         </div>
@@ -160,6 +178,10 @@ export default function Doanhthu() {
                 <div class="form-group">
                     <label for="">Chỉ tiêu ngày</label>
                     <input type="number" name="chitieungay" value={chitieungay} onChange={onChange} id="" class="form-control" placeholder="" aria-describedby="helpId" />
+                </div>
+                <div class="form-group">
+                    <label for="">Chỉ tiêu tuần</label>
+                    <input type="number" name="chitieutuan" value={chitieutuan} onChange={onChange} id="" class="form-control" placeholder="" aria-describedby="helpId" />
                 </div>
                 <div class="form-group">
                     <label for="">Chỉ tiêu tháng</label>

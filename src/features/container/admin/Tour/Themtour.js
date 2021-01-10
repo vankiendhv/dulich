@@ -35,8 +35,8 @@ function Themtour(props) {
     }
     const { id } = useParams();
     const tours = useSelector(state => state.tours.tour.data);
-    const [state, setState] = useState({ vitri: 1, quocgiaId: "", checkdichvu: "", checkloaitour: "", checkngaydi: "", checkdiadiem: "", dichvuId: [], diadiemId: [], thoigian: "", soluong: "", loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
-    const { vitri, linkImg, dichvuId, tenanh, name, quocgiaId, load, thoigian, soluong, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, img, previewVisible, previewImage, fileList, previewTitle } = state;
+    const [state, setState] = useState({ vitri: 1, quocgiaId: "", checkdichvu: "", checkloaitour: "", checkngaydi: "", checkdiadiem: "", dichvuId: [], diadiemId: [], thoigian: "", songuoi: "", loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
+    const { vitri, linkImg, dichvuId, tenanh, name, quocgiaId, load, thoigian, songuoi, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, img, previewVisible, previewImage, fileList, previewTitle } = state;
     const dispatch = useDispatch();
     const history = useHistory();
     const actionResult = async () => { await dispatch(tourData()) }
@@ -67,7 +67,7 @@ function Themtour(props) {
                 ...state,
                 vitri: tour.vitri,
                 thoigian: tour.thoigian,
-                soluong: tour.songuoi,
+                songuoi: tour.songuoi,
                 name: tour.name,
                 avatar: tour.avatar,
                 gianguoilon: tour.gianguoilon,
@@ -109,7 +109,7 @@ function Themtour(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         const { checkdichvu, checkloaitour, checkngaydi, checkdiadiem, diadiemId, dichvuId, loaitourId } = state
-        if (name.trim() === "" || diadiemId.length === 0 || dichvuId.length === 0 || loaitourId.length === 0 || ngaydiId.length === 0 || gianguoilon === "" || giatreem === "" || giaembe === "" || trailer.trim() === "" || chitiettour.trim() === "" || luuy.trim() === "" || bando.trim() === "" || thoigian === "" || soluong === "") {
+        if (name.trim() === "" || diadiemId.length === 0 || dichvuId.length === 0 || loaitourId.length === 0 || ngaydiId.length === 0 || gianguoilon === "" || giatreem === "" || giaembe === "" || trailer.trim() === "" || chitiettour.trim() === "" || luuy.trim() === "" || bando.trim() === "" || thoigian === "" || songuoi === "") {
             message.warning("Xin hãy nhập đầy đủ thông tin!");
         } else {
             setState({ ...state, load: true })
@@ -162,9 +162,9 @@ function Themtour(props) {
                     await tourdiadiemApi.posttourdiadiem(data)
                 }
                 if (avatar === "") {
-                    await dispatch(updatetour({ idsua: id, name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
+                    await dispatch(updatetour({ idsua: id, name, thoigian, songuoi, vitri, luuy, chitiettour, status, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
                 } else {
-                    await dispatch(updatetour({ idsua: id, name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
+                    await dispatch(updatetour({ idsua: id, name, thoigian, songuoi, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
                 }
             } else {
                 await storage.ref(`imagestour/${img.name}`).put(img)
@@ -191,7 +191,7 @@ function Themtour(props) {
                 for (let i = 0; i < ngaydiId.length; i++) {
                     TourNgaydis.push({ ngaydiId: ngaydiId[i] });
                 }
-                await dispatch(addtour({ name, thoigian, soluong, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
+                await dispatch(addtour({ name, thoigian, songuoi, vitri, luuy, chitiettour, status, tenanh, avatar, gianguoilon, giatreem, giaembe, trailer, bando, Anhs, TourDiadiems, TourLoaitours, DichvuTours, TourNgaydis }));
 
             }
             setTimeout(() => {
@@ -423,7 +423,7 @@ function Themtour(props) {
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Số lượng</label>
-                        <input type="number" min="0" name="soluong" value={soluong} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                        <input type="number" min="0" name="songuoi" value={songuoi} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Số ngày đi</label>

@@ -15,11 +15,12 @@ import hoadonReducer from "../features/container/admin/Hoadon/hoadonSlice"
 import tintuctagReducer from "../features/container/admin/tintuc/tintuctagSlice"
 import roleReducer from "../features/container/admin/Role/roleSlice";
 import lienheReducer from "../features/container/admin/Lienhe/lienheSlice"
+import khuyenmaiReducer from "../features/container/admin/Khuyenmai/khuyenmaiSlice"
 import ngaydiReducer from "../features/container/admin/Ngaydi/ngaydiSlice"
 import camnangReducer from "../features/container/admin/Camnangdulich/camnangdulichSlice"
 import userroleReducer from "../features/container/admin/header/userroleSlice"
 import inforReducer from "../features/container/login/inforSlice"
-
+import chitieuReducer from "../features/container/admin/Doanhthu/chitieuSlice"
 const rootReducer = {
   tintucs: tintucReducer,
   user: userReducer,
@@ -40,7 +41,9 @@ const rootReducer = {
   ngaydis: ngaydiReducer,
   camnangdulichs: camnangReducer,
   userroles: userroleReducer,
-  infor: inforReducer
+  infor: inforReducer,
+  chitieu: chitieuReducer,
+  khuyenmais: khuyenmaiReducer
 }
 
 export default configureStore({

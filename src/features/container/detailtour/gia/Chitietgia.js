@@ -10,6 +10,20 @@ function Chitietgia(props) {
             }
         }
     }
+    const tinhkhuyenmai = (money, km) => {
+        return ((money) - ((money) * (km / 100)))
+    }
+    const checkKhuyenmai = () => {
+        if (tour[0].Khuyenmais.length === 0) {
+            return tour[0].gianguoilon;
+        } else {
+            if (tour[0].Khuyenmais[0].status === 0) {
+                return tour[0].gianguoilon;
+            } else {
+                return tinhkhuyenmai(tour[0].gianguoilon, tour[0].Khuyenmais[0].khuyenmai);
+            }
+        }
+    }
     return (
         <div>
             <div className="heading-nx">
@@ -20,13 +34,13 @@ function Chitietgia(props) {
                     {tour.map(ok => (
                         <div key={ok.id}>
                             <p>
-                                - Giá tiền người lớn: {ok.gianguoilon}
+                                - Giá tiền người lớn: {checkKhuyenmai(ok.gianguoilon, ok.Khuyenmais[0].khuyenmai).toLocaleString()} vnd
                             </p>
                             <p>
-                                - Giá tiền trẻ em: {ok.giatreem}
+                                - Giá tiền trẻ em: {(ok.giatreem).toLocaleString()} vnd
                             </p>
                             <p>
-                                - Giá tiền em bé: {ok.giaembe}
+                                - Giá tiền em bé: {(ok.giaembe).toLocaleString()} vnd
                             </p>
                         </div>
                     ))}

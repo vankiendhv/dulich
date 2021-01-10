@@ -8,7 +8,7 @@ export default function CheckoutForm() {
     const stripe = useStripe();
     const elements = useElements();
     const [email, setemail] = useState('chikien9x@gmail.com')
-    const [price, setprice] = useState(1)
+    const [price, setprice] = useState(100 * 100)
     const handleSubmit = async (event) => {
         event.preventDefault()
         if (!stripe || !elements) {
@@ -23,6 +23,7 @@ export default function CheckoutForm() {
         //     console.log(err);
         // })
         var res = await stripeApi.poststripe({ email, price }).then(ok => {
+            console.log(ok);
             //clientSecret = ok.client_secret;
             return ok.client_secret;
         })

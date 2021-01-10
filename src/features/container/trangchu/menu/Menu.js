@@ -217,6 +217,19 @@ function ListMenu(props) {
               <Link
                 className="nav-link"
                 activeClass="active"
+                to="tour"
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={500}
+              >
+                Tour du lịch
+          </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className="nav-link"
+                activeClass="active"
                 to="dichvu"
                 spy={true}
                 smooth={true}
