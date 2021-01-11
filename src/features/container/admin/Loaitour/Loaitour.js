@@ -4,9 +4,10 @@ import { Button } from '@material-ui/core';
 import { Popconfirm, Spin, Table } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { loaitourData, removeloaitour, updateloaitour } from './loaitourSlice';
 function Loaitour(props) {
+    const match = useRouteMatch()
 
     const columns = [
         {
@@ -35,7 +36,7 @@ function Loaitour(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/sualoaitour/${id}`)
+        history.replace(`${match.url}/sualoaitour/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -56,7 +57,7 @@ function Loaitour(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themloaitour`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themloaitour`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={loaitours.map((ok, index) => (

@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { Popconfirm, Spin, Table } from 'antd'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { lienheData, removelienhe, updatelienhe } from './lienheSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { diadiemData } from '../DiaDiem/diadiemSlice';
-function Lienhe(props) {
+function Lienhe() {
+    const match = useRouteMatch()
 
     const columns = [
         {
@@ -43,7 +44,7 @@ function Lienhe(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/sualienhe/${id}`)
+        history.replace(`${match.url}/sualienhe/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -63,7 +64,7 @@ function Lienhe(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themlienhe`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themlienhe`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={lienhe.map((ok, index) => (

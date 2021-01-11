@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { Popconfirm, Rate, Spin, Table } from 'antd'
 import { binhluanData, removebinhluan, updatebinhluan } from './binhluanSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import "./binhluan.css";
-function Binhluan(props) {
+function Binhluan() {
+    const match = useRouteMatch();
+    console.log(match.url);
     const columns = [
         {
             title: 'Người dùng',
@@ -60,7 +62,7 @@ function Binhluan(props) {
         }, 500);
     }
     const hangdleInfor = (id) => {
-        history.push(`/admin/chitietbinhluan/${id}`)
+        history.push(`${match.url}/chitietbinhluan/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {

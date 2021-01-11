@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addngaydi, ngaydiData, removengaydi, updatengaydi } from './ngaydiSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import "./ngaydi.css"
-function Ngaydi(props) {
+function Ngaydi() {
 
     const columns = [
         {
@@ -51,9 +51,6 @@ function Ngaydi(props) {
         setTimeout(() => {
             actionResult();
         }, 500);
-    }
-    const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suangaydi/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {

@@ -4,8 +4,8 @@ import { Button } from '@material-ui/core';
 import { Popconfirm, Popover, Spin, Table, Tooltip } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { hoadonData, removehoadon, updatehoadon } from './hoadonSlice';
-function Hoadon(props) {
+import { hoadonData, removehoadon } from './hoadonSlice';
+function Hoadon() {
 
     const columns = [
         {

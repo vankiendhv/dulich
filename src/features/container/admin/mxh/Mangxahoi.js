@@ -1,11 +1,12 @@
 import { Button } from '@material-ui/core'
 import React, { useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 import { Popconfirm, Spin, Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { mangxahoiData, removemangxahoi, updatemangxahoi } from './mangxahoiSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
-function Mangxahoi(props) {
+function Mangxahoi() {
+    const match = useRouteMatch()
 
     const columns = [
         {
@@ -46,7 +47,7 @@ function Mangxahoi(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suamangxahoi/${id}`)
+        history.replace(`${match.url}/suamangxahoi/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -66,7 +67,7 @@ function Mangxahoi(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themmangxahoi`}>
+                    <Link to={`${match.url}/themmangxahoi`}>
                         <Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button>
                     </Link>
                 </div>

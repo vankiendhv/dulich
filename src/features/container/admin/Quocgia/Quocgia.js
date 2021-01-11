@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { Popconfirm, Spin, Table } from 'antd'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { quocgiaData, removequocgia, updatequocgia } from './quocgiaSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { diadiemData } from '../DiaDiem/diadiemSlice';
-function Quocgia(props) {
+function Quocgia() {
+    const match = useRouteMatch()
 
     const columns = [
         {
@@ -53,7 +54,7 @@ function Quocgia(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suaquocgia/${id}`)
+        history.replace(`${match.url}/suaquocgia/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -73,13 +74,13 @@ function Quocgia(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themquocgia`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themquocgia`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={quocgia.map((ok, index) => (
                         {
                             key: index + 1,
-                            name: <Link to={`${props.url}/chitietquocgia/${ok.id}`}>{ok.name}</Link>,
+                            name: <Link to={`${match.url}/chitietquocgia/${ok.id}`}>{ok.name}</Link>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">

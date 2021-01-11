@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { Popconfirm, Spin, Table } from 'antd'
 import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { diadiemData, removediadiem, updatediadiem } from './diadiemSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-function Diadiem(props) {
-
+function Diadiem() {
+    const match = useRouteMatch()
+    console.log({ match });
     const columns = [
         {
             title: 'tên địa điểm',
@@ -26,9 +27,6 @@ function Diadiem(props) {
     const loading = useSelector(state => state.diadiems.loading)
     const dispatch = useDispatch();
     const actionResult = async () => { await dispatch(diadiemData()) }
-    function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-    }
     useEffect(() => {
         //actionResult();
     }, [])
@@ -40,7 +38,7 @@ function Diadiem(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suadiadiem/${id}`)
+        history.push(`${match.url}/suadiadiem/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -60,7 +58,7 @@ function Diadiem(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themdiadiem`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themdiadiem`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={diadiems.map((ok, index) => (
@@ -77,8 +75,7 @@ function Diadiem(props) {
                                         <i className="far fa-trash-alt" ></i>
                                     </Popconfirm>
                                 </div>
-                        }))}
-                        onChange={onChange} />
+                        }))} />
                 }
             </div>
         </div>

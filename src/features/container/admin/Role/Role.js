@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { userroleData } from '../header/userroleSlice';
 import { roleData, updaterole } from './roleSlice';
-function Role(props) {
+function Role() {
+
     const columns = [
         {
             title: 'quyền',

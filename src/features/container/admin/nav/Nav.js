@@ -9,7 +9,7 @@ import Tintuc from './../tintuc/Tintuc'
 import Chitiettintuc from './../tintuc/Chitiettintuc'
 import Themloaitour from './../Loaitour/Themloaitour'
 import Loaitour from './../Loaitour/Loaitour'
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
 import Taikhoan from '../taikhoan/Taikhoan';
 import Chitiettaikhoan from '../taikhoan/Chitiettaikhoan'
 import Chitietquocgia from "../Quocgia/Chitietquocgia"
@@ -41,7 +41,8 @@ import Khuyenmai from "../Khuyenmai/Khuyenmai"
 import Themkhuyenmai from "../Khuyenmai/Themkhuyenmai"
 import { useSelector } from 'react-redux';
 
-export default function Nav(props) {
+export default function Nav() {
+    const match = useRouteMatch();
     const { Header, Sider, Content } = Layout;
     const [state, setState] = useState({
         collapsed: true,
@@ -58,228 +59,223 @@ export default function Nav(props) {
     const user = useSelector(state => state.infor.infor.data);
     const quanlytintuc = (
         <div>
-            <Route exact path={props.path}>
+            <Route exact path={match.path}>
                 <Doanhthu />
             </Route>
-            <Route path={`${props.path}/tintuc`}  >
-                <Tintuc url={props.url} />
+            <Route exact path={`${match.path}/tintuc`}  >
+                <Tintuc url={match.url} />
             </Route>
-            <Route path={`${props.path}/themtintuc`}  >
+            <Route path={`${match.path}/tintuc/themtintuc`}  >
                 <Themtintuc />
             </Route>
-            <Route path={`${props.path}/suatintuc/:id`}  >
+            <Route path={`${match.path}/tintuc/suatintuc/:id`}  >
                 <Themtintuc />
             </Route>
-            <Route path={`${props.path}/chitiettintuc/:id`}  >
+            <Route path={`${match.path}/tintuc/chitiettintuc/:id`}  >
                 <Chitiettintuc />
             </Route>
         </div>
     )
     const quanlybinhluan = (
         <div>
-            <Route exact path={props.path}>
+            <Route exact path={match.path}>
                 <Doanhthu />
             </Route>
-            <Route path={`${props.path}/binhluan`}  >
-                <Binhluan url={props.url} />
+            <Route exact path={`${match.path}/binhluan`}  >
+                <Binhluan url={match.url} />
             </Route>
-            <Route path={`${props.path}/chitietbinhluan/:id`}  >
+            <Route path={`${match.path}/binhluan/chitietbinhluan/:id`}  >
                 <Chitietbinhluan />
             </Route>
         </div>
     )
     const quanlytour = (
         <div>
-            <Route exact path={props.path}>
+            <Route exact path={match.path}>
                 <Doanhthu />
             </Route>
-            <Route path={`${props.path}/tour`}  >
-                <Tour url={props.url} />
+            <Route exact path={`${match.path}/tour`}  >
+                <Tour url={match.url} />
             </Route>
-            <Route path={`${props.path}/chitiettour/:id`}  >
+            <Route path={`${match.path}/tour/chitiettour/:id`}  >
                 <Chitiettour />
             </Route>
-            <Route path={`${props.path}/themtour`}  >
+            <Route path={`${match.path}/tour/themtour`}  >
                 <Themtour />
             </Route>
-            <Route path={`${props.path}/suatour/:id`}  >
+            <Route path={`${match.path}/tour/suatour/:id`}  >
                 <Themtour />
             </Route>
-            <Route path={`${props.path}/sualoaitour/:id`}  >
+            <Route path={`${match.path}/loaitour/sualoaitour/:id`}  >
                 <Themloaitour />
             </Route>
-            <Route path={`${props.path}/loaitour`}  >
-                <Loaitour url={props.url} />
+            <Route exact path={`${match.path}/loaitour`}  >
+                <Loaitour url={match.url} />
             </Route>
-            <Route path={`${props.path}/themloaitour`}  >
+            <Route path={`${match.path}/loaitour/themloaitour`}  >
                 <Themloaitour />
             </Route>
-            <Route path={`${props.path}/suaquocgia/:id`}  >
+            <Route path={`${match.path}/quocgia/suaquocgia/:id`}  >
                 <Themquocgia />
             </Route>
-            <Route path={`${props.path}/quocgia`}  >
-                <Quocgia url={props.url} />
+            <Route exact path={`${match.path}/quocgia`}  >
+                <Quocgia url={match.url} />
             </Route>
-            <Route path={`${props.path}/themquocgia`}  >
+            <Route path={`${match.path}/quocgia/themquocgia`}  >
                 <Themquocgia />
             </Route>
-            <Route path={`${props.path}/diadiem`}  >
-                <Diadiem url={props.url} />
+            <Route exact path={`${match.path}/diadiem`}  >
+                <Diadiem url={match.url} />
             </Route>
-            <Route path={`${props.path}/themdiadiem`}  >
+            <Route path={`${match.path}/diadiem/themdiadiem`}  >
                 <Themdiadiem />
             </Route>
-            <Route path={`${props.path}/suadiadiem/:id`}  >
+            <Route path={`${match.path}/diadiem/suadiadiem/:id`}  >
                 <Themdiadiem />
             </Route>
         </div>
     )
     const admin = (
         <div>
-            <Route exact path={props.path}>
+            <Route exact path={match.path}>
                 <Doanhthu />
             </Route>
-            <Route path={`${props.path}/khuyenmai`}  >
-                <Khuyenmai url={props.url} />
+            <Route exact path={`${match.path}/khuyenmai`}  >
+                <Khuyenmai url={match.url} />
             </Route>
-            <Route path={`${props.path}/themkhuyenmai`}  >
-                <Themkhuyenmai url={props.url} />
+            <Route path={`${match.path}/khuyenmai/themkhuyenmai`}  >
+                <Themkhuyenmai url={match.url} />
             </Route>
-            <Route path={`${props.path}/suakhuyenmai/:id`}  >
-                <Themkhuyenmai url={props.url} />
+            <Route path={`${match.path}/khuyenmai/suakhuyenmai/:id`}  >
+                <Themkhuyenmai url={match.url} />
             </Route>
-            <Route path={`${props.path}/chitiettintuc/:id`}  >
+            <Route path={`${match.path}/tintuc/chitiettintuc/:id`}  >
                 <Chitiettintuc />
             </Route>
-            <Route path={`${props.path}/tintuc`}  >
-                <Tintuc url={props.url} />
+            <Route exact path={`${match.path}/tintuc`}  >
+                <Tintuc url={match.url} />
             </Route>
-            <Route path={`${props.path}/themtintuc`}  >
+            <Route path={`${match.path}/tintuc/themtintuc`}  >
                 <Themtintuc />
             </Route>
-            <Route path={`${props.path}/suatintuc/:id`}  >
+            <Route path={`${match.path}/tintuc/suatintuc/:id`}  >
                 <Themtintuc />
             </Route>
-            <Route path={`${props.path}/diadiem`}  >
-                <Diadiem url={props.url} />
+            <Route exact path={`${match.path}/diadiem`}  >
+                <Diadiem url={match.url} />
             </Route>
-            <Route path={`${props.path}/themdiadiem`}  >
+            <Route path={`${match.url}/diadiem/themdiadiem`}  >
                 <Themdiadiem />
             </Route>
-            <Route path={`${props.path}/suadiadiem/:id`}  >
+            <Route path={`${match.path}/diadiem/suadiadiem/:id`}  >
                 <Themdiadiem />
             </Route>
-            <Route path={`${props.path}/tag`}  >
-                <Tag url={props.url} />
+            <Route exact path={`${match.path}/tag`}  >
+                <Tag url={match.url} />
             </Route>
-            <Route path={`${props.path}/camnangdulich`}  >
-                <Camnangdulich url={props.url} />
+            <Route exact path={`${match.path}/camnangdulich`}  >
+                <Camnangdulich url={match.url} />
             </Route>
-            <Route path={`${props.path}/lienhe`}  >
-                <Lienhe url={props.url} />
+            <Route exact path={`${match.path}/lienhe`}  >
+                <Lienhe url={match.url} />
             </Route>
-            <Route path={`${props.path}/ngaydi`}  >
+            <Route exact path={`${match.path}/ngaydi`}  >
                 <Ngaydi />
             </Route>
-            <Route path={`${props.path}/hoadon`}  >
-                <Hoadon url={props.url} />
+            <Route exact path={`${match.path}/hoadon`}  >
+                <Hoadon url={match.url} />
             </Route>
-            <Route path={`${props.path}/anh`}  >
-                <Anh url={props.url} />
+            <Route exact path={`${match.path}/anh`}  >
+                <Anh url={match.url} />
             </Route>
-            <Route path={`${props.path}/dichvu`}  >
-                <Dichvu url={props.url} />
+            <Route exact path={`${match.path}/dichvu`}  >
+                <Dichvu url={match.url} />
             </Route>
-            <Route path={`${props.path}/binhluan`}  >
-                <Binhluan url={props.url} />
+            <Route exact path={`${match.path}/binhluan`}  >
+                <Binhluan url={match.url} />
             </Route>
-            <Route path={`${props.path}/tour`}  >
-                <Tour url={props.url} />
+            <Route exact path={`${match.path}/tour`}  >
+                <Tour url={match.url} />
             </Route>
-            <Route path={`${props.path}/role`}  >
-                <Role url={props.url} />
+            <Route exact path={`${match.path}/role`}  >
+                <Role url={match.url} />
             </Route>
-
-            <Route path={`${props.path}/themcamnangdulich`}  >
+            <Route exact path={`${match.path}/themcamnangdulich`}  >
                 <Themcamnang />
             </Route>
-            <Route path={`${props.path}/themtag`}  >
+            <Route path={`${match.path}/tag/themtag`}  >
                 <Themtag />
             </Route>
-            <Route path={`${props.path}/themlienhe`}  >
+            <Route path={`${match.path}/lienhe/themlienhe`}  >
                 <Themlienhe />
             </Route>
-            <Route path={`${props.path}/themrole`}  >
+            <Route path={`${match.path}/role/themrole`}  >
                 <Themrole />
             </Route>
-            <Route path={`${props.path}/themdichvu`}  >
+            <Route path={`${match.path}/dichvu/themdichvu`}  >
                 <Themdichvu />
             </Route>
-
-            <Route path={`${props.path}/chitietbinhluan/:id`}  >
+            <Route path={`${match.path}/binhluan/chitietbinhluan/:id`}  >
                 <Chitietbinhluan />
             </Route>
-            <Route path={`${props.path}/chitiettour/:id`}  >
+            <Route path={`${match.path}/tour/chitiettour/:id`}  >
                 <Chitiettour />
             </Route>
-            <Route path={`${props.path}/chitietquocgia/:id`}  >
+            <Route path={`${match.path}/quocgia/chitietquocgia/:id`}  >
                 <Chitietquocgia />
             </Route>
-            <Route path={`${props.path}/suacamnangdulich/:id`}  >
+            <Route path={`${match.path}/camnangdulich/suacamnangdulich/:id`}  >
                 <Themcamnang />
             </Route>
-            <Route path={`${props.path}/suarole/:id`}  >
+            <Route path={`${match.path}/role/suarole/:id`}  >
                 <Themrole />
             </Route>
-            <Route path={`${props.path}/sualienhe/:id`}  >
+            <Route path={`${match.path}/lienhe/sualienhe/:id`}  >
                 <Themlienhe />
             </Route>
-            <Route path={`${props.path}/suamangxahoi/:id`}  >
+            <Route path={`${match.path}/mangxahoi/suamangxahoi/:id`}  >
                 <Themmangxahoi />
             </Route>
-            <Route path={`${props.path}/suatag/:id`}  >
+            <Route path={`${match.path}/tag/suatag/:id`}  >
                 <Themtag />
             </Route>
-            <Route path={`${props.path}/suadichvu/:id`}  >
+            <Route path={`${match.path}/dichvu/suadichvu/:id`}  >
                 <Themdichvu />
             </Route>
-            <Route path={`${props.path}/sualoaitour/:id`}  >
+            <Route path={`${match.path}/loaitour/sualoaitour/:id`}  >
                 <Themloaitour />
             </Route>
-            <Route path={`${props.path}/suaquocgia/:id`}  >
+            <Route path={`${match.path}/quocgia/suaquocgia/:id`}  >
                 <Themquocgia />
             </Route>
-
-            <Route path={`${props.path}/quocgia`}  >
-                <Quocgia url={props.url} />
+            <Route exact path={`${match.path}/quocgia`}  >
+                <Quocgia url={match.url} />
             </Route>
-            <Route path={`${props.path}/loaitour`}  >
-                <Loaitour url={props.url} />
+            <Route exact path={`${match.path}/loaitour`}  >
+                <Loaitour url={match.url} />
             </Route>
-            <Route path={`${props.path}/taikhoan`}  >
-                <Taikhoan url={props.url} />
+            <Route exact path={`${match.path}/taikhoan`}  >
+                <Taikhoan url={match.url} />
             </Route>
-            <Route path={`${props.path}/mangxahoi`}  >
-                <Mangxahoi url={props.url} />
+            <Route exact path={`${match.path}/mangxahoi`}  >
+                <Mangxahoi url={match.url} />
             </Route>
-            <Route path={`${props.path}/themloaitour`}  >
+            <Route path={`${match.path}/loaitour/themloaitour`}  >
                 <Themloaitour />
             </Route>
-            <Route path={`${props.path}/chitiettaikhoan/:id`}  >
+            <Route path={`${match.path}/taikhoan/chitiettaikhoan/:id`}  >
                 <Chitiettaikhoan />
             </Route>
-            <Route path={`${props.path}/themquocgia`}  >
+            <Route path={`${match.path}/quocgia/themquocgia`}  >
                 <Themquocgia />
             </Route>
-
-            <Route path={`${props.path}/themtour`}  >
+            <Route path={`${match.path}/tour/themtour`}  >
                 <Themtour />
             </Route>
-
-            <Route path={`${props.path}/suatour/:id`}  >
+            <Route path={`${match.path}/tour/suatour/:id`}  >
                 <Themtour />
             </Route>
-            <Route path={`${props.path}/themmangxahoi`}  >
+            <Route path={`${match.path}/mangxahoi/themmangxahoi`}  >
                 <Themmangxahoi />
             </Route>
         </div>
@@ -290,7 +286,7 @@ export default function Nav(props) {
                 <Link to="/admin">Doanh thu</Link>
             </Menu.Item>
             <Menu.Item key="4" icon={state.collapsed === true ? <span className="far fa-newspaper" ></span> : <span className="far fa-newspaper mr-2"></span>}>
-                <Link to={`${props.url}/tintuc`}>Quản lý tin tức</Link>
+                <Link to={`${match.url}/tintuc`}>Quản lý tin tức</Link>
             </Menu.Item>
         </Menu>
     )
@@ -300,7 +296,7 @@ export default function Nav(props) {
                 <Link to="/admin">Doanh thu</Link>
             </Menu.Item>
             <Menu.Item key="9" icon={state.collapsed === true ? <span className="fas fa-comments" ></span> : <span className="fas fa-comments mr-2"></span>}>
-                <Link to={`${props.url}/binhluan`}>Quản lý bình luận</Link>
+                <Link to={`${match.url}/binhluan`}>Quản lý bình luận</Link>
             </Menu.Item>
         </Menu>
     )
@@ -310,16 +306,16 @@ export default function Nav(props) {
                 <Link to="/admin">Doanh thu</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={state.collapsed === true ? <span className="fas fa-luggage-cart" ></span> : <span className="fas fa-luggage-cart mr-2"></span>}>
-                <Link to={`${props.url}/tour`}>Quản lý tour</Link>
+                <Link to={`${match.url}/tour`}>Quản lý tour</Link>
             </Menu.Item>
             <Menu.Item key="5" icon={state.collapsed === true ? <span className="fas fa-flag-usa" ></span> : <span className="fas fa-flag-usa mr-2"></span>}>
-                <Link to={`${props.url}/quocgia`}>Quản lý quốc gia</Link>
+                <Link to={`${match.url}/quocgia`}>Quản lý quốc gia</Link>
             </Menu.Item>
             <Menu.Item key="6" icon={state.collapsed === true ? <span className="fas fa-atlas" ></span> : <span className="fas fa-atlas mr-2"></span>}>
-                <Link to={`${props.url}/loaitour`}>Quản lý loại tour</Link>
+                <Link to={`${match.url}/loaitour`}>Quản lý loại tour</Link>
             </Menu.Item>
             <Menu.Item key="8" icon={state.collapsed === true ? <span className="fas fa-place-of-worship" ></span> : <span className="fas fa-place-of-worship mr-2"></span>}>
-                <Link to={`${props.url}/diadiem`}>Quản lý địa điểm</Link>
+                <Link to={`${match.url}/diadiem`}>Quản lý địa điểm</Link>
             </Menu.Item>
         </Menu>
     )
@@ -329,56 +325,56 @@ export default function Nav(props) {
                 <Link to="/admin">Doanh thu</Link>
             </Menu.Item>
             <Menu.Item key="2" icon={state.collapsed === true ? <span className="fas fa-luggage-cart" ></span> : <span className="fas fa-luggage-cart mr-2"></span>}>
-                <Link to={`${props.url}/tour`}>Quản lý tour</Link>
+                <Link to={`${match.url}/tour`}>Quản lý tour</Link>
             </Menu.Item>
             <Menu.Item key="3" icon={state.collapsed === true ? <span className="fas fa-users" ></span> : <span className="fas fa-users mr-2"></span>}>
-                <Link to={`${props.url}/taikhoan`}>Quản lý tài khoản</Link>
+                <Link to={`${match.url}/taikhoan`}>Quản lý tài khoản</Link>
             </Menu.Item>
             <Menu.Item key="4" icon={state.collapsed === true ? <span className="far fa-newspaper" ></span> : <span className="far fa-newspaper mr-2"></span>}>
-                <Link to={`${props.url}/tintuc`}>Quản lý tin tức</Link>
+                <Link to={`${match.url}/tintuc`}>Quản lý tin tức</Link>
             </Menu.Item>
             <Menu.Item key="5" icon={state.collapsed === true ? <span className="fas fa-flag-usa" ></span> : <span className="fas fa-flag-usa mr-2"></span>}>
-                <Link to={`${props.url}/quocgia`}>Quản lý quốc gia</Link>
+                <Link to={`${match.url}/quocgia`}>Quản lý quốc gia</Link>
             </Menu.Item>
             <Menu.Item key="6" icon={state.collapsed === true ? <span className="fas fa-atlas" ></span> : <span className="fas fa-atlas mr-2"></span>}>
-                <Link to={`${props.url}/loaitour`}>Quản lý loại tour</Link>
+                <Link to={`${match.url}/loaitour`}>Quản lý loại tour</Link>
             </Menu.Item>
             <Menu.Item key="7" icon={state.collapsed === true ? <span className="fas  fa-share-alt" ></span> : <span className="fas  fa-share-alt mr-2"></span>}>
-                <Link to={`${props.url}/mangxahoi`}>Quản lý mạng xã hội</Link>
+                <Link to={`${match.url}/mangxahoi`}>Quản lý mạng xã hội</Link>
             </Menu.Item>
             <Menu.Item key="8" icon={state.collapsed === true ? <span className="fas fa-place-of-worship" ></span> : <span className="fas fa-place-of-worship mr-2"></span>}>
-                <Link to={`${props.url}/diadiem`}>Quản lý địa điểm</Link>
+                <Link to={`${match.url}/diadiem`}>Quản lý địa điểm</Link>
             </Menu.Item>
             <Menu.Item key="9" icon={state.collapsed === true ? <span className="fas fa-comments" ></span> : <span className="fas fa-comments mr-2"></span>}>
-                <Link to={`${props.url}/binhluan`}>Quản lý bình luận</Link>
+                <Link to={`${match.url}/binhluan`}>Quản lý bình luận</Link>
             </Menu.Item>
             <Menu.Item key="10" icon={state.collapsed === true ? <span className="fas fa-tags" ></span> : <span className="fas fa-tags mr-2"></span>}>
-                <Link to={`${props.url}/tag`}>Quản lý tag</Link>
+                <Link to={`${match.url}/tag`}>Quản lý tag</Link>
             </Menu.Item>
             <Menu.Item key="11" icon={state.collapsed === true ? <span className="fas fa-images" ></span> : <span className="fas fa-images mr-2"></span>}>
-                <Link to={`${props.url}/anh`}>Quản lý ảnh</Link>
+                <Link to={`${match.url}/anh`}>Quản lý ảnh</Link>
             </Menu.Item>
             <Menu.Item key="12" icon={state.collapsed === true ? <span className="fab fa-phoenix-framework" ></span> : <span className="fab fa-phoenix-framework mr-2"></span>}>
-                <Link to={`${props.url}/dichvu`}>Quản lý dịch vụ</Link>
+                <Link to={`${match.url}/dichvu`}>Quản lý dịch vụ</Link>
             </Menu.Item>
             <Menu.Item key="13" icon={state.collapsed === true ? <span className="fas fa-file-alt" ></span> : <span className="fas fa-file-alt mr-2"></span>}>
-                <Link to={`${props.url}/hoadon`}>Quản lý hoá đơn</Link>
+                <Link to={`${match.url}/hoadon`}>Quản lý hoá đơn</Link>
             </Menu.Item>
             <Menu.Item key="14" icon={state.collapsed === true ? <span className="fas fa-user-tag" ></span> : <span className="fas fa-user-tag mr-2"></span>}>
-                <Link to={`${props.url}/role`}>Quản lý phân quyền</Link>
+                <Link to={`${match.url}/role`}>Quản lý phân quyền</Link>
             </Menu.Item>
             <Menu.Item key="15" icon={state.collapsed === true ? <span className="fas fa-id-card" ></span> : <span className="fas fa-id-card mr-2"></span>}>
-                <Link to={`${props.url}/lienhe`}>Quản lý liên hệ</Link>
+                <Link to={`${match.url}/lienhe`}>Quản lý liên hệ</Link>
             </Menu.Item>
             <Menu.Item key="16" icon={state.collapsed === true ? <span className="fas fa-clock" ></span> : <span className="fas fa-clock mr-2"></span>}>
-                <Link to={`${props.url}/ngaydi`}>Quản lý Ngày đi</Link>
+                <Link to={`${match.url}/ngaydi`}>Quản lý Ngày đi</Link>
             </Menu.Item>
             <Menu.Item key="17" icon={state.collapsed === true ? <span className="fas fa-book" ></span> : <span className="fas fa-book mr-2"></span>}>
-                <Link to={`${props.url}/camnangdulich`}>Cẩm nang du lịch</Link>
+                <Link to={`${match.url}/camnangdulich`}>Cẩm nang du lịch</Link>
             </Menu.Item>
 
             <Menu.Item key="18" icon={state.collapsed === true ? <span className="fas fa-percent" ></span> : <span className="fas fa-percent mr-2"></span>}>
-                <Link to={`${props.url}/khuyenmai`}>Khuyễn mãi</Link>
+                <Link to={`${match.url}/khuyenmai`}>Khuyễn mãi</Link>
             </Menu.Item>
         </Menu>
     )

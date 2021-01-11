@@ -4,11 +4,13 @@ import { Button } from '@material-ui/core';
 import { Image, Popconfirm, Spin, Table } from 'antd'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { ngaydiData } from '../Ngaydi/ngaydiSlice';
 import { removetour, updatetour } from './tourSlice';
 import { tourData } from './tourSlice';
-function Tour(props) {
+function Tour() {
+    const match = useRouteMatch()
+
     const dispatch = useDispatch()
     const tours = useSelector(state => state.tours.tour.data);
     var tour = [];
@@ -53,7 +55,7 @@ function Tour(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suatour/${id}`)
+        history.replace(`${match.url}/suatour/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -73,13 +75,13 @@ function Tour(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themtour`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themtour`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={tour.map((ok, index) => (
                         {
                             key: index + 1,
-                            name: <Link to={`${props.url}/chitiettour/${ok.id}`}>{ok.name}</Link>,
+                            name: <Link to={`${match.url}/chitiettour/${ok.id}`}>{ok.name}</Link>,
                             anh: <Image src={ok.avatar} width="150px" height="200px" alt="" />,
                             status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
                             action:

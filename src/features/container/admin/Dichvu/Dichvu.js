@@ -2,12 +2,12 @@
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button } from '@material-ui/core';
 import { Popconfirm, Spin, Table } from 'antd';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { dichvuData, removedichvu, updatedichvu } from './dichvuSlice';
-function Dichvu(props) {
-
+function Dichvu() {
+    const match = useRouteMatch();
     const columns = [
         {
             title: 'Loại tour',
@@ -47,7 +47,7 @@ function Dichvu(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suadichvu/${id}`)
+        history.replace(`${match.url}/suadichvu/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -78,7 +78,7 @@ function Dichvu(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themdichvu`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themdichvu`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={dichvus.map((ok, index) => (

@@ -4,13 +4,13 @@ import { Button } from '@material-ui/core';
 import { Modal, Popconfirm, Spin, Table, Checkbox, Row, Col, Radio, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import tourkhuyenmaiApi from '../../../../api/tourKhuyenmaiApi';
 import tourloaitourApi from '../../../../api/tourLoaitour';
 import { tourData } from '../Tour/tourSlice';
 import { khuyenmaiData, removekhuyenmai, updatekhuyenmai } from './khuyenmaiSlice';
-function Khuyenmai(props) {
-
+function Khuyenmai() {
+    const match = useRouteMatch()
     const columns = [
         {
             title: 'Tên khuyến mãi',
@@ -45,7 +45,7 @@ function Khuyenmai(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suakhuyenmai/${id}`)
+        history.replace(`${match.url}/suakhuyenmai/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -124,7 +124,7 @@ function Khuyenmai(props) {
             <div className="content">
                 <div className="add">
                     <Button variant="outlined" color="primary" className="mr-2" onClick={showModal}><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm khuyến mãi</Button>
-                    <Link to={`${props.url}/themkhuyenmai`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themkhuyenmai`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 <div className="add">
                 </div>

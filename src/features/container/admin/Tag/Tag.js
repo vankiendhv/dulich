@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { Popconfirm, Spin, Table } from 'antd'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { tagData, removetag, updatetag } from './tagSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { diadiemData } from '../DiaDiem/diadiemSlice';
-function Tag(props) {
+function Tag() {
+    const match = useRouteMatch()
 
     const columns = [
         {
@@ -39,7 +40,7 @@ function Tag(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suatag/${id}`)
+        history.replace(`${match.url}/suatag/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -59,13 +60,13 @@ function Tag(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themtag`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themtag`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={tag.map((ok, index) => (
                         {
                             key: index + 1,
-                            name: <Link to={`${props.url}/chitiettag/${ok.id}`}>{ok.name}</Link>,
+                            name: <Link to={`${match.url}/chitiettag/${ok.id}`}>{ok.name}</Link>,
                             status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,
                             action:
                                 <div className="action">

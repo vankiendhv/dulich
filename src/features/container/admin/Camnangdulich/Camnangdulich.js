@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { Popconfirm, Spin, Table } from 'antd'
 import { Button } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { camnangdulichData, removecamnangdulich, updatecamnangdulich } from './camnangdulichSlice';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-function Camnangdulich(props) {
-
+function Camnangdulich() {
+    const match = useRouteMatch()
     const columns = [
         {
             title: 'tên',
@@ -42,7 +42,7 @@ function Camnangdulich(props) {
         }, 500);
     }
     const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suacamnangdulich/${id}`)
+        history.replace(`${match.url}/suacamnangdulich/${id}`)
     }
     const handleStatus = (e, id) => {
         if (e === 1) {
@@ -62,7 +62,7 @@ function Camnangdulich(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themcamnangdulich`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themcamnangdulich`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> :
                     <Table columns={columns} dataSource={camnangdulichs.map((ok, index) => (

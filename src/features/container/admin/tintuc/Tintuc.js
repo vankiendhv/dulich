@@ -4,10 +4,12 @@ import { Button } from '@material-ui/core';
 import { Image, message, Popconfirm, Spin, Table } from 'antd'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import './tintuc.css'
 import { removetintuc, tintucData, updatetintuc } from "./tintucSlice"
-function Tintuc(props) {
+function Tintuc() {
+    const match = useRouteMatch()
+
     const dispatch = useDispatch()
     const tintucs = useSelector(state => state.tintucs.tintuc.data);
     const loading = useSelector(state => state.tintucs.Loading);
@@ -57,7 +59,7 @@ function Tintuc(props) {
         if (users.role === "biên tập viên") {
             message.warning("Bạn không có đủ quyền để thực thi!")
         } else {
-            history.replace(`${props.url}/suatintuc/${id}`)
+            history.replace(`${match.url}/suatintuc/${id}`)
         }
     }
     const handleStatus = (e, id) => {
@@ -83,12 +85,12 @@ function Tintuc(props) {
             </div>
             <div className="content">
                 <div className="add">
-                    <Link to={`${props.url}/themtintuc`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
+                    <Link to={`${match.url}/themtintuc`}><Button variant="outlined" color="secondary"><i className="fas fa-plus"></i>&nbsp;&nbsp; Thêm mới</Button></Link>
                 </div>
                 {loading ? <div className="spin"><Spin className="mt-5" /></div> : <Table columns={columns} dataSource={sort.map((ok, index) => (
                     {
                         key: index + 1,
-                        name: <Link to={`${props.url}/chitiettintuc/${ok.id}`}>{ok.name}</Link>,
+                        name: <Link to={`${match.url}/chitiettintuc/${ok.id}`}>{ok.name}</Link>,
                         author: <span>{ok.tacgia}</span>,
                         anh: <Image src={ok.anh} width="200px" height="150px" alt="" />,
                         status: <div className="action">{ok.status === 1 ? <Link onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up "></i></Link> : <Link onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></Link>}</div>,

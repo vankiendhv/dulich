@@ -1,12 +1,10 @@
 
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { Image, Popconfirm, Spin, Table } from 'antd';
-import React, { useEffect } from 'react';
+import { Image, Spin, Table } from 'antd';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { anhData, removeanh, updateanh } from './anhSlice';
-function Anh(props) {
-
+import { useHistory, useRouteMatch } from 'react-router-dom';
+import { anhData, updateanh } from './anhSlice';
+function Anh() {
     const columns = [
         {
             title: 'Tour',
@@ -25,20 +23,12 @@ function Anh(props) {
             dataIndex: 'banner',
         },
     ];
-
-    function onChange(pagination, filters, sorter, extra) {
-        console.log('params', pagination, filters, sorter, extra);
-    }
     const anhs = useSelector(state => state.anhs.anh.data);
     const loading = useSelector(state => state.anhs.loading)
     const dispatch = useDispatch();
     const actionResult = async () => { await dispatch(anhData()) }
 
     const history = useHistory()
-
-    const hangdleEdit = (id) => {
-        history.replace(`${props.url}/suaanh/${id}`)
-    }
     const handleStatus = (e, id) => {
         if (e === 1) {
             dispatch(updateanh({ status: 0, idsua: id }))

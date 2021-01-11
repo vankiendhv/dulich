@@ -1,22 +1,12 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React from 'react'
+import { useRouteMatch } from 'react-router-dom';
 import Nav from "./../container/admin/nav/Nav"
-export class Admin extends Component {
-    render() {
-        return (
-            <div>
-                <Nav url={this.props.url} path={this.props.path} />
-            </div>
-        )
-    }
+export default function Admin() {
+    const match = useRouteMatch();
+    console.log({ match });
+    return (
+        <div>
+            <Nav url={match.url} path={match.path} />
+        </div>
+    )
 }
-
-const mapStateToProps = (state) => ({
-
-})
-
-const mapDispatchToProps = {
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Admin)
