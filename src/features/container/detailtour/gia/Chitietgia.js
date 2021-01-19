@@ -24,6 +24,7 @@ function Chitietgia(props) {
             }
         }
     }
+    
     return (
         <div>
             <div className="heading-nx">
@@ -34,7 +35,7 @@ function Chitietgia(props) {
                     {tour.map(ok => (
                         <div key={ok.id}>
                             <p>
-                                - Giá tiền người lớn: {checkKhuyenmai(ok.gianguoilon, ok.Khuyenmais[0].khuyenmai).toLocaleString()} vnd
+                                - Giá tiền người lớn: {checkKhuyenmai().toLocaleString()} vnd
                             </p>
                             <p>
                                 - Giá tiền trẻ em: {(ok.giatreem).toLocaleString()} vnd

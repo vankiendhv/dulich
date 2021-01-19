@@ -17,6 +17,7 @@ import Tintucdetail from "../container/tintuc/tintucdetail/Tintucdetail";
 import Listtour from "../container/Listtour/Listtour";
 import Dattour from "../container/detailtour/dattour/Dattour";
 import Listtintuc from "../container/tintuc/listtintuc/Listtintuc";
+import Stripe from "../teststripe/Stripe";
 import Error from "./Error";
 import { useDispatch } from "react-redux";
 import { getMe } from "../../app/userSlice";
@@ -147,6 +148,9 @@ export default function NestingExample() {
           </Route>
           <Route path='/dat-tour'>
             <Dattour />
+          </Route>
+          <Route path='/stripe'>
+            <Stripe />
           </Route>
         </Switch>
       </div>

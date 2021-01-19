@@ -44,7 +44,7 @@ function Themdiadiem(props) {
     const history = useHistory()
     const onSubmit = e => {
         e.preventDefault();
-        if (name.trim() === '' || quocgiaId.trim() === "") {
+        if (name.trim() === '' || quocgiaId === "") {
             message.error("Xin hãy nhập đầy đủ thông tin!");
         } else {
             if (id) {

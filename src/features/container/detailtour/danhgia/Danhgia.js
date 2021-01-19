@@ -1,4 +1,4 @@
-import { Progress, Rate, Spin } from 'antd'
+import { message, Progress, Rate, Spin } from 'antd'
 import Avatar from 'antd/lib/avatar/avatar'
 import renderHTML from 'react-render-html';
 import React, { useState } from 'react'
@@ -58,18 +58,22 @@ function Danhgia(props) {
         e.preventDefault();
         var tourId = props.id;
         var userId = infor.id;
-        if (binhluans.find(x => x.tourId === +tourId && x.userId === +userId)) {
-            var binhluanid = binhluans.find(x => x.tourId === +tourId && x.userId === +userId);
-            var idsua = binhluanid.id
-            dispatch(updatebinhluan({ idsua, tourId, binhluan, userId, star, status }))
-            setTimeout(() => {
-                actionbinhluan();
-            }, 500);
+        if (binhluan.length === 0 || binhluan.length > 10) {
+            if (binhluans.find(x => x.tourId === +tourId && x.userId === +userId)) {
+                var binhluanid = binhluans.find(x => x.tourId === +tourId && x.userId === +userId);
+                var idsua = binhluanid.id
+                dispatch(updatebinhluan({ idsua, tourId, binhluan, userId, star, status }))
+                setTimeout(() => {
+                    actionbinhluan();
+                }, 500);
+            } else {
+                dispatch(addbinhluan({ tourId, binhluan, userId, star, status }))
+                setTimeout(() => {
+                    actionbinhluan();
+                }, 500);
+            }
         } else {
-            dispatch(addbinhluan({ tourId, binhluan, userId, star, status }))
-            setTimeout(() => {
-                actionbinhluan();
-            }, 500);
+            message.warning("Bạn quá ngắn, tối thiểu là 10 ký tự!");
         }
         setState({
             ...state,

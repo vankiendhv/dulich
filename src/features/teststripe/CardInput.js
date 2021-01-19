@@ -21,6 +21,8 @@ export default function CardInput() {
     };
 
     return (
-        <CardElement options={CARD_ELEMENT_OPTIONS} />
+        <div className="div_card w-75">
+            <CardElement options={CARD_ELEMENT_OPTIONS} />
+        </div>
     )
 }

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import './tour.css'
 import { Button } from '@material-ui/core';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import Detail from '../detail/Detail';
 import Footer from '../../trangchu/footer/Footer'
 import Modal from 'antd/lib/modal/Modal';
@@ -189,24 +189,36 @@ function Tour(props) {
       visible: false,
     });
   };
-
-  const handleOk2 = async (e) => {
+  const thanhtien = (gia_te, gia_eb) => {
+    var gianguoilon = checkKhuyenmai();
+    return ((gianguoilon * nguoilon) + (gia_te * treem) + (gia_eb * embe));
+  }
+  const [stylepayment, setstylepayment] = useState(1);
+  const callbackfunction = (data) => {
+    setstylepayment(data);
+  }
+  const history = useHistory();
+  const handleOk2 = async () => {
     if (state.dieukhoan === false) {
       message.warning("Bạn chưa đồng ý điều khoản của chúng tôi!")
     } else {
-      var userId = await taikhoanApi.getOne(+users.id).then(data => {
-        return data.id;
-      })
-      var tourId = id
-      //await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
-      setState({
-        ...state,
-        visible2: false,
-        visible: false,
-        loadlaihoadon: state.loadlaihoadon + 1
-      });
+      if (stylepayment === 1) {
+        var userId = await taikhoanApi.getOne(+users.id).then(data => {
+          return data.id;
+        })
+        // var tourId = id
+        // await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
+        // setState({
+        //   ...state,
+        //   visible2: false,
+        //   visible: false,
+        //   loadlaihoadon: state.loadlaihoadon + 1
+        // });
+        console.log(thanhtien(tour_ngay[0].giatreem, tour_ngay[0].giaembe));
+      } else if (stylepayment === 3) {
+        history.push("/stripe");
+      }
     }
-
   };
 
   const handleCancel2 = e => {
@@ -252,10 +264,7 @@ function Tour(props) {
       }
     }
   }
-  const thanhtien = (gia_nl, gia_te, gia_eb) => {
-    var gianguoilon = checkKhuyenmai();
-    return ((gianguoilon * nguoilon) + (gia_te * treem) + (gia_eb * embe)).toLocaleString();
-  }
+
   const radioStyle = {
     display: 'block',
     height: '30px',
@@ -433,7 +442,7 @@ function Tour(props) {
         </div>
         <h4 className="text-center text-primary">Thành tiền</h4>
         {tour_ngay.map(ok => (
-          <p key={ok.id}>Số tiền cần phải trả: <strong className="text-danger">{thanhtien(ok.gianguoilon, ok.giatreem, ok.giaembe)}</strong></p>
+          <p key={ok.id}>Số tiền cần phải trả: <strong className="text-danger">{thanhtien(ok.giatreem, ok.giaembe).toLocaleString()}</strong></p>
         ))}
       </Modal>
       <Modal
@@ -443,7 +452,7 @@ function Tour(props) {
         onCancel={handleCancel2}
       >
         <h4 className="text-center text-primary">Hình thức thanh toán</h4>
-        <Hinhthucthanhtoan />
+        <Hinhthucthanhtoan callback={callbackfunction} />
         <h4 className="text-center text-primary">Điều khoản</h4>
         <div className="dieukhoan">
           <Dieukhoan />

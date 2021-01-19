@@ -12,10 +12,9 @@
   width: 100%;
   color: #32325d;
   background-color: white;
-  border: 1px solid transparent;
+  border: 1px solid #0abf54;
   border-radius: 4px;
-
-  box-shadow: 0 1px 3px 0 #e6ebf1;
+  /* box-shadow: 0 1px 3px 0 #e6ebf1; */
   -webkit-transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
 }
@@ -30,4 +29,20 @@
 
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
+}
+.btn-payment{
+  margin-top: 2rem;
+  padding: .3rem 1.5rem ;
+  border: 1px solid blue;
+  border-radius: 5px;
+  background-color: blue;
+  color: white;
+  transition: .5s;
+}
+.btn-payment:hover{
+  color: blue;
+  background-color: white;
+}
+.div_card{
+  margin: 0 auto;
 }

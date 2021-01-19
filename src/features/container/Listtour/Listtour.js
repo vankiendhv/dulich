@@ -105,14 +105,15 @@ export default function Listtour() {
                 for (let i = 0; i < tours.length; i++) {
                     sort.unshift(tours[i])
                 }
+                console.log(sort);
                 var date = new Date();
                 var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 10 ? date.getDate() : ("0" + date.getDate()));
-                console.log(star);
                 for (let i = 0; i < sort.length; i++) {
-                    if (sort[i].status === 1 && sort[i].vitri === 1 && tinhdiem(sort[i].id) <= star && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
+                    if (sort[i].status === 1 && sort[i].vitri === 1 && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
                         tourtrongnuoc.push(sort[i])
                     }
                 }
+                console.log(tourtrongnuoc);
             }
             setState({
                 ...state,
@@ -128,7 +129,7 @@ export default function Listtour() {
                 var date = new Date();
                 var today = date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 10 ? date.getDate() : ("0" + date.getDate()));
                 for (let i = 0; i < sort.length; i++) {
-                    if (sort[i].status === 1 && sort[i].vitri === 2 && tinhdiem(sort[i].id) <= star && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
+                    if (sort[i].status === 1 && sort[i].vitri === 2 && (sort[i].name).toLowerCase().search(e) === 0 && maxDate(sort[i].Ngaydis) >= today) {
                         tournuocngoai.push(sort[i])
                     }
                 }
@@ -141,8 +142,8 @@ export default function Listtour() {
     }
 
     const checkstar = value => {
-        setstar(value)
-        search()
+        // setstar(value)
+        // search()
     }
     let actives = document.querySelectorAll('li');
     actives.forEach(active => {

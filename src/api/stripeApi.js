@@ -6,7 +6,7 @@ class StripeApi {
     poststripe = (params) => {
         const url = '/payment';
         return axiosClient.post(url, params).then(data => {
-            message.loading("Xin chờ trong giây lát!");
+
             return data
         }).catch(err => {
             message.error("Thanh toán thất bại, vui lòng quay lại sau!");

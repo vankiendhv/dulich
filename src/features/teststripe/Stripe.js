@@ -38,11 +38,21 @@ function Stripe(props) {
         })
     }
     return (
-        <div>
-            <h1>Stripe OK</h1>
-            <Elements stripe={stripePromise}>
-                <CheckoutForm />
-            </Elements>
+        <div className="">
+            <h2 className="mt-5 text-center">Thanh toán online</h2>
+            <div className="row mt-4">
+                <div className="col-md-6"><div>
+                    <p>Tour: Hải phòng</p>
+                    <p>Tổng tiền: 10,000,000 vnđ</p>
+                    <p>Quy đổi: 100 $</p>
+                </div>
+                </div>
+                <div className="col-md-6">
+                    <Elements stripe={stripePromise}>
+                        <CheckoutForm />
+                    </Elements>
+                </div>
+            </div>
         </div>
     )
 }
