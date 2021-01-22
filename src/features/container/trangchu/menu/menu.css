@@ -52,6 +52,10 @@
 #menu2 .span.ant-dropdown-trigger.nav-link {
   text-align: right;
 }
+a.navbar-brand img {
+  width: 80% !important;
+  /* height: 50% !important; */
+}
 @media (max-width: 768px) {
   #menu .drawer-menu .ant-drawer-content-wrapper{
     width: 45% !important;

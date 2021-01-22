@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-scroll";
+import logo from "./../../../images/logoTravel.png"
 import { Link as Linkrt } from "react-router-dom";
 import "./menu.css";
 import Avatar from "antd/lib/avatar/avatar";
@@ -182,7 +182,9 @@ function ListMenu(props) {
         <div id="menu2">
             <div className="background ">
                 <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-                    <Linkrt className="navbar-brand" to="/" >Travel</Linkrt>
+                    <Linkrt className="navbar-brand" to="/" >
+                        <img src={logo} alt="" />
+                    </Linkrt>
                     <button
                         className="navbar-toggler d-lg-none"
                         type="button"

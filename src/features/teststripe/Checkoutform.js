@@ -4,16 +4,24 @@ import Cardinput from "./CardInput"
 import stripeApi from '../../api/stripeApi';
 import { message } from 'antd';
 import "./card.css";
-export default function CheckoutForm() {
+import { useDispatch } from 'react-redux';
+import { addhoadon } from '../container/admin/Hoadon/hoadonSlice';
+import { useHistory } from 'react-router-dom';
+export default function CheckoutForm(props) {
     const stripe = useStripe();
     const elements = useElements();
-    const [email, setemail] = useState('chikien9x@gmail.com')
-    const [price, setprice] = useState(100 * 100)
+    const email = props.email;
+    const price = props.price * 100;
+    const hoadon = props.hoadon;
+    console.log(hoadon);
+    const dispatch = useDispatch();
+    const history = useHistory();
     const handleSubmit = async (event) => {
         event.preventDefault()
         if (!stripe || !elements) {
             return;
         }
+        console.log("ok");
         var res = await stripeApi.poststripe({ email, price }).then(ok => {
             return ok.client_secret;
         })
@@ -26,12 +34,13 @@ export default function CheckoutForm() {
                 },
             }
         });
-
         if (result.error) {
             message.warning("Số thẻ hoặc thông tin khác không hợp lệ!");
         } else {
             if (result.paymentIntent.status === 'succeeded') {
-                message.success("Thanh toán thành công!")
+                message.success("Thanh toán thành công!");
+                dispatch(addhoadon({ tourId: hoadon.tourId, userId: hoadon.userId, embe: hoadon.embe, treem: hoadon.treem, nguoilon: hoadon.nguoilon, ngaydi: hoadon.ngaydi }));
+                history.push(`/tour/${hoadon.tourId}`);
             }
         }
     };

@@ -21,6 +21,7 @@ import camnangReducer from "../features/container/admin/Camnangdulich/camnangdul
 import userroleReducer from "../features/container/admin/header/userroleSlice"
 import inforReducer from "../features/container/login/inforSlice"
 import chitieuReducer from "../features/container/admin/Doanhthu/chitieuSlice"
+import thanhtoanReducer from "../features/container/detailtour/tour/thanhtoanSlice"
 const rootReducer = {
   tintucs: tintucReducer,
   user: userReducer,
@@ -43,7 +44,8 @@ const rootReducer = {
   userroles: userroleReducer,
   infor: inforReducer,
   chitieu: chitieuReducer,
-  khuyenmais: khuyenmaiReducer
+  khuyenmais: khuyenmaiReducer,
+  thanhtoans: thanhtoanReducer
 }
 
 export default configureStore({

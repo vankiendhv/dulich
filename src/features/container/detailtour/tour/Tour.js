@@ -1,4 +1,4 @@
-import { Carousel, message, Popover, Radio, Rate } from 'antd'
+import { Carousel, message, Popover, Radio, Rate, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import './tour.css'
@@ -13,6 +13,7 @@ import { binhluanData } from '../../admin/Binhluan/binhluanSlice';
 import { addhoadon, hoadonData } from '../../admin/Hoadon/hoadonSlice';
 import taikhoanApi from '../../../../api/taikhoanApi';
 import { ngaydiData } from '../../admin/Ngaydi/ngaydiSlice';
+import { addthanhtoan } from './thanhtoanSlice';
 function Tour(props) {
   const { id } = useParams()
   const [state, setState] = useState({
@@ -202,11 +203,11 @@ function Tour(props) {
     if (state.dieukhoan === false) {
       message.warning("Bạn chưa đồng ý điều khoản của chúng tôi!")
     } else {
+      var userId = await taikhoanApi.getOne(+users.id).then(data => {
+        return data.id;
+      })
+      var tourId = id
       if (stylepayment === 1) {
-        var userId = await taikhoanApi.getOne(+users.id).then(data => {
-          return data.id;
-        })
-        // var tourId = id
         // await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
         // setState({
         //   ...state,
@@ -216,11 +217,12 @@ function Tour(props) {
         // });
         console.log(thanhtien(tour_ngay[0].giatreem, tour_ngay[0].giaembe));
       } else if (stylepayment === 3) {
+        let tongtien = thanhtien(tour_ngay[0].giatreem, tour_ngay[0].giaembe)
+        dispatch(addthanhtoan({ hoadon: { tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }, nguoilon, treem, embe, tongtien, "name": tour_ngay[0].name, "giatreem": tour_ngay[0].giatreem, "giaembe": tour_ngay[0].giaembe, "gianguoilon": tour_ngay[0].gianguoilon }))
         history.push("/stripe");
       }
     }
   };
-
   const handleCancel2 = e => {
     setState({
       ...state,
@@ -280,6 +282,7 @@ function Tour(props) {
   if (giakhuyenmai) {
     tong = Number(nguoilon) + Number(treem) + Number(embe);
   }
+  console.log(tour_ngay);
   return (
     <div id="detail-tour">
       <div className="breadcrumb">
@@ -287,95 +290,98 @@ function Tour(props) {
           <ol className="breadcrumb">
             <li className="breadcrumb-item"><Link to="/"><i className="fas fa-home mr-2"></i>Trang chủ</Link></li>
             <li className="breadcrumb-item"><Link to="/list-tour">Tour du lịch</Link></li>
-            <li className="breadcrumb-item active" aria-current="page">Tên tour</li>
+            <li className="breadcrumb-item active" aria-current="page">{tour_ngay.length > 0 ? tour_ngay[0].name : ""}</li>
           </ol>
         </nav>
       </div>
-      { tour_ngay.map(ok => (
-        <div className="box-tour" key={ok.id}>
-          <div className="container bg-white">
-            <div className="row justify-content-center" >
-              <div className="col-lg-8">
-                <Carousel autoplay>
-                  {tours.find(x => x.id === +id).Anhs.map(oki => (
-                    <div>
-                      <img src={oki.link} width="760px" height="430px" alt="" />
+      { tour_ngay.length === 0 ?
+        <div className="spin"><Spin className="mt-1" /></div>
+        :
+        tour_ngay.map(ok => (
+          <div className="box-tour" key={ok.id}>
+            <div className="container bg-white">
+              <div className="row justify-content-center" >
+                <div className="col-lg-8">
+                  <Carousel autoplay>
+                    {tours.find(x => x.id === +id).Anhs.map(oki => (
+                      <div>
+                        <img src={oki.link} width="760px" height="430px" alt="" />
+                      </div>
+                    ))}
+                  </Carousel>
+                </div>
+                <div className="col-lg-4 position-relative ">
+                  <div className=" pl-3">
+                    <div className="star float-left">
+                      <Rate value={tinhdiem()} disabled />
                     </div>
-                  ))}
-                </Carousel>
-              </div>
-              <div className="col-lg-4 position-relative ">
-                <div className=" pl-3">
-                  <div className="star float-left">
-                    <Rate value={tinhdiem()} disabled />
-                  </div>
-                  <div className="icon-comment">
-                    <span><strong> &emsp; {tinhdiem()}/5</strong> điểm với <strong>{binhluanload.length}</strong> đánh giá</span>
-                  </div>
-                  <div className="view">
-                    <span className="mr-3"><i className="far fa-thumbs-up mr-1"></i> 200</span>
-                    <span><i className="far fa-comment-dots mr-1"></i> {binhluanload.length}</span>
-                  </div>
+                    <div className="icon-comment">
+                      <span><strong> &emsp; {tinhdiem()}/5</strong> điểm với <strong>{binhluanload.length}</strong> đánh giá</span>
+                    </div>
+                    <div className="view">
+                      <span className="mr-3"><i className="far fa-thumbs-up mr-1"></i> 200</span>
+                      <span><i className="far fa-comment-dots mr-1"></i> {binhluanload.length}</span>
+                    </div>
 
-                  <hr className="hr-tour" />
-                  <div className="tt-tour">
-                    <table className="w-100">
-                      <tr>
-                        <td><span>Khởi hành:</span></td>
-                        <td><span>{state.date === "" ? formatlaidate(checkngaydi()) : state.date}</span></td>
-                        <td>
-                          <Popover
-                            content={
-                              <div>
-                                <Radio.Group onChange={onChangedate} value={state.valueDate}>
-                                  {state.listdate === "" ? "" :
-                                    state.listdate.map(ok => (
-                                      <Radio style={radioStyle} key={ok.id} value={ok.id}>
-                                        <span onClick={() => { adddate(ok.id) }}>{ok.ngay}</span><br />
-                                      </Radio>
-                                    ))}
-                                </Radio.Group>
-                                <hr />
-                                <div className="text-center">
-                                  <strong className="text-danger" style={{ cursor: "pointer" }} onClick={hide}>Close</strong>
+                    <hr className="hr-tour" />
+                    <div className="tt-tour">
+                      <table className="w-100">
+                        <tr>
+                          <td><span>Khởi hành:</span></td>
+                          <td><span>{state.date === "" ? formatlaidate(checkngaydi()) : state.date}</span></td>
+                          <td>
+                            <Popover
+                              content={
+                                <div>
+                                  <Radio.Group onChange={onChangedate} value={state.valueDate}>
+                                    {state.listdate === "" ? "" :
+                                      state.listdate.map(ok => (
+                                        <Radio style={radioStyle} key={ok.id} value={ok.id}>
+                                          <span onClick={() => { adddate(ok.id) }}>{ok.ngay}</span><br />
+                                        </Radio>
+                                      ))}
+                                  </Radio.Group>
+                                  <hr />
+                                  <div className="text-center">
+                                    <strong className="text-danger" style={{ cursor: "pointer" }} onClick={hide}>Close</strong>
+                                  </div>
                                 </div>
-                              </div>
-                            }
-                            title="Chọn ngày khác"
-                            trigger="click"
-                            visible={state.visible3}
-                            onVisibleChange={handleVisibleChange}
-                          >
-                            <span className="text-primary" style={{ cursor: "pointer" }}>Đổi ngày</span>
-                          </Popover>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><span>Thời gian:</span></td>
-                        <td><span>{ok.thoigian} ngày</span></td>
-                      </tr>
-                      <tr>
-                        <td><span>Nơi khởi hành:</span></td>
-                        <td><span>Hà Nội</span></td>
-                      </tr>
-                    </table>
-                  </div>
-                  <Button className="float-right position-absolute btn-dt" onClick={showModal} variant="contained" color="secondary">
-                    Đặt tour
+                              }
+                              title="Chọn ngày khác"
+                              trigger="click"
+                              visible={state.visible3}
+                              onVisibleChange={handleVisibleChange}
+                            >
+                              <span className="text-primary" style={{ cursor: "pointer" }}>Đổi ngày</span>
+                            </Popover>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><span>Thời gian:</span></td>
+                          <td><span>{ok.thoigian} ngày</span></td>
+                        </tr>
+                        <tr>
+                          <td><span>Nơi khởi hành:</span></td>
+                          <td><span>Hà Nội</span></td>
+                        </tr>
+                      </table>
+                    </div>
+                    <Button className="float-right position-absolute btn-dt" onClick={showModal} variant="contained" color="secondary">
+                      Đặt tour
                   </Button>
-                  <div className="price position-absolute">
-                    <span><strong className="text-danger">{(checkKhuyenmai()).toLocaleString()}</strong> vnd</span>
-                    <br />
-                    <span>Số chỗ còn lại: {songuoiconlai(ok.songuoi)}</span>
+                    <div className="price position-absolute">
+                      <span><strong className="text-danger">{(checkKhuyenmai()).toLocaleString()}</strong> vnd</span>
+                      <br />
+                      <span>Số chỗ còn lại: {songuoiconlai(ok.songuoi)}</span>
+                    </div>
                   </div>
                 </div>
               </div>
+              <Detail id={id} />
             </div>
-            <Detail id={id} />
           </div>
-        </div>
 
-      ))}
+        ))}
       <Footer />
       <Modal
         title="Đặt tour"
