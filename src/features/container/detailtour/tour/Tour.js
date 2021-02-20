@@ -133,7 +133,6 @@ function Tour(props) {
       visible3: false,
     });
   };
-
   const handleVisibleChange = () => {
     setState({ ...state, visible3: true, listdate: fillDate() });
   };
@@ -163,7 +162,6 @@ function Tour(props) {
       message.warning("Bạn cần đăng nhập trước!")
     }
   };
-
   const handleOk = e => {
     if (name === "" || sdt === "" || diachi === "" || email === "" || !name || !sdt || !diachi || !email) {
       message.warning('Bạn cần cập nhật thông tin cho tài khoản!');
@@ -183,7 +181,6 @@ function Tour(props) {
       }
     }
   };
-
   const handleCancel = e => {
     setState({
       ...state,
@@ -208,14 +205,13 @@ function Tour(props) {
       })
       var tourId = id
       if (stylepayment === 1) {
-        // await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
-        // setState({
-        //   ...state,
-        //   visible2: false,
-        //   visible: false,
-        //   loadlaihoadon: state.loadlaihoadon + 1
-        // });
-        console.log(thanhtien(tour_ngay[0].giatreem, tour_ngay[0].giaembe));
+        await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
+        setState({
+          ...state,
+          visible2: false,
+          visible: false,
+          loadlaihoadon: state.loadlaihoadon + 1
+        });
       } else if (stylepayment === 3) {
         let tongtien = thanhtien(tour_ngay[0].giatreem, tour_ngay[0].giaembe)
         dispatch(addthanhtoan({ hoadon: { tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }, nguoilon, treem, embe, tongtien, "name": tour_ngay[0].name, "giatreem": tour_ngay[0].giatreem, "giaembe": tour_ngay[0].giaembe, "gianguoilon": tour_ngay[0].gianguoilon }))

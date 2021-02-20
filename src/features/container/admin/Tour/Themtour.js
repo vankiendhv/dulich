@@ -35,7 +35,7 @@ function Themtour(props) {
     }
     const { id } = useParams();
     const tours = useSelector(state => state.tours.tour.data);
-    const [state, setState] = useState({ vitri: 1, quocgiaId: "", checkdichvu: "", checkloaitour: "", checkngaydi: "", checkdiadiem: "", dichvuId: [], diadiemId: [], thoigian: "", songuoi: "", loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 1 })
+    const [state, setState] = useState({ vitri: 1, quocgiaId: "", checkdichvu: "", checkloaitour: "", checkngaydi: "", checkdiadiem: "", dichvuId: [], diadiemId: [], thoigian: "", songuoi: "", loaitourId: [], load: false, linkImg: '', tenanh: '', img: '', previewVisible: false, previewImage: '', previewTitle: '', fileList: [], name: '', avatar: '', gianguoilon: '', giatreem: '', giaembe: '', trailer: '', bando: '', status: 0 })
     const { vitri, linkImg, dichvuId, tenanh, name, quocgiaId, load, thoigian, songuoi, avatar, status, bando, giaembe, gianguoilon, giatreem, trailer, img, previewVisible, previewImage, fileList, previewTitle } = state;
     const dispatch = useDispatch();
     const history = useHistory();
