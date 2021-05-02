@@ -204,8 +204,9 @@ function Tour(props) {
         return data.id;
       })
       var tourId = id
+      let tongtien = thanhtien(tour_ngay[0].giatreem, tour_ngay[0].giaembe)
       if (stylepayment === 1) {
-        await dispatch(addhoadon({ tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
+        await dispatch(addhoadon({ thanhtien: tongtien, tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }));
         setState({
           ...state,
           visible2: false,
@@ -213,7 +214,7 @@ function Tour(props) {
           loadlaihoadon: state.loadlaihoadon + 1
         });
       } else if (stylepayment === 3) {
-        let tongtien = thanhtien(tour_ngay[0].giatreem, tour_ngay[0].giaembe)
+
         dispatch(addthanhtoan({ hoadon: { tourId, userId, nguoilon, treem, embe, ngaydi: state.date === "" ? formatlaidate(checkngaydi()) : state.date }, nguoilon, treem, embe, tongtien, "name": tour_ngay[0].name, "giatreem": tour_ngay[0].giatreem, "giaembe": tour_ngay[0].giaembe, "gianguoilon": tour_ngay[0].gianguoilon }))
         history.push("/stripe");
       }
@@ -278,7 +279,7 @@ function Tour(props) {
   if (giakhuyenmai) {
     tong = Number(nguoilon) + Number(treem) + Number(embe);
   }
-  console.log(tour_ngay);
+  //console.log(tour_ngay);
   return (
     <div id="detail-tour">
       <div className="breadcrumb">

@@ -8,7 +8,7 @@ import Axios from 'axios';
 import { Spin, Tooltip } from 'antd';
 const stripePromise = loadStripe("pk_test_51I0p5CE2oIGbiAkNsd7EJ9VZNaxZXtDMMfkcDD7s5WyP2PXM4hQ6qcSWGwlGtG4DFwWTFTVzr5AAxEaPYiAQBe6Z008USzew3a");
 function Stripe(props) {
-    const [usd, setusd] = useState("")
+    const [usd, setusd] = useState("");
     const [email, setemail] = useState();
     const thanhtoans = useSelector(state => state.thanhtoans);
     var thanhtoan = [];
@@ -17,6 +17,7 @@ function Stripe(props) {
             thanhtoan.unshift(thanhtoans[i]);
         }
     }
+    console.log(thanhtoan);
     const infor = useSelector(state => state.infor.infor.data);
     useEffect(() => {
         Axios.get("https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=6c24709f2cfc058a0499").then(data => {
@@ -66,7 +67,7 @@ function Stripe(props) {
                             </div>
                             <div className="col-md-6 text-center">
                                 <Elements stripe={stripePromise}>
-                                    <CheckoutForm hoadon={thanhtoan[0].hoadon} email={email} price={quyDoi(tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe), usd)} />
+                                    <CheckoutForm hoadon={thanhtoan[0].hoadon} thanhtien={thanhtoan[0].tongtien} email={email} price={quyDoi(tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe), usd)} />
                                 </Elements>
                             </div>
                         </div>

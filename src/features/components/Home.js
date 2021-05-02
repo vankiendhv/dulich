@@ -39,6 +39,8 @@ import { ngaydiData } from "../container/admin/Ngaydi/ngaydiSlice";
 import { tourData } from "../container/admin/Tour/tourSlice";
 import { camnangdulichData } from "../container/admin/Camnangdulich/camnangdulichSlice";
 import { inforData } from "../container/login/inforSlice";
+import { chiphiData } from "../container/admin/Chiphi/chiphiSlice";
+import CreateTour from "../container/createTour/CreateTour";
 
 export default function NestingExample() {
   const dispatch = useDispatch();
@@ -70,6 +72,7 @@ export default function NestingExample() {
   const actiontour = async () => { await dispatch(tourData()) }
   const actioncamnang = async () => { await dispatch(camnangdulichData()) }
   const actioninfor = async () => { await dispatch(inforData()) }
+  const actionchiphi = async () => { await dispatch(chiphiData()) }
   useEffect(() => {
 
     // const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
@@ -99,6 +102,7 @@ export default function NestingExample() {
     actiontour();
     actioncamnang();
     actioninfor();
+    actionchiphi();
     // }
     // );
     // return () => unregisterAuthObserver();
@@ -148,6 +152,9 @@ export default function NestingExample() {
           </Route>
           <Route path='/dat-tour'>
             <Dattour />
+          </Route>
+          <Route path='/create-tour'>
+            <CreateTour />
           </Route>
           <Route path='/stripe'>
             <Stripe />

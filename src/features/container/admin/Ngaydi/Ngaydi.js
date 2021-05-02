@@ -45,7 +45,6 @@ function Ngaydi() {
     const dispatch = useDispatch();
     const actionResult = async () => { await dispatch(ngaydiData()) }
 
-    const history = useHistory()
     const hangdleDelete = e => {
         dispatch(removengaydi(e));
         setTimeout(() => {

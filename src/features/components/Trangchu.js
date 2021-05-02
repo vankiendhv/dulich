@@ -8,6 +8,7 @@ import Tintuc from "../container/trangchu/tintuc/Tintuc";
 import Ykienkhachhang from "../container/trangchu/ykienkhachhang/ykienkhachhang";
 import Dichvu from "../container/trangchu/dichvu/Dichvu";
 import Footer from "../container/trangchu/footer/Footer";
+import CreateTour from "../container/trangchu/createTour/CreateTour";
 export class Trangchu extends Component {
 
   render() {
@@ -15,6 +16,7 @@ export class Trangchu extends Component {
       <div>
         <Banner />
         <Camnangdulich />
+        <CreateTour />
         <Tourtrongnuoc />
         <Tournuocngoai />
         <Dichvu />

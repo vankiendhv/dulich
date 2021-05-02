@@ -13,7 +13,7 @@ export default function CheckoutForm(props) {
     const email = props.email;
     const price = props.price * 100;
     const hoadon = props.hoadon;
-    console.log(hoadon);
+    const thanhtien = props.thanhtien;
     const dispatch = useDispatch();
     const history = useHistory();
     const actionhoadon = async () => { await dispatch(hoadonData()) }
@@ -40,7 +40,7 @@ export default function CheckoutForm(props) {
         } else {
             if (result.paymentIntent.status === 'succeeded') {
                 message.success("Thanh toán thành công!");
-                dispatch(addhoadon({ tourId: hoadon.tourId, userId: hoadon.userId, embe: hoadon.embe, treem: hoadon.treem, nguoilon: hoadon.nguoilon, ngaydi: hoadon.ngaydi }));
+                dispatch(addhoadon({ tourId: hoadon.tourId, userId: hoadon.userId, embe: hoadon.embe, treem: hoadon.treem, nguoilon: hoadon.nguoilon, ngaydi: hoadon.ngaydi, thanhtien: thanhtien }));
                 actionhoadon();
                 history.push(`/tour/${hoadon.tourId}`);
             }

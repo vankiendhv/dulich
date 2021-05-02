@@ -6,7 +6,6 @@ export const tintucData = createAsyncThunk('tintucs/tintucData', async () => {
     const tintuc = await tintucApi.getAll();
     return tintuc;
 })
-var datatintuc = [];
 const Tintuc = createSlice({
     name: "tintucs",
     initialState: {

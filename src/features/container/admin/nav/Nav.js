@@ -40,6 +40,9 @@ import Themcamnang from "../Camnangdulich/Themcamnang";
 import Khuyenmai from "../Khuyenmai/Khuyenmai"
 import Themkhuyenmai from "../Khuyenmai/Themkhuyenmai"
 import { useSelector } from 'react-redux';
+import Chiphi from '../Chiphi/Chiphi';
+import Themchiphi from '../Chiphi/Themchiphi';
+import Hoadoncanhan from '../Hoadoncanhan/Hoadoncanhan';
 
 export default function Nav() {
     const match = useRouteMatch();
@@ -140,6 +143,15 @@ export default function Nav() {
             <Route exact path={match.path}>
                 <Doanhthu />
             </Route>
+            <Route exact path={`${match.path}/chiphi`}>
+                <Chiphi url={match.url} />
+            </Route>
+            <Route path={`${match.path}/chiphi/suachiphi/:id`}  >
+                <Themchiphi url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/chiphi/themchiphi`}>
+                <Themchiphi url={match.url} />
+            </Route>
             <Route exact path={`${match.path}/khuyenmai`}  >
                 <Khuyenmai url={match.url} />
             </Route>
@@ -184,6 +196,9 @@ export default function Nav() {
             </Route>
             <Route exact path={`${match.path}/hoadon`}  >
                 <Hoadon url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/hoadoncanhan`}  >
+                <Hoadoncanhan url={match.url} />
             </Route>
             <Route exact path={`${match.path}/anh`}  >
                 <Anh url={match.url} />
@@ -324,6 +339,9 @@ export default function Nav() {
             <Menu.Item key="1" icon={state.collapsed === true ? <span className="fas fa-tachometer-alt" ></span> : <span className="fas fa-tachometer-alt mr-2"></span>}>
                 <Link to="/admin">Doanh thu</Link>
             </Menu.Item>
+            <Menu.Item key="19" icon={state.collapsed === true ? <span className="fas fa-money-check-alt"></span> : <span className="fas fa-money-check-alt mr-2"></span>}>
+                <Link to={`${match.url}/chiphi`}>Chi phí</Link>
+            </Menu.Item>
             <Menu.Item key="2" icon={state.collapsed === true ? <span className="fas fa-luggage-cart" ></span> : <span className="fas fa-luggage-cart mr-2"></span>}>
                 <Link to={`${match.url}/tour`}>Quản lý tour</Link>
             </Menu.Item>
@@ -359,6 +377,9 @@ export default function Nav() {
             </Menu.Item>
             <Menu.Item key="13" icon={state.collapsed === true ? <span className="fas fa-file-alt" ></span> : <span className="fas fa-file-alt mr-2"></span>}>
                 <Link to={`${match.url}/hoadon`}>Quản lý hoá đơn</Link>
+            </Menu.Item>
+            <Menu.Item key="20" icon={state.collapsed === true ? <span className="fas fa-file-alt" ></span> : <span className="fas fa-file-alt mr-2"></span>}>
+                <Link to={`${match.url}/hoadoncanhan`}>Hoá đơn tạo tour</Link>
             </Menu.Item>
             <Menu.Item key="14" icon={state.collapsed === true ? <span className="fas fa-user-tag" ></span> : <span className="fas fa-user-tag mr-2"></span>}>
                 <Link to={`${match.url}/role`}>Quản lý phân quyền</Link>

@@ -9,6 +9,9 @@
     align-items: center;
     transition: .2s;
 }
+#doanhthu .bold{
+    font-weight: bold;
+}
 #doanhthu .col-md:hover .icon{
     transform: scale(1.2);
     color: #45b649;

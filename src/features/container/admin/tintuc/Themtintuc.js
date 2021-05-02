@@ -1,13 +1,13 @@
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, IconButton } from '@material-ui/core'
-import { message, Select, Spin } from 'antd'
+import { message, Select } from 'antd'
 import { Option } from 'antd/lib/mentions'
 import { useDispatch, useSelector } from 'react-redux'
 import { addtintuc, tintucData, updatetintuc } from './tintucSlice'
 import { useHistory, useParams } from 'react-router-dom'
 import { storage } from "../../../../firebase"
-import { addtintuctag, removetintuctag, tintuctagData } from './tintuctagSlice'
+import { tintuctagData } from './tintuctagSlice'
 import axios from "axios";
 import JoditEditor from "jodit-react";
 import tintuctagApi from '../../../../api/tintuctagApi'
