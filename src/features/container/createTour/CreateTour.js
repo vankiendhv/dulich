@@ -50,7 +50,7 @@ export default function CreateTour() {
                 message.warning("Ngày khởi hành không phù hợp!");
             } else {
                 console.log(td.join(", "), nxp, date1, infor.id);
-                hoadoncanhanApi.posthoadoncanhan({ userId: infor.id, noikhoihanh: nxp, ngaykhoihanh: date1, diadiemdi: td.join(", "), kiemduyet: 0 })
+                hoadoncanhanApi.posthoadoncanhan({ userId: infor.id, noikhoihanh: nxp, ngaykhoihanh: date1, diadiemdi: td.join(", "), kiemduyet: 0, agree: 0 })
             }
         } else {
             message.warning("Bạn chưa nhập đầy đủ thông tin!");

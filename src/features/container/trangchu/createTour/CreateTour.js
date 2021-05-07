@@ -14,7 +14,7 @@ function CreateTour(props) {
                     </p>
                 </div>
                 <div className="container">
-                    <Link><img src={anh} className="w-100" alt="" /></Link>
+                    <Link to="/create-tour"><img src={anh} className="w-100" alt="" /></Link>
                 </div>
             </div>
         </div>

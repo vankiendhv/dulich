@@ -1,27 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Popconfirm, Spin, Table } from 'antd'
-import { Link, useHistory, useRouteMatch } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Spin, Table } from 'antd'
 import { useDispatch, useSelector } from 'react-redux';
-import taikhoanApi from "../../../../api/taikhoanApi";
-import { hoadoncanhanData, removehoadoncanhan, updatehoadoncanhan } from './hoadoncanhanSlice';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import Modal from 'antd/lib/modal/Modal';
+import { hoadoncanhanData } from './hoadoncanhanSlice';
+import Axios from 'axios';
 function Hoadoncanhan() {
-    const match = useRouteMatch()
-    const [isModalVisible, setIsModalVisible] = useState(false);
-
-    const showModal = () => {
-        setIsModalVisible(true);
-    };
-
-    const handleOk = () => {
-        setIsModalVisible(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
     const columns = [
         {
             title: 'Người dùng',
@@ -40,37 +22,34 @@ function Hoadoncanhan() {
             dataIndex: 'nkh',
         },
         {
+            title: 'Giá tiền',
+            dataIndex: 'tien',
+        },
+        {
             title: 'Kiểm duyệt',
             dataIndex: 'kd'
         }
     ];
+    const [user, setuser] = useState("")
     const actionResult = async () => { await dispatch(hoadoncanhanData()) }
     useEffect(() => {
+        Axios.get("http://localhost:666/users/1").then(data => {
+            setuser(data.data.USD_VND)
+        })
         actionResult();
     }, [])
-    const hoadoncanhan = useSelector(state => state.hoadoncanhans.hoadoncanhan.data);
+    const hoadoncanhans = useSelector(state => state.hoadoncanhans.hoadoncanhan.data);
+    let hoadoncanhan = [];
+    if (hoadoncanhans) {
+        for (let i = 0; i < hoadoncanhans.length; i++) {
+            if (hoadoncanhans[i].agree === 1) {
+                hoadoncanhan.push(hoadoncanhans[i])
+            }
+        }
+    }
+
     const loading = useSelector(state => state.hoadoncanhans.loading)
     const dispatch = useDispatch();
-    const history = useHistory()
-    const hangdleDelete = e => {
-        dispatch(removehoadoncanhan(e));
-        setTimeout(() => {
-            actionResult();
-        }, 500);
-    }
-    const hangdleEdit = (id) => {
-        history.replace(`${match.url}/suahoadoncanhan/${id}`)
-    }
-    const handleStatus = (e, id) => {
-        if (e === 1) {
-            dispatch(updatehoadoncanhan({ status: 0, idsua: id }))
-        } else {
-            dispatch(updatehoadoncanhan({ status: 1, idsua: id }))
-        }
-        setTimeout(() => {
-            actionResult();
-        }, 500);
-    }
     return (
         <div id="admin">
             <div className="heading">
@@ -82,19 +61,14 @@ function Hoadoncanhan() {
                     <Table columns={columns} dataSource={hoadoncanhan.map((ok, index) => (
                         {
                             key: index + 1,
-                            user: <span>{ok.userId}</span>,
+                            user: <span className="text-primary">{ok.User.name}</span>,
                             nxp: <span>{ok.noikhoihanh}</span>,
                             nkh: <span>{ok.ngaykhoihanh}</span>,
                             ddd: <span>{ok.diadiemdi}</span>,
-                            kd: <div className="action">{ok.kiemduyet === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={showModal}><i className="far fa-thumbs-down "></i></span>}</div>,
-
+                            tien: <span>{ok.giatien ? (ok.giatien).toLocaleString() + " vnđ" : <span className='text-danger'>Chưa kiểm duyệt</span>}</span>,
+                            kd: <div className="action">{ok.kiemduyet === 1 ? <span ><i className="far fa-thumbs-up text-primary"></i></span> : <span ><i className="far fa-thumbs-down "></i></span>}</div>,
                         }))} />
                 }
-                <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                </Modal>
             </div>
         </div>
     )

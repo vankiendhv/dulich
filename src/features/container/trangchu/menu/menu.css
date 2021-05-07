@@ -52,6 +52,18 @@
 #menu2 .span.ant-dropdown-trigger.nav-link {
   text-align: right;
 }
+.fa-bell{
+  color: #8a95b2;
+
+}
+.sss{
+  padding-bottom: 2rem !important;
+  padding-right: 1rem !important;
+}
+.sss-true{
+  color: rgb(100, 100, 255) !important;
+  display: block !important;
+}
 a.navbar-brand img {
   width: 80% !important;
   /* height: 50% !important; */

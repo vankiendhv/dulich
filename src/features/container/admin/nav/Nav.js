@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu } from 'antd';
+import { Badge, Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import './nav.css'
 import Headers from './../header/Header'
@@ -39,10 +39,12 @@ import Camnangdulich from "../Camnangdulich/Camnangdulich";
 import Themcamnang from "../Camnangdulich/Themcamnang";
 import Khuyenmai from "../Khuyenmai/Khuyenmai"
 import Themkhuyenmai from "../Khuyenmai/Themkhuyenmai"
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Chiphi from '../Chiphi/Chiphi';
 import Themchiphi from '../Chiphi/Themchiphi';
 import Hoadoncanhan from '../Hoadoncanhan/Hoadoncanhan';
+import Kiemduyet from '../Kiemduyet/Kiemduyet';
+import { hoadoncanhanData } from '../Hoadoncanhan/hoadoncanhanSlice';
 
 export default function Nav() {
     const match = useRouteMatch();
@@ -51,9 +53,21 @@ export default function Nav() {
         collapsed: true,
         visible: true
     })
+    const dispatch = useDispatch();
+    const actionResult = async () => { await dispatch(hoadoncanhanData()) }
     useEffect(() => {
+        actionResult();
         window.scrollTo(0, 0);
-    }, [])
+    }, []);
+    const hoadoncanhan = useSelector(state => state.hoadoncanhans.hoadoncanhan.data);
+    let counthoadon = 0;
+    if (hoadoncanhan) {
+        for (let i = 0; i < hoadoncanhan.length; i++) {
+            if (hoadoncanhan[i].kiemduyet === 0) {
+                counthoadon++
+            }
+        }
+    }
     const toggle = () => {
         setState({
             collapsed: !state.collapsed,
@@ -151,6 +165,9 @@ export default function Nav() {
             </Route>
             <Route exact path={`${match.path}/chiphi/themchiphi`}>
                 <Themchiphi url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/kiemduyet`}>
+                <Kiemduyet url={match.url} />
             </Route>
             <Route exact path={`${match.path}/khuyenmai`}  >
                 <Khuyenmai url={match.url} />
@@ -342,6 +359,9 @@ export default function Nav() {
             <Menu.Item key="19" icon={state.collapsed === true ? <span className="fas fa-money-check-alt"></span> : <span className="fas fa-money-check-alt mr-2"></span>}>
                 <Link to={`${match.url}/chiphi`}>Chi phí</Link>
             </Menu.Item>
+            <Menu.Item key="21" icon={state.collapsed === true ? <span className="fas fa-check-double"></span> : <span className="fas fa-check-double"></span>}>
+                <Link to={`${match.url}/kiemduyet`}>Kiểm duyệt tour {counthoadon === 0 ? "" : <Badge status="error" />}</Link>
+            </Menu.Item>
             <Menu.Item key="2" icon={state.collapsed === true ? <span className="fas fa-luggage-cart" ></span> : <span className="fas fa-luggage-cart mr-2"></span>}>
                 <Link to={`${match.url}/tour`}>Quản lý tour</Link>
             </Menu.Item>
@@ -378,7 +398,7 @@ export default function Nav() {
             <Menu.Item key="13" icon={state.collapsed === true ? <span className="fas fa-file-alt" ></span> : <span className="fas fa-file-alt mr-2"></span>}>
                 <Link to={`${match.url}/hoadon`}>Quản lý hoá đơn</Link>
             </Menu.Item>
-            <Menu.Item key="20" icon={state.collapsed === true ? <span className="fas fa-file-alt" ></span> : <span className="fas fa-file-alt mr-2"></span>}>
+            <Menu.Item key="20" icon={state.collapsed === true ? <span className="fas fa-file-invoice-dollar"></span> : <span className="fas fa-file-invoice-dollar"></span>}>
                 <Link to={`${match.url}/hoadoncanhan`}>Hoá đơn tạo tour</Link>
             </Menu.Item>
             <Menu.Item key="14" icon={state.collapsed === true ? <span className="fas fa-user-tag" ></span> : <span className="fas fa-user-tag mr-2"></span>}>

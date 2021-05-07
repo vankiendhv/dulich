@@ -23,3 +23,13 @@
 #nav .site-layout .site-layout-background {
     background: #fff;
   }
+/* #nav .counthoadon{
+  color: red;
+  position: absolute;
+  border: 1px solid ;
+} */
+#nav .bordercount{
+  width: 50px;
+  height: 50px;
+  border: 1px solid red;
+}

@@ -20,15 +20,15 @@ import Listtintuc from "../container/tintuc/listtintuc/Listtintuc";
 import Stripe from "../teststripe/Stripe";
 import Error from "./Error";
 import { useDispatch } from "react-redux";
-import { getMe } from "../../app/userSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
+// import { getMe } from "../../app/userSlice";
+// import { unwrapResult } from "@reduxjs/toolkit";
 import { quocgiaData } from "../container/admin/Quocgia/quocgiaSlice";
 import { tintucData } from "../container/admin/tintuc/tintucSlice";
 import { loaitourData } from "../container/admin/Loaitour/loaitourSlice";
 import { diadiemData } from "../container/admin/DiaDiem/diadiemSlice";
 import { mangxahoiData } from "../container/admin/mxh/mangxahoiSlice";
 import { binhluanData } from "../container/admin/Binhluan/binhluanSlice";
-import { userData } from "../container/admin/taikhoan/taikhoanSlice";
+// import { userData } from "../container/admin/taikhoan/taikhoanSlice";
 import { tagData } from "../container/admin/Tag/tagSlice";
 import { anhData } from "../container/admin/Anh/anhSlice";
 import { dichvuData } from "../container/admin/Dichvu/dichvuSlice";
@@ -41,6 +41,8 @@ import { camnangdulichData } from "../container/admin/Camnangdulich/camnangdulic
 import { inforData } from "../container/login/inforSlice";
 import { chiphiData } from "../container/admin/Chiphi/chiphiSlice";
 import CreateTour from "../container/createTour/CreateTour";
+import { thongbaoData } from "../container/admin/Kiemduyet/thongbaoSlice";
+import Thongtin from "../container/trangchu/thongtin/Thongtin";
 
 export default function NestingExample() {
   const dispatch = useDispatch();
@@ -73,6 +75,7 @@ export default function NestingExample() {
   const actioncamnang = async () => { await dispatch(camnangdulichData()) }
   const actioninfor = async () => { await dispatch(inforData()) }
   const actionchiphi = async () => { await dispatch(chiphiData()) }
+  const actionthongbao = async () => { await dispatch(thongbaoData()) }
   useEffect(() => {
 
     // const unregisterAuthObserver = firebase.auth().onAuthStateChanged(async (user) => {
@@ -103,6 +106,7 @@ export default function NestingExample() {
     actioncamnang();
     actioninfor();
     actionchiphi();
+    actionthongbao();
     // }
     // );
     // return () => unregisterAuthObserver();
@@ -128,6 +132,9 @@ export default function NestingExample() {
           </Route>
           <Route path="/admin">
             <Ladmin />
+          </Route>
+          <Route path="/thongtin/:id">
+            <Thongtin />
           </Route>
           <Route path="/dangnhap">
             <Ldangnhap />

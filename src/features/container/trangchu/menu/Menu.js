@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-scroll";
-import { Link as Linkrt } from "react-router-dom";
+import { Link as Linkrt, useHistory } from "react-router-dom";
 import "./menu.css";
 import Avatar from "antd/lib/avatar/avatar";
 import logo from "./../../../images/logoTravel.png"
-import { Menu, Dropdown, Drawer, message } from 'antd';
+import { Menu, Dropdown, Drawer, message, Badge } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { Button, IconButton } from "@material-ui/core";
 import { storage } from "../../../../firebase"
 import { inforData } from "../../login/inforSlice";
 import taikhoanApi from "../../../../api/taikhoanApi";
+import { thongbaoData, updatethongbao } from "../../admin/Kiemduyet/thongbaoSlice";
 
 function ListMenu(props) {
 
@@ -108,6 +109,9 @@ function ListMenu(props) {
       <Menu.Item key="2">
         <span onClick={showDrawer}>Xem thông tin</span>
       </Menu.Item>
+      <Menu.Item key="4">
+        <Linkrt to="/thongtin/0">Xem lịch sử</Linkrt>
+      </Menu.Item>
       {users ? phanquyen() ?
         <Menu.Item key="3">
           <Linkrt to="/admin" className="nav-link">Quản lý admin</Linkrt>
@@ -119,6 +123,42 @@ function ListMenu(props) {
       </Menu.Item>
     </Menu>
   );
+  const thongbaos = useSelector(state => state.thongbao.thongbao.data);
+  let thongbao = [];
+  let checkthongbao = 0
+  if (thongbaos && users) {
+    for (let i = 0; i < thongbaos.length; i++) {
+      if (thongbaos[i].userId === users.id) {
+        thongbao.push(thongbaos[i]);
+      }
+    }
+  }
+  if (thongbao) {
+    for (let i = 0; i < thongbao.length; i++) {
+      if (thongbao[i].status === 1) {
+        checkthongbao++;
+      }
+    }
+  }
+  const history = useHistory();
+  const actionthongbao = async () => { await dispatch(thongbaoData()) }
+
+  const linkthongbao = (id) => {
+    dispatch(updatethongbao({ status: 0, idsua: id }))
+    setTimeout(() => {
+      actionthongbao();
+    }, 500);
+    history.push(`/thongtin/1`);
+  }
+  const sss = (
+    <Menu className="sss">
+      {thongbao.map((ok, index) => (
+        <Menu.Item key={index} >
+          <span onClick={() => { linkthongbao(ok.id) }}>{ok.status === 0 ? <span >{ok.noidung}</span> : <span className="sss-true">{ok.noidung}</span>}</span>
+        </Menu.Item>
+      ))}
+    </Menu>
+  )
   const dispatch = useDispatch()
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -133,7 +173,7 @@ function ListMenu(props) {
           .then(data => {
             return data;
           })
-        console.log(update);
+        // console.log(update);
         if (update) {
           getprofile()
           message.success("Sửa thông tin thành công!");
@@ -150,7 +190,7 @@ function ListMenu(props) {
           .then(data => {
             return data;
           })
-        console.log(update);
+        // console.log(update);
         if (update) {
           getprofile();
           message.success("Sửa thông tin thành công!");
@@ -252,7 +292,7 @@ function ListMenu(props) {
                 Tin tức
           </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item mr-3">
               <Dropdown overlay={ss} trigger={['click']}>
                 <span className="nav-link" >
                   <Avatar size="small" src={
@@ -265,6 +305,15 @@ function ListMenu(props) {
               </Dropdown>
             </li>
           </ul>
+          <Dropdown overlay={sss} trigger={['click']}>
+            {checkthongbao === 0 ?
+              <Badge >
+                <i class="fas fa-bell"></i>
+              </Badge> :
+              <Badge dot >
+                <i class="fas fa-bell"></i>
+              </Badge>}
+          </Dropdown>
 
         </div>
       </nav>
