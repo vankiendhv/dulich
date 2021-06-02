@@ -87,16 +87,23 @@ function Tour(props) {
   }
   const checkngaydi = () => {
     if (tour.length !== 0) {
+      // console.log(tour);
       var ngaydi = tour[0];
       var ngaymin = formatdate(ngaydi[0].ngay);
       var date = new Date();
-      var dateToday = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+      // var dateToday = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
+      var listDate = [];
       for (let i = 0; i < ngaydi.length; i++) {
-        if (ngaymin > formatdate(ngaydi[i].ngay) && dateToday <= formatdate(ngaydi[i].ngay)) {
-          ngaymin = formatdate(ngaydi[i].ngay)
+        if (new Date(ngaymin) < new Date(formatdate(ngaydi[i].ngay)) && date <= new Date(formatdate(ngaydi[i].ngay))) {
+          listDate.push(formatdate(ngaydi[i].ngay))
         }
       }
-      return ngaymin;
+      // console.log(listDate.sort((a, b) => { return new Date(b) - new Date(a) }));
+      listDate.sort(function (a, b) {
+        return new Date(a) - new Date(b);
+      });
+      return listDate[0];
+
     }
   }
   const fillDate = () => {
@@ -106,10 +113,12 @@ function Tour(props) {
       var dates = []
       var dateToday = date.getFullYear() + "-" + ((date.getMonth() + 1) > 1 ? date.getMonth() + 1 : ("0" + (date.getMonth() + 1))) + "-" + (date.getDate() > 1 ? date.getDate() : ("0" + date.getDate()));
       for (let i = 0; i < ngaydi.length; i++) {
-        if (dateToday <= formatdate(ngaydi[i].ngay)) {
+        console.log(dateToday <= formatdate(ngaydi[i].ngay));
+        if (date <= new Date(formatdate(ngaydi[i].ngay))) {
           dates.push({ id: i + 1, ngay: ngaydi[i].ngay })
         }
       }
+
       return dates
     }
   }
@@ -126,7 +135,7 @@ function Tour(props) {
   if (ngaydis && formatlaidate(checkngaydi())) {
     tour_ngay.push(ngaydis.find(x => x.ngay === formatlaidate(checkngaydi())).Tours.find(x => x.id === +id))
   }
-
+  console.log(tour_ngay);
   const hide = () => {
     setState({
       ...state,
@@ -279,7 +288,6 @@ function Tour(props) {
   if (giakhuyenmai) {
     tong = Number(nguoilon) + Number(treem) + Number(embe);
   }
-  //console.log(tour_ngay);
   return (
     <div id="detail-tour">
       <div className="breadcrumb">
@@ -359,7 +367,7 @@ function Tour(props) {
                         </tr>
                         <tr>
                           <td><span>Nơi khởi hành:</span></td>
-                          <td><span>Hà Nội</span></td>
+                          <td><span>Vinh</span></td>
                         </tr>
                       </table>
                     </div>
@@ -463,7 +471,6 @@ function Tour(props) {
         <input type="checkbox" onChange={onchange} className="mt-3" name="dieukhoan" id="dk" />
         <label htmlFor="dk" className="ml-3"><strong>Tôi đồng ý với điều khoản ở trên</strong></label>
       </Modal>
-
     </div>
 
   )

@@ -145,14 +145,14 @@ export default function Listtour() {
         // setstar(value)
         // search()
     }
-    let actives = document.querySelectorAll('li');
-    actives.forEach(active => {
-        active.addEventListener('click', function () {
-            console.log("ok");
-            actives.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-        })
-    })
+    // let actives = document.querySelectorAll('li');
+    // actives.forEach(active => {
+    //     active.addEventListener('click', function () {
+    //         console.log("ok");
+    //         actives.forEach(btn => btn.classList.remove('active'));
+    //         this.classList.add('active');
+    //     })
+    // })
     return (
         <div id="list-tour">
             <div className="breadcrumb">
@@ -174,6 +174,16 @@ export default function Listtour() {
                             <Option value="trong">Tour trong nước</Option>
                             <Option value="ngoai">Tour nước ngoài</Option>
                         </Select>
+                        {state.check === "trong" ?
+                            <div>
+                                <h4 className="mt-3">Vùng</h4>
+                                <Select className="w-100" defaultValue="trung" style={{ width: 120 }}>
+                                    <Option value="bac">Miền Bắc</Option>
+                                    <Option value="trung">Miền Trung</Option>
+                                    <Option value="nam">Miền Nam</Option>
+                                </Select>
+                            </div> : ""
+                        }
                         <h4 className="mt-3">Đánh giá</h4>
                         <div className="star-mid text-primary">
                             <ul>

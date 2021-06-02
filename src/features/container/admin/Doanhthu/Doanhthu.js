@@ -11,7 +11,8 @@ import { userData } from '../taikhoan/taikhoanSlice';
 export default function Doanhthu() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [state, setState] = useState({ chitieuthang: "", chitieungay: "", chitieunam: "" });
-    const [usd, setusd] = useState("");
+    // const [usd, setusd] = useState(1);
+    const [usd, setusd] = useState(23060);
 
     const showModal = () => {
         setIsModalVisible(true);
@@ -34,9 +35,9 @@ export default function Doanhthu() {
     const actionChitiet = async () => await dispatch(chitieuData());
     const chitieu = useSelector(state => state.chitieu.chitieu.data);
     useEffect(() => {
-        Axios.get("https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=6c24709f2cfc058a0499").then(data => {
-            setusd(data.data.USD_VND)
-        })
+        // Axios.get("https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=6c24709f2cfc058a0499").then(data => {
+        //     setusd(data.data.USD_VND)
+        // })
         actionResult();
         if (chitieu) {
             setState({
@@ -97,6 +98,7 @@ export default function Doanhthu() {
             TongThuNhap += HoaDon[i].thanhtien;
         }
     }
+    console.log(usd);
     const LoiNhuan = (a, b) => {
         return (b - a).toLocaleString();
     }

@@ -33,18 +33,18 @@ function Chitiettaikhoan(props) {
                                 <p>Giới tính:&emsp; <b><i>{ok.gioitinh === 1 ? "Nam" : "Nữ"}</i></b></p>
                                 <p>Ngày sinh:&emsp; <b><i>{ok.ngaysinh}</i></b></p>
                                 <p>Địa chỉ:&emsp; <b><i>{ok.diachi}</i></b></p>
-                                <p>Website:&emsp; <b><i>Lai.com.vn</i></b></p>
+                                <p>Website:&emsp; <b><i>{ok.UserRoles[0].website}</i></b></p>
                                 <p>Châm ngôn:</p>
                                 <div className="container">
-                                    <p>Có làm thì mới có ăn</p>
+                                    <p>{ok.UserRoles[0].chamngon}</p>
                                 </div>
-                                <p>Chức vụ:&emsp; <b><i>Kiểm duyệt</i></b></p>
-                                <p>Bộ phận:&emsp; <b><i>Kiểm duyệt</i></b></p>
-                                <p>Github:&emsp; <b><i>Kiểm duyệt</i></b></p>
-                                <p>Facebook:&emsp; <b><i>Kiểm duyệt</i></b></p>
+                                <p>Chức vụ:&emsp; <b><i>Load ...</i></b></p>
+                                <p>Bộ phận:&emsp; <b><i>Load ...</i></b></p>
+                                <p>Github:&emsp; <b><i>{ok.UserRoles[0].github}</i></b></p>
+                                <p>Facebook:&emsp; <b><i>{ok.UserRoles[0].facebook}</i></b></p>
                                 <p>Kỹ năng:</p>
                                 <div className="container">
-                                    <p>C / C + +, data structures, software engineering, operating systems, computer networks, databases, compiler theory, computer architecture, Microcomputer Principle and Interface Technology, Computer English, Java, ASP, etc.</p>
+                                    <p>{ok.UserRoles[0].kynang}</p>
                                 </div>
                             </div>
                         ))

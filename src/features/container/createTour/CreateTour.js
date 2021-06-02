@@ -77,9 +77,7 @@ export default function CreateTour() {
                 <div className="head--content">
                     <form action="" onSubmit={onSubmit} method="post">
                         <Select placeholder="Chọn nơi khởi hành" className="mr-2" style={{ width: 200 }} onChange={handleNoixuatphat}>
-                            {!diadiem ? '' : diadiem.map((data) => (
-                                <Option key={data.name}>{data.name}</Option>
-                            ))}
+                            <Option key="vinh">Vinh</Option>
                         </Select>
                         <Select
                             mode="multiple"
