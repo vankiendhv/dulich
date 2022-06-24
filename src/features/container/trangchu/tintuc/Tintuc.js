@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link as Linkrt } from "react-router-dom";
+import { Link, Link as Linkrt } from "react-router-dom";
 import "./tintuc.css";
 function Tintuc(props) {
   const tintucs = useSelector(state => state.tintucs.tintuc.data);
@@ -53,7 +53,7 @@ function Tintuc(props) {
   return (
     <div id="news" >
       <div className="heading text-center">
-        <span>Tin tức du lịch</span>
+        <span><Link to="/listtintuc">Tin tức du lịch</Link></span>
         <div className="hr"></div>
         <p className="mb-4">
           Cập nhật các tin tức mới nhất về các tour du lịch trong nước và

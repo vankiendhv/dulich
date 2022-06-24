@@ -43,6 +43,9 @@ import { chiphiData } from "../container/admin/Chiphi/chiphiSlice";
 import CreateTour from "../container/createTour/CreateTour";
 import { thongbaoData } from "../container/admin/Kiemduyet/thongbaoSlice";
 import Thongtin from "../container/trangchu/thongtin/Thongtin";
+import Hotel from "../container/hotels/Hotel";
+import DetailHotel from "../container/hotels/DetailHotel";
+import Contact from "../container/hotels/Contact";
 
 export default function NestingExample() {
   const dispatch = useDispatch();
@@ -165,6 +168,15 @@ export default function NestingExample() {
           </Route>
           <Route path='/stripe'>
             <Stripe />
+          </Route>
+          <Route path='/hotels'>
+            <Hotel />
+          </Route>
+          <Route path="/detailhotel/:id">
+            <DetailHotel />
+          </Route>
+          <Route path="/lienhe_khachsan">
+            <Contact />
           </Route>
         </Switch>
       </div>

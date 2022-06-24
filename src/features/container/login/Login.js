@@ -97,7 +97,6 @@ function Login(props) {
                     </form>
                     <p className="or">OR</p>
                     <div className="mxh mt-3">
-                        {/* <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} /> */}
                         <Button variant="contained" color="primary" className="text-capitalize mb-3">
                             <i className="fab fa-facebook-f mr-4"></i> Facebook
                         </Button>
