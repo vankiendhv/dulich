@@ -29,13 +29,11 @@ export default function CheckoutForm(props) {
     if (!stripe || !elements) {
       return;
     }
-    console.log({ email, price: Math.floor(price) });
+    console.log("ok");
     setBtn(false);
-    var res = await stripeApi
-      .poststripe({ email, price: Math.floor(price) })
-      .then((ok) => {
-        return ok.client_secret;
-      });
+    var res = await stripeApi.poststripe({ email, price }).then((ok) => {
+      return ok.client_secret;
+    });
     var clientSecret = res;
     const result = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
@@ -65,7 +63,7 @@ export default function CheckoutForm(props) {
             nguoilon: hoadon.nguoilon,
             ngaydi: hoadon.ngaydi,
             thanhtien: thanhtien,
-          })
+          }),
         );
         actionhoadon();
         history.push(`/tour/${hoadon.tourId}`);
@@ -81,7 +79,7 @@ export default function CheckoutForm(props) {
           Thanh toán
         </button>
       ) : (
-        <button className="btn-payment ac" disabled={false}>
+        <button className="btn-payment ac" disabled="false">
           Thanh toán
         </button>
       )}

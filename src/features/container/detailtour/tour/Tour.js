@@ -94,6 +94,7 @@ function Tour(props) {
   };
   const checkngaydi = () => {
     if (tour.length !== 0) {
+      // console.log(tour);
       var ngaydi = tour[0];
       var ngaymin = formatdate(ngaydi[0].ngay);
       var date = new Date();
@@ -101,7 +102,7 @@ function Tour(props) {
       var listDate = [];
       for (let i = 0; i < ngaydi.length; i++) {
         if (
-          new Date(ngaymin) <= new Date(formatdate(ngaydi[i].ngay)) &&
+          new Date(ngaymin) < new Date(formatdate(ngaydi[i].ngay)) &&
           date <= new Date(formatdate(ngaydi[i].ngay))
         ) {
           listDate.push(formatdate(ngaydi[i].ngay));
@@ -129,11 +130,12 @@ function Tour(props) {
         "-" +
         (date.getDate() > 1 ? date.getDate() : "0" + date.getDate());
       for (let i = 0; i < ngaydi.length; i++) {
-        // console.log(dateToday <= formatdate(ngaydi[i].ngay));
+        console.log(dateToday <= formatdate(ngaydi[i].ngay));
         if (date <= new Date(formatdate(ngaydi[i].ngay))) {
           dates.push({ id: i + 1, ngay: ngaydi[i].ngay });
         }
       }
+
       return dates;
     }
   };
@@ -153,10 +155,10 @@ function Tour(props) {
     tour_ngay.push(
       ngaydis
         .find((x) => x.ngay === formatlaidate(checkngaydi()))
-        .Tours.find((x) => x.id === +id)
+        .Tours.find((x) => x.id === +id),
     );
   }
-  // console.log(tour_ngay);
+  console.log(tour_ngay);
   const hide = () => {
     setState({
       ...state,
@@ -284,7 +286,7 @@ function Tour(props) {
             giatreem: tour_ngay[0].giatreem,
             giaembe: tour_ngay[0].giaembe,
             gianguoilon: tour_ngay[0].gianguoilon,
-          })
+          }),
         );
         history.push("/stripe");
       }
@@ -330,7 +332,7 @@ function Tour(props) {
       } else {
         return tinhkhuyenmai(
           giakhuyenmai.gianguoilon,
-          giakhuyenmai.Khuyenmais[0].khuyenmai
+          giakhuyenmai.Khuyenmais[0].khuyenmai,
         );
       }
     }

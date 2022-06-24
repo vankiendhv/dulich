@@ -358,6 +358,19 @@ function ListMenu(props) {
               </Linkrt>
             </li>
             <li className="nav-item">
+              <Linkrt
+                className="nav-link"
+                activeClass="active"
+                to="/hotels"
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={500}
+              >
+                Khách sạn
+          </Linkrt>
+            </li>
+            <li className="nav-item">
               <Link
                 className="nav-link"
                 activeClass="active"
