@@ -79,15 +79,6 @@ function Tintucdetail(props) {
                                         <p><i>Tác giả:</i> <strong><i>{ok.tacgia}</i></strong></p>
                                         <p>Ngày đăng: <i><strong>{formatdate(ok.createdAt)}</strong></i></p>
                                     </div>
-                                    <div>
-                                        <div className="tags mb-4 font-weight-bold">
-                                            <h5>tag:
-                                                {ok.Tags.map(oki => (
-                                                <Link><span className="tag">{oki.name}</span></Link>
-                                            ))}
-                                            </h5>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         ))}

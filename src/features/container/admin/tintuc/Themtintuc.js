@@ -7,30 +7,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addtintuc, tintucData, updatetintuc } from './tintucSlice'
 import { useHistory, useParams } from 'react-router-dom'
 import { storage } from "../../../../firebase"
-import { tintuctagData } from './tintuctagSlice'
 import axios from "axios";
 import JoditEditor from "jodit-react";
-import tintuctagApi from '../../../../api/tintuctagApi'
 function Themtintuc(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
     const actionResult = async () => { await dispatch(tintucData()) }
-    const actiontintuctag = async () => { await dispatch(tintuctagData()) }
 
-    const [state, setState] = useState({ load: false, tenanh: '', checktag: [], name: '', idsua: '', status: 1, facebook: '', twitch: '', instagram: '', tag: [], anh: '', img: '', linkImg: '', tomtat: '', tacgia: '', tag_id: [] })
+    const [state, setState] = useState({ load: false, tenanh: '', name: '', idsua: '', status: 1, facebook: '', twitch: '', instagram: '', anh: '', img: '', linkImg: '', tomtat: '', tacgia: '', })
     const [content, setcontent] = useState('')
 
     useEffect(async () => {
         actionResult();
-        actiontintuctag();
         if (id) {
-            const suatag = await axios.get(`http://localhost:666/tintuctags/${id}`);
-            const ss = suatag.data
-            const sua_tag = [];
-            for (let i = 0; i < ss.data.length; i++) {
-                sua_tag.push(`${ss.data[i].tagId}`);
-            }
             setState({
                 status: tintuc.status,
                 name: tintuc.name,
@@ -41,8 +31,6 @@ function Themtintuc(props) {
                 instagram: tintuc.instagram,
                 tomtat: tintuc.tomtat,
                 tacgia: tintuc.tacgia,
-                tag_id: sua_tag,
-                checktag: sua_tag,
                 idsua: id
             })
             setcontent(tintuc.content)
@@ -60,7 +48,7 @@ function Themtintuc(props) {
             return true;
         }
     }
-    const { load, tenanh, linkImg, img, name, tacgia, anh, idsua, facebook, twitch, instagram, status, tomtat, tag_id, checktag } = state;
+    const { load, tenanh, linkImg, img, name, tacgia, anh, idsua, facebook, twitch, instagram, status, tomtat } = state;
     const onSubmit = async (e) => {
         e.preventDefault();
         setState({ ...state, load: true })
@@ -71,43 +59,15 @@ function Themtintuc(props) {
                 if (img !== undefined) {
                     await storage.ref(`imagestintuc/${img.name}`).put(img);
                     const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
-                    if (checktag === tag_id) {
-                        dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
-                    } else {
-                        await tintuctagApi.deletetintuctag(idsua);
-                        var data = [];
-                        for (let i = 0; i < tag_id.length; i++) {
-                            var tintucId = idsua;
-                            var tagId = tag_id[i];
-                            data.push({ tintucId, tagId })
-                        }
-                        await tintuctagApi.posttintuctag(data)
-                        await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
-                    }
+                    await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                 } else {
-                    if (equar(checktag, tag_id)) {
-                        dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
-                    } else {
-                        await tintuctagApi.deletetintuctag(idsua);
-                        var data = [];
-                        for (let i = 0; i < tag_id.length; i++) {
-                            var tintucId = idsua;
-                            var tagId = tag_id[i];
-                            data.push({ tintucId, tagId })
-                        }
-                        await tintuctagApi.posttintuctag(data)
-                        await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
-                    }
+                    await dispatch(updatetintuc({ idsua, name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
                 }
             } else {
                 await storage.ref(`imagestintuc/${img.name}`).put(img);
                 const anh = await storage.ref("imagestintuc").child(img.name).getDownloadURL();
-                var TintucTags = []
-                for (let i = 0; i < tag_id.length; i++) {
-                    TintucTags.push({ tagId: tag_id[i] })
-                }
-                console.log(tag_id);
-                dispatch(addtintuc({ name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh, TintucTags }));
+
+                dispatch(addtintuc({ name, content, tomtat, facebook, instagram, twitch, status, tacgia, anh, tenanh }));
             }
             setTimeout(() => {
                 actionResult();
@@ -115,27 +75,14 @@ function Themtintuc(props) {
             history.push("/admin/tintuc");
         }
     }
-    const tags = useSelector(state => state.tags.tag.data);
-    const data = [];
-
-    for (let i = 0; i < tags.length; i++) {
-        data.push(<Option key={tags[i].id}>{tags[i].name}</Option>);
-    }
-
     const tintuc = useSelector(state => state.tintucs.tintuc.data.find(x => x.id === +id))
-    // const tintucs = useSelector(state => state.tintucs.tintuc.data)
     const onChange = (e) => {
         setState({
             ...state,
             [e.target.name]: e.target.value
         })
     }
-    const handleChange = (value) => {
-        setState({
-            ...state,
-            tag_id: value
-        })
-    }
+
     const hangdelimage = (e) => {
         setState({
             ...state,
@@ -198,12 +145,7 @@ function Themtintuc(props) {
                         <label htmlFor="">Instagram</label>
                         <input type="text" name="instagram" value={instagram} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="">Tags liên quan</label>
-                        <Select mode="tags" value={tag_id} onChange={handleChange} className="w-50 ml-4" placeholder="Tags Mode">
-                            {data}
-                        </Select>
-                    </div>
+
                     <div className="text-center mtb">
                         {load ? <div className="spinner-border text-success" role="status"><span className="sr-only">Loading...</span></div> : ''}
                         <Button type="submit" variant="contained" color="primary" >{id ? "Sửa tin tức" : "Thêm tin"}</Button></div>
