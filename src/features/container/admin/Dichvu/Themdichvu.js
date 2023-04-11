@@ -8,7 +8,7 @@ import { adddichvu, dichvuData, updatedichvu } from './dichvuSlice';
 function Themdichvu(props) {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const [state, setState] = useState({ status: 1, name: '', mota: '', loadhome: 0, icon: '', idsua: '' });
+    const [state, setState] = useState({ status: 1, name: '', mota: '', loadhome: 0, icon: '', price: 0, idsua: '' });
     const onChange = e => {
         setState({
             ...state,
@@ -25,15 +25,16 @@ function Themdichvu(props) {
                 name: dichvu.name,
                 mota: dichvu.mota,
                 icon: dichvu.icon,
+                price: dichvu.price,
                 loadhome: dichvu.loadhome,
                 idsua: id
             })
         }
     }, [])
-    const { name, mota, icon } = state;
+    const { name, mota, icon, price } = state;
     const onSubmit = e => {
         e.preventDefault();
-        if (mota.trim() === '' || name.trim() === "") {
+        if (mota.trim() === '' || name.trim() === "" || price <= 0) {
             message.error("Xin hãy nhập đầy đủ thông tin!");
         } else {
             if (id) {
@@ -59,6 +60,10 @@ function Themdichvu(props) {
                     <div className="form-group">
                         <label htmlFor="">Tên dịch vụ</label>
                         <input type="text" name="name" value={name} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Giá</label>
+                        <input type="number" min={0} name="price" value={price} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Icon</label>

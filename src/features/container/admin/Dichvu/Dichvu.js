@@ -18,6 +18,10 @@ function Dichvu() {
             dataIndex: 'mota',
         },
         {
+            title: 'Giá',
+            dataIndex: 'price',
+        },
+        {
             title: 'icon',
             dataIndex: 'icon',
         },
@@ -86,6 +90,7 @@ function Dichvu() {
                             key: index + 1,
                             name: <span>{ok.name}</span>,
                             mota: <span>{ok.mota}</span>,
+                            price: <span>{ok.price || 0} vnđ</span>,
                             icon: <span className={`${ok.icon} text-success`} style={{ fontSize: "1.5rem" }}></span>,
                             loadhome: <div className="action">{ok.loadhome === 1 ? <span onClick={() => { handleLoadhome(ok.loadhome, ok.id) }}><i className="fas fa-check text-success "></i></span> : <span onClick={() => handleLoadhome(ok.loadhome, ok.id)}><i className="fas fa-times text-danger"></i></span>}</div>,
                             status: <div className="action">{ok.status === 1 ? <span onClick={() => { handleStatus(ok.status, ok.id) }}><i className="far fa-thumbs-up text-primary"></i></span> : <span onClick={() => handleStatus(ok.status, ok.id)}><i className="far fa-thumbs-down "></i></span>}</div>,
