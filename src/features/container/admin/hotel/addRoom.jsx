@@ -7,7 +7,7 @@ import roomApi from '../../../../api/room';
 
 function AddRoom() {
     const { id: idHotel, idRoom } = useParams();
-    const [state, setState] = useState({ status: 1, name: '', description: "", total: 0, price: 0, idTypeRoom: 1, idsua: '' });
+    const [state, setState] = useState({ status: 1, name: '', description: "", total: 0, price: 0, idTypeRoom: 1, idsua: '', addPeople: 0, moneyForOne: 0 });
 
     const onChange = e => {
         setState({
@@ -24,13 +24,15 @@ function AddRoom() {
                     name: data.name,
                     total: data.total,
                     price: data.price,
+                    addPeople: data.addPeople,
+                    moneyForOne: data.moneyForOne,
                     idTypeRoom: data.typeRoomId,
                 })
             })
         }
     }, [idRoom])
 
-    const { name, price, total, idTypeRoom } = state;
+    const { name, price, total, idTypeRoom, addPeople, moneyForOne } = state;
     const history = useHistory();
 
     const handleTypeRoom = (id) => {
@@ -39,15 +41,15 @@ function AddRoom() {
 
     const onSubmit = e => {
         e.preventDefault();
-        if (name.trim() === "" || price <= 0 || total <= 0) {
+        if (name.trim() === "" || price <= 0 || total <= 0 || addPeople <= 0 || moneyForOne <= 0) {
             message.error("Xin hãy nhập đầy đủ thông tin!");
         } else {
             if (idRoom) {
-                roomApi.editRoom({ name, id: idRoom, typeRoomId: idTypeRoom, status: false, hotelId: +idHotel, price, total }).then(data => {
+                roomApi.editRoom({ name, id: idRoom, typeRoomId: idTypeRoom, status: false, hotelId: +idHotel, price, total, addPeople, moneyForOne }).then(data => {
                     history.push(`/admin/room/${idHotel}`);
                 })
             } else {
-                roomApi.postRoom({ name, typeRoomId: idTypeRoom, status: false, hotelId: +idHotel, price, total }).then(data => {
+                roomApi.postRoom({ name, typeRoomId: idTypeRoom, status: false, hotelId: +idHotel, price, total, moneyForOne, addPeople }).then(data => {
                     history.push(`/admin/room/${idHotel}`);
                 })
             }
@@ -72,6 +74,14 @@ function AddRoom() {
                     <div className="form-group">
                         <label htmlFor="">Số lượng</label>
                         <input type="number" min={0} name="total" value={total} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Số lượng người tối đa được chèn thêm</label>
+                        <input type="number" min={0} name="addPeople" value={addPeople} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="">Giá cho một người thêm</label>
+                        <input type="number" min={0} name="moneyForOne" value={moneyForOne} onChange={onChange} className="form-control w-50" placeholder="" aria-describedby="helpId" />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Loại phòng</label>

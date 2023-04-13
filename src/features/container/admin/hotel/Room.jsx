@@ -81,7 +81,7 @@ function Room() {
                         {
                             key: index + 1,
                             name: <p>{ok.name}</p>,
-                            status: <Link to="#" onClick={() => handleUpdateStatus(ok.id, ok.status)}>{ok.status ? <i className="fas fa-battery-empty mr-4"></i> : <i className="fas fa-battery-full mr-4"></i>}</Link>,
+                            status: <Link to="#" onClick={() => handleUpdateStatus(ok.id, ok.status)}>{!ok.status ? <i className="fas fa-battery-empty mr-4"></i> : <i className="fas fa-battery-full mr-4"></i>}</Link>,
                             price: <p>{ok.price.toLocaleString()} vnđ</p>,
                             total: <p>{ok.total.toLocaleString()}</p>,
                             typeRoom: <p>{ok.TypeRoom.name}</p>,

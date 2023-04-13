@@ -4,7 +4,7 @@ import axiosClient from "./axiosClient";
 class RoomApi {
     getAll = (params) => {
         const url = '/rooms/hotel/' + params.id;
-        return axiosClient.get(url).then(data => data.data);
+        return axiosClient.get(url, { params }).then(data => data.data);
     };
     getOne = (id) => {
         const url = `/rooms/${id}`;

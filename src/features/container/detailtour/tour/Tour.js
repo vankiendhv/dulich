@@ -1,4 +1,4 @@
-import { Carousel, message, Popover, Radio, Rate, Spin } from "antd";
+import { Carousel, message, Popover, Radio, Rate, Select, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./tour.css";
@@ -14,6 +14,7 @@ import { addhoadon, hoadonData } from "../../admin/Hoadon/hoadonSlice";
 import taikhoanApi from "../../../../api/taikhoanApi";
 import { ngaydiData } from "../../admin/Ngaydi/ngaydiSlice";
 import { addthanhtoan } from "./thanhtoanSlice";
+import ModalHotel from "./ModalHotel";
 function Tour(props) {
     const { id } = useParams();
     const [state, setState] = useState({
@@ -32,7 +33,20 @@ function Tour(props) {
         valueDate: "",
         date: "",
         loadlaihoadon: 1,
+        totalService: 0
     });
+    const services = useSelector((state) => state.dichvus.dichvu.data);
+
+    let optionService = [];
+    if (services) {
+        services.forEach(item => {
+            optionService.push({
+                value: item.id,
+                label: `${item.name} - ${item.price?.toLocaleString() || 0} vnđ`,
+            })
+        });
+    }
+
     const binhluans = useSelector((state) => state.binhluans.binhluan.data);
     var binhluanload = [];
     if (binhluans) {
@@ -150,7 +164,7 @@ function Tour(props) {
     };
     // console.log(ngaydis);
     var tour_ngay = [];
-    console.log("checkngaydi():", checkngaydi());
+
     if (ngaydis && formatlaidate(checkngaydi())) {
         tour_ngay.push(
             ngaydis
@@ -158,7 +172,7 @@ function Tour(props) {
                 .Tours.find((x) => x.id === +id),
         );
     }
-    console.log(tour_ngay);
+
     const hide = () => {
         setState({
             ...state,
@@ -227,9 +241,9 @@ function Tour(props) {
             visible: false,
         });
     };
-    const thanhtien = (gia_te, gia_eb) => {
+    const thanhtien = (gia_te, gia_eb, totalService) => {
         var gianguoilon = checkKhuyenmai();
-        return gianguoilon * nguoilon + gia_te * treem + gia_eb * embe;
+        return gianguoilon * nguoilon + gia_te * treem + gia_eb * embe + totalService;
     };
     const [stylepayment, setstylepayment] = useState(1);
     const callbackfunction = (data) => {
@@ -353,6 +367,16 @@ function Tour(props) {
     if (giakhuyenmai) {
         tong = Number(nguoilon) + Number(treem) + Number(embe);
     }
+
+    const handleChange = (value) => {
+        let serviceActive = services.filter(s => value.includes(s.id))
+        let totalService = serviceActive.reduce((accumulator, current) => accumulator + current.price, 0)
+        setState({
+            ...state,
+            totalService
+        })
+    };
+
     return (
         <div id="detail-tour">
             <div className="breadcrumb">
@@ -534,6 +558,9 @@ function Tour(props) {
                 ))
             )}
             <Footer />
+
+            <ModalHotel isModalHotelOpen={true} />
+
             <Modal
                 title="Đặt tour"
                 visible={state.visible}
@@ -608,6 +635,7 @@ function Tour(props) {
                         placeholder=""
                     />
                 </div>
+
                 <h4 className="text-center text-primary">Số người</h4>
                 <div className="row">
                     <div className="col-md-3">
@@ -670,12 +698,32 @@ function Tour(props) {
                         </div>
                     </div>
                 </div>
+
+                <h4 className="text-center text-primary">Dịch vụ</h4>
+                <div className="form-group">
+                    <label htmlFor="">Có một vài dịch vụ mà bạn có thể chọn</label>
+                    <Select
+                        mode="tags"
+                        onChange={handleChange}
+                        style={{
+                            width: "100%"
+                        }}
+                        // className="form-control"
+                        tokenSeparators={[',']}
+                        options={optionService}
+                    />
+
+                </div>
+                <h4 className="text-center text-primary">Khách sạn</h4>
+                <div className="form-group">
+                    <label htmlFor="" style={{ cursor: "pointer" }}>Click vào đây để chọn khách sạn</label>
+                </div>
                 <h4 className="text-center text-primary">Thành tiền</h4>
                 {tour_ngay.map((ok) => (
                     <p key={ok.id}>
                         Số tiền cần phải trả:{" "}
                         <strong className="text-danger">
-                            {thanhtien(ok.giatreem, ok.giaembe).toLocaleString()}
+                            {thanhtien(ok.giatreem, ok.giaembe, state.totalService).toLocaleString()}
                         </strong>
                     </p>
                 ))}
