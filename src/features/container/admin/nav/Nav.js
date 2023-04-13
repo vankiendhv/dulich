@@ -36,6 +36,10 @@ import Themkhuyenmai from "../Khuyenmai/Themkhuyenmai";
 import { useDispatch, useSelector } from "react-redux";
 import Chiphi from "../Chiphi/Chiphi";
 import Themchiphi from "../Chiphi/Themchiphi";
+import Hotel from "../hotel/Hotel";
+import AddHotel from "../hotel/addHotel";
+import Room from "../hotel/Room";
+import AddRoom from "../hotel/addRoom";
 
 export default function Nav() {
     const match = useRouteMatch();
@@ -140,6 +144,24 @@ export default function Nav() {
             </Route>
             <Route exact path={`${match.path}/chiphi`}>
                 <Chiphi url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/hotel`}>
+                <Hotel url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/hotel/addHotel`}>
+                <AddHotel url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/hotel/editHotel/:id`}>
+                <AddHotel url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/room/:id`}>
+                <Room url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/room/:id/addRoom`}>
+                <AddRoom url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/room/:id/editRoom/:idRoom`}>
+                <AddRoom url={match.url} />
             </Route>
             <Route path={`${match.path}/chiphi/suachiphi/:id`}>
                 <Themchiphi url={match.url} />
@@ -406,6 +428,18 @@ export default function Nav() {
                 }
             >
                 <Link to={`${match.url}/chiphi`}>Chi phí</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="100"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-hotel"></span>
+                    ) : (
+                        <span className="fas fa-hotel mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/hotel`}>Khách sạn</Link>
             </Menu.Item>
             <Menu.Item
                 key="2"
