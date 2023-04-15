@@ -10,6 +10,27 @@
 }
 
 .room button {
+  outline: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  background-color: transparent;
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.room .btn-add-people {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  z-index: 20;
+}
+
+.room .active {
+  background-color: #1890ff;
+  color: white;
+}
+
+.room .btn-choose {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -22,7 +43,7 @@
 }
 
 .room.active {
-  background-color: rgba(128, 128, 128, 0.564);
+  border-color: #1890ff;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 

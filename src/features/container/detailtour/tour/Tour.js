@@ -33,8 +33,13 @@ function Tour(props) {
         valueDate: "",
         date: "",
         loadlaihoadon: 1,
-        totalService: 0
+        totalService: 0,
+        roomActive: []
     });
+
+    const [isModalHotel, setIsModalHotel] = useState(false);
+
+
     const services = useSelector((state) => state.dichvus.dichvu.data);
 
     let optionService = [];
@@ -227,10 +232,15 @@ function Tour(props) {
                 if (tong > songuoiconlai(songuoi)) {
                     message.warning("Vượt quá số người cho phép!");
                 } else {
-                    setState({
-                        ...state,
-                        visible2: true,
-                    });
+                    let totalPeopleRoom = state.roomActive.reduce((a, b) => (a + b.total), 0);
+                    if (totalPeopleRoom <= tong) {
+                        message.warning("Số người được đặt phòng ít hơn số người đi");
+                    } else {
+                        setState({
+                            ...state,
+                            visible2: true,
+                        });
+                    }
                 }
             }
         }
@@ -243,7 +253,7 @@ function Tour(props) {
     };
     const thanhtien = (gia_te, gia_eb, totalService) => {
         var gianguoilon = checkKhuyenmai();
-        return gianguoilon * nguoilon + gia_te * treem + gia_eb * embe + totalService;
+        return gianguoilon * nguoilon + gia_te * treem + gia_eb * embe + totalService + getTotalPrice(state.roomActive);
     };
     const [stylepayment, setstylepayment] = useState(1);
     const callbackfunction = (data) => {
@@ -296,6 +306,7 @@ function Tour(props) {
                         treem,
                         embe,
                         tongtien,
+                        roomActive: state.roomActive,
                         name: tour_ngay[0].name,
                         giatreem: tour_ngay[0].giatreem,
                         giaembe: tour_ngay[0].giaembe,
@@ -376,6 +387,18 @@ function Tour(props) {
             totalService
         })
     };
+
+    const handleOnOkHotel = (value) => {
+        setState({
+            ...state,
+            roomActive: value
+        })
+        setIsModalHotel(false)
+    }
+
+    const getTotalPrice = (data) => {
+        return data.reduce((a, b) => (a + b.price), 0)
+    }
 
     return (
         <div id="detail-tour">
@@ -559,7 +582,7 @@ function Tour(props) {
             )}
             <Footer />
 
-            <ModalHotel isModalHotelOpen={true} />
+            <ModalHotel isModalHotelOpen={isModalHotel} onClose={() => setIsModalHotel(false)} onOK={handleOnOkHotel} />
 
             <Modal
                 title="Đặt tour"
@@ -716,7 +739,7 @@ function Tour(props) {
                 </div>
                 <h4 className="text-center text-primary">Khách sạn</h4>
                 <div className="form-group">
-                    <label htmlFor="" style={{ cursor: "pointer" }}>Click vào đây để chọn khách sạn</label>
+                    <label htmlFor="" style={{ cursor: "pointer" }} onClick={() => setIsModalHotel(true)}>Click vào đây để chọn khách sạn</label>
                 </div>
                 <h4 className="text-center text-primary">Thành tiền</h4>
                 {tour_ngay.map((ok) => (

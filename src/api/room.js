@@ -34,6 +34,14 @@ class RoomApi {
             message.error("Có lỗi xảy ra!");
         });
     }
+
+    offRoom = (params) => {
+        const url = `/rooms/off/offRoom`;
+        return axiosClient.patch(url, params).then(data => {
+        }).catch(err => {
+            message.error("Có lỗi xảy ra!");
+        });
+    }
 }
 const roomApi = new RoomApi();
 export default roomApi;

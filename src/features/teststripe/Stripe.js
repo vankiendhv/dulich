@@ -57,9 +57,9 @@ function Stripe(props) {
                                 <p><strong>Tên tour</strong>: {thanhtoan[0].name}</p>
 
                                 <p><strong>Số người</strong>:
-                                 <Tooltip placement="right" title={<div>người lớn: {thanhtoan[0].nguoilon}, trẻ em: {thanhtoan[0].treem}, em bé: {thanhtoan[0].embe}</div>}>
+                                    <Tooltip placement="right" title={<div>người lớn: {thanhtoan[0].nguoilon}, trẻ em: {thanhtoan[0].treem}, em bé: {thanhtoan[0].embe}</div>}>
                                         &nbsp; {tinhSoNguoi(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe)} người
-                                </Tooltip></p>
+                                    </Tooltip></p>
 
                                 <p><strong>Tổng tiền</strong>: {tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe).toLocaleString()} vnđ</p>
                                 <p><strong>Quy đổi</strong>: {quyDoi(tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe), usd)} $</p>
@@ -67,7 +67,7 @@ function Stripe(props) {
                             </div>
                             <div className="col-md-6 text-center">
                                 <Elements stripe={stripePromise}>
-                                    <CheckoutForm hoadon={thanhtoan[0].hoadon} tentour={thanhtoan[0].name} thanhtien={thanhtoan[0].tongtien} email={email} price={quyDoi(tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe), usd)} />
+                                    <CheckoutForm roomActive={thanhtoan[0].roomActive} hoadon={thanhtoan[0].hoadon} tentour={thanhtoan[0].name} thanhtien={thanhtoan[0].tongtien} email={email} price={quyDoi(tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe), usd)} />
                                 </Elements>
                             </div>
                         </div>
