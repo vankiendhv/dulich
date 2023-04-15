@@ -124,7 +124,7 @@ const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK }) => {
             </Select>
             <div className="rooms">
                 <p>Phòng:</p>
-                {rooms.length ?
+                {rooms?.length ?
                     <div className="row">
                         {
                             rooms?.map(data => (
