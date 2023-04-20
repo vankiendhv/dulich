@@ -26,6 +26,14 @@ class RoomApi {
             message.error("Có lỗi xảy ra!");
         });
     };
+    addImg = (params) => {
+        const url = `/rooms/addImg`;
+        return axiosClient.post(url, params)
+    };
+    deleteImg = (id) => {
+        const url = `/rooms/deleteImg/${id}`;
+        return axiosClient.delete(url)
+    };
     editRoom = (params) => {
         const url = `/rooms/${params.id}`;
         return axiosClient.patch(url, params).then(data => {

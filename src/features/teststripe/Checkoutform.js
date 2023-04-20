@@ -17,6 +17,7 @@ export default function CheckoutForm(props) {
     const roomActive = props.roomActive;
     const price = props.price * 100;
     const hoadon = props.hoadon;
+    const totalMoney = props.totalMoney;
     const tentour = props.tentour;
     console.log(tentour);
     const thanhtien = props.thanhtien;
@@ -65,11 +66,11 @@ export default function CheckoutForm(props) {
                         treem: hoadon.treem,
                         nguoilon: hoadon.nguoilon,
                         ngaydi: hoadon.ngaydi,
-                        thanhtien: thanhtien,
+                        thanhtien: totalMoney,
                     }),
                 );
                 actionhoadon();
-                history.push(`/tour/${hoadon.tourId}`);
+                history.push(`/`);
             }
         }
     };

@@ -6,6 +6,10 @@ class HotelApi {
         const url = '/hotels';
         return axiosClient.get(url, { params }).then(data => data.data);
     };
+    getFollowAddress = (id) => {
+        const url = '/hotels/address/' + id;
+        return axiosClient.get(url).then(data => data.data);
+    };
     getOne = (id) => {
         const url = `/hotels/${id}`;
         return axiosClient.get(url).then(data => data.data)

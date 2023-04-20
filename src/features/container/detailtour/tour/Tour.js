@@ -17,6 +17,10 @@ import { addthanhtoan } from "./thanhtoanSlice";
 import ModalHotel from "./ModalHotel";
 function Tour(props) {
     const { id } = useParams();
+
+    const tours = useSelector((state) => state.tours.tour.data);
+    const ngaydis = useSelector((state) => state.ngaydis.ngaydi.data);
+
     const [state, setState] = useState({
         listdate: "",
         visible: false,
@@ -34,11 +38,18 @@ function Tour(props) {
         date: "",
         loadlaihoadon: 1,
         totalService: 0,
-        roomActive: []
+        roomActive: [],
+
     });
 
+    const [idAddress, setIdAddress] = useState(null);
     const [isModalHotel, setIsModalHotel] = useState(false);
 
+    useEffect(() => {
+        if (tours?.length) {
+            setIdAddress(tours.find(x => x.id === +id).Diadiems[0].id)
+        }
+    }, [tours])
 
     const services = useSelector((state) => state.dichvus.dichvu.data);
 
@@ -87,8 +98,7 @@ function Tour(props) {
         await dispatch(ngaydiData());
     };
 
-    const tours = useSelector((state) => state.tours.tour.data);
-    const ngaydis = useSelector((state) => state.ngaydis.ngaydi.data);
+
 
     const tour = [];
     if (tours) {
@@ -102,7 +112,6 @@ function Tour(props) {
     if (tours) {
         giakhuyenmai = tours.find((x) => x.id === +id);
     }
-    // console.log(giakhuyenmai);
     const formatdate = (e) => {
         if (e) {
             var ngay = e.substr(0, 2);
@@ -113,7 +122,6 @@ function Tour(props) {
     };
     const checkngaydi = () => {
         if (tour.length !== 0) {
-            // console.log(tour);
             var ngaydi = tour[0];
             var ngaymin = formatdate(ngaydi[0].ngay);
             var date = new Date();
@@ -127,7 +135,6 @@ function Tour(props) {
                     listDate.push(formatdate(ngaydi[i].ngay));
                 }
             }
-            // console.log(listDate.sort((a, b) => { return new Date(b) - new Date(a) }));
             listDate.sort(function (a, b) {
                 return new Date(a) - new Date(b);
             });
@@ -149,7 +156,6 @@ function Tour(props) {
                 "-" +
                 (date.getDate() > 1 ? date.getDate() : "0" + date.getDate());
             for (let i = 0; i < ngaydi.length; i++) {
-                console.log(dateToday <= formatdate(ngaydi[i].ngay));
                 if (date <= new Date(formatdate(ngaydi[i].ngay))) {
                     dates.push({ id: i + 1, ngay: ngaydi[i].ngay });
                 }
@@ -167,7 +173,6 @@ function Tour(props) {
             return ngay + "/" + thang + "/" + nam;
         }
     };
-    // console.log(ngaydis);
     var tour_ngay = [];
 
     if (ngaydis && formatlaidate(checkngaydi())) {
@@ -233,7 +238,7 @@ function Tour(props) {
                     message.warning("Vượt quá số người cho phép!");
                 } else {
                     let totalPeopleRoom = state.roomActive.reduce((a, b) => (a + b.total), 0);
-                    if (totalPeopleRoom <= tong) {
+                    if (totalPeopleRoom < tong) {
                         message.warning("Số người được đặt phòng ít hơn số người đi");
                     } else {
                         setState({
@@ -306,6 +311,7 @@ function Tour(props) {
                         treem,
                         embe,
                         tongtien,
+                        thanhtien: thanhtien(tour_ngay[0].giatreem, tour_ngay[0].giaembe, state.totalService),
                         roomActive: state.roomActive,
                         name: tour_ngay[0].name,
                         giatreem: tour_ngay[0].giatreem,
@@ -582,7 +588,7 @@ function Tour(props) {
             )}
             <Footer />
 
-            <ModalHotel isModalHotelOpen={isModalHotel} onClose={() => setIsModalHotel(false)} onOK={handleOnOkHotel} />
+            <ModalHotel idAddress={idAddress} isModalHotelOpen={isModalHotel} onClose={() => setIsModalHotel(false)} onOK={handleOnOkHotel} />
 
             <Modal
                 title="Đặt tour"

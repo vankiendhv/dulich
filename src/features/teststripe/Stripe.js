@@ -61,13 +61,13 @@ function Stripe(props) {
                                         &nbsp; {tinhSoNguoi(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe)} người
                                     </Tooltip></p>
 
-                                <p><strong>Tổng tiền</strong>: {tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe).toLocaleString()} vnđ</p>
-                                <p><strong>Quy đổi</strong>: {quyDoi(tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe), usd)} $</p>
+                                <p><strong>Tổng tiền</strong>: {thanhtoan[0].thanhtien?.toLocaleString()} vnđ</p>
+                                <p><strong>Quy đổi</strong>: {quyDoi(thanhtoan[0].thanhtien, usd)} $</p>
                             </div>
                             </div>
                             <div className="col-md-6 text-center">
                                 <Elements stripe={stripePromise}>
-                                    <CheckoutForm roomActive={thanhtoan[0].roomActive} hoadon={thanhtoan[0].hoadon} tentour={thanhtoan[0].name} thanhtien={thanhtoan[0].tongtien} email={email} price={quyDoi(tinhTongTien(thanhtoan[0].nguoilon, thanhtoan[0].treem, thanhtoan[0].embe, thanhtoan[0].gianguoilon, thanhtoan[0].giatreem, thanhtoan[0].giaembe), usd)} />
+                                    <CheckoutForm totalMoney={thanhtoan[0].thanhtien} roomActive={thanhtoan[0].roomActive} hoadon={thanhtoan[0].hoadon} tentour={thanhtoan[0].name} thanhtien={thanhtoan[0].tongtien} email={email} price={quyDoi(thanhtoan[0].thanhtien, usd)} />
                                 </Elements>
                             </div>
                         </div>

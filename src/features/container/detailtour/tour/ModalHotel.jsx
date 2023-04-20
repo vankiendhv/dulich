@@ -4,8 +4,9 @@ import hotelApi from "../../../../api/hotel"
 import roomApi from "../../../../api/room"
 import { Option } from 'antd/lib/mentions';
 import "./room.css"
+import ModalDetailRoom from './ModalDetailRoom';
 
-const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK }) => {
+const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK, idAddress }) => {
 
     const [hotels, setHotels] = useState([]);
     const [valueHotel, setValueHotel] = useState(null);
@@ -13,15 +14,18 @@ const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK }) => {
     const [isModalAddPeople, setIsModalAddPeople] = useState(false);
     const [valueAddPeople, setValueAddPeople] = useState(0);
     const [infoRoomActive, setInfoRoomActive] = useState({});
+    const [isModalRoom, setIsModalRoom] = useState(false);
 
     const [rooms, setRooms] = useState(null);
 
     useEffect(() => {
-        hotelApi.getAll().then(data => {
-            setValueHotel(data[0].id)
-            setHotels(data)
+        hotelApi.getFollowAddress(idAddress).then(data => {
+            if (data.length > 0) {
+                setValueHotel(data[0].id)
+                setHotels(data)
+            }
         })
-    }, []);
+    }, [idAddress]);
 
     useEffect(() => {
         if (valueHotel) {
@@ -43,7 +47,8 @@ const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK }) => {
         setValueHotel(value)
     }
 
-    const handleClickRoom = (room) => {
+    const handleClickRoom = (e, room) => {
+        e.stopPropagation()
         let index = roomActive.findIndex(r => r?.id === room.id)
         if (index >= 0) {
             let newData = [...roomActive];
@@ -53,13 +58,15 @@ const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK }) => {
             setInfoRoomActive(room);
             setRoomActive((prev) => [...prev, room])
         }
+        setIsModalRoom(false)
     }
 
     const checkRoomActive = (room) => {
         return roomActive.some(r => r.id === room.id && r.hotelId === room.hotelId);
     }
 
-    const handleAddPeople = () => {
+    const handleAddPeople = (e) => {
+        e.stopPropagation()
         setIsModalAddPeople(true);
     }
 
@@ -90,67 +97,81 @@ const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK }) => {
         return data.reduce((a, b) => (a + b.price), 0)
     }
 
+    const handleClickOkDetailRoom = () => {
+        setIsModalRoom(false)
+    }
+
+    const handleClickBoxRoom = (data) => {
+        setInfoRoomActive(data);
+        setIsModalRoom(true);
+    }
+
     return (
         <Modal title="Khách sạn" visible={isModalHotelOpen} onOk={handleOk} onCancel={handleCancel} width="80%">
-            <div>
-                <p>Phòng đã chọn</p>
-                {
-                    roomActive.length ?
-                        <>
-                            <ul>
-                                {roomActive.map(room => (
-                                    <li key={room.id}>Phòng: {room.name}, số người: {room.total?.toLocaleString()}, giá tiền: {room.price?.toLocaleString()} vnđ</li>
-                                ))}
-                            </ul>
-                            <p>Tổng tiền phòng: {getTotalPrice(roomActive)?.toLocaleString()} vnđ</p>
-                        </> :
-                        <center>Chưa chọn phòng nào</center>
-                }
-            </div>
-            <p>Chọn khách sạn:</p>
-            <Select
-                showSearch
-                style={{ width: 200 }}
-                placeholder="Select a hotel"
-                onChange={onChange}
-                value={valueHotel}
-                filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-            >
-                {hotels.map(data => (
-                    <Option value={data.id} key={data.id}>{data.name}</Option>
-                ))}
-            </Select>
-            <div className="rooms">
-                <p>Phòng:</p>
-                {rooms?.length ?
-                    <div className="row">
+            {hotels.length == 0 ?
+                <p>Không có khách sạn nào ở địa điểm này</p> :
+                <>
+                    <div>
+                        <p>Phòng đã chọn</p>
                         {
-                            rooms?.map(data => (
-                                <div className="col-md-6" style={{ marginBottom: 20 }} key={data.id}>
-                                    <div className={`room ${checkRoomActive(data) ? 'active' : null}`}>
-                                        <img src="https://pix8.agoda.net/hotelImages/159186/71699211/70d12ed128533df944afc2bae811fa6e.jpg?ca=16&ce=1" alt="" />
-                                        <div className="content">
-                                            <div>
-                                                <h4>{data.name}</h4>
-                                                <div className="info">Giá: {data.price?.toLocaleString()} vnđ</div>
-                                                <div className="info">Số lượng: {data.total}</div>
-                                                <div className="info">Loại phòng: {data.TypeRoom.name}</div>
-                                                <button onClick={() => handleClickRoom(data)} className={`btn-choose ${checkRoomActive(data) ? 'active' : null}`}>{checkRoomActive(data) ? 'Bỏ chọn' : 'Chọn phòng'} </button>
-                                                {checkRoomActive(data) && <button onClick={handleAddPeople} className='btn-add-people'>Thêm người</button>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
+                            roomActive.length ?
+                                <>
+                                    <ul>
+                                        {roomActive.map(room => (
+                                            <li key={room.id}>Phòng: {room.name}, số người: {room.total?.toLocaleString()}, giá tiền: {room.price?.toLocaleString()} vnđ</li>
+                                        ))}
+                                    </ul>
+                                    <p>Tổng tiền phòng: {getTotalPrice(roomActive)?.toLocaleString()} vnđ</p>
+                                </> :
+                                <center>Chưa chọn phòng nào</center>
                         }
                     </div>
-                    :
-                    <center>Hết phòng</center>
+                    <p>Chọn khách sạn:</p>
+                    <Select
+                        showSearch
+                        style={{ width: 200 }}
+                        placeholder="Select a hotel"
+                        onChange={onChange}
+                        value={valueHotel}
+                        filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                    >
+                        {hotels.map(data => (
+                            <Option value={data.id} key={data.id}>{data.name}</Option>
+                        ))}
+                    </Select>
+                    <div className="rooms">
+                        <p>Phòng:</p>
+                        {rooms?.length ?
+                            <div className="row">
+                                {
+                                    rooms?.map(data => (
+                                        <div className="col-md-6" style={{ marginBottom: 20 }} key={data.id} onClick={() => handleClickBoxRoom(data)}>
+                                            <div className={`room ${checkRoomActive(data) ? 'active' : null}`}>
+                                                <img src={data.imgRooms[0]?.urlImg ?? "https://pix8.agoda.net/hotelImages/159186/71699211/70d12ed128533df944afc2bae811fa6e.jpg?ca=16&ce=1"} alt="" />
+                                                <div className="content">
+                                                    <div>
+                                                        <h4>{data.name}</h4>
+                                                        <div className="info">Giá: {data.price?.toLocaleString()} vnđ</div>
+                                                        <div className="info">Số lượng: {data.total}</div>
+                                                        <div className="info">Loại phòng: {data.TypeRoom.name}</div>
+                                                        <button onClick={(e) => handleClickRoom(e, data)} className={`btn-choose ${checkRoomActive(data) ? 'active' : null}`}>{checkRoomActive(data) ? 'Bỏ chọn' : 'Chọn phòng'} </button>
+                                                        {checkRoomActive(data) && <button onClick={handleAddPeople} className='btn-add-people'>Thêm người</button>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                            :
+                            <center>Hết phòng</center>
 
-                }
-            </div>
+                        }
+                    </div>
+                </>
+            }
             <Modal title="Thêm người" visible={isModalAddPeople} onOk={handleAddPeopleOk} onCancel={handlePeopleCancel} width="50%">
                 <form action="" method="post">
                     <p>Với 1 người thêm giá phòng sẽ được tăng thêm: {infoRoomActive?.moneyForOne?.toLocaleString()} vnđ</p>
@@ -161,6 +182,8 @@ const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK }) => {
                     </div>
                 </form>
             </Modal>
+            <ModalDetailRoom isRoomActive={checkRoomActive(infoRoomActive)} isModalRoom={isModalRoom} onOk={handleClickOkDetailRoom} data={infoRoomActive} onChoose={handleClickRoom} />
+
         </Modal>
     );
 };
