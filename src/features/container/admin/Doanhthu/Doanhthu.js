@@ -19,14 +19,13 @@ export default function Doanhthu() {
             TongChiPhi += chiphi[i].money;
         }
     }
-    const chitieu = useSelector(state => state.chitieu.chitieu.data);
     useEffect(() => {
         // Axios.get("https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=6c24709f2cfc058a0499").then(data => {
         //     setusd(data.data.USD_VND)
         // })
         actionResult();
 
-    }, [chitieu])
+    }, [])
 
     const SoNguoiDung = useSelector(state => state.taikhoan.user.data);
     const HoaDon = useSelector(state => state.hoadons.hoadon.data);

@@ -60,7 +60,7 @@ export default function Lichsu() {
                                             </tr>
                                             <tr>
                                                 <th>Tổng tiền</th>
-                                                <th>{(ok.thanhtien).toLocaleString()} vnđ</th>
+                                                <th>{(ok.thanhtien)?.toLocaleString()} vnđ</th>
                                             </tr>
                                         </table>
                                     </div>
