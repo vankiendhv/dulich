@@ -1,11 +1,9 @@
 import { Button, Carousel, Modal, Rate } from 'antd'
 import React from 'react'
-import img1 from "../../hotels/img/1.jpg"
-import img6 from "../../hotels/img/6.jpg"
+import renderHtml from "react-render-html"
 
 
 export default function ModalDetailRoom({ isModalRoom = true, onOk, data, onChoose, isRoomActive }) {
-    console.log('data:', data)
 
     const handleOk = () => {
         onOk()
@@ -82,7 +80,7 @@ export default function ModalDetailRoom({ isModalRoom = true, onOk, data, onChoo
                 </div>
                 <div className="container" style={{ marginTop: 20 }}>
                     <div>
-                        {data.description}
+                        {renderHtml(data.description || '')}
                     </div>
                 </div>
             </div>

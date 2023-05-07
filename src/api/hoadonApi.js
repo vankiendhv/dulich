@@ -6,6 +6,10 @@ class HoadonApi {
         const url = '/hoadons';
         return axiosClient.get(url, { params });
     };
+    getStatistical = (params) => {
+        const url = '/hoadons/statistical';
+        return axiosClient.get(url, { params });
+    };
     posthoadon = (params) => {
         const url = '/hoadons';
         return axiosClient.post(url, params).then(data => {

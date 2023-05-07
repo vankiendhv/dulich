@@ -30,10 +30,11 @@ const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK, idAddress }) => {
     useEffect(() => {
         if (valueHotel) {
             roomApi.getAll({ id: valueHotel, status: false }).then(data => {
-                setRooms(data)
+                let newData = data.map(ok => ({ ...ok, hotelName: hotels.find(x => x.id === valueHotel)?.name }))
+                setRooms(newData)
             })
         }
-    }, [valueHotel]);
+    }, [valueHotel, hotels]);
 
     const handleOk = () => {
         onOK(roomActive);
@@ -108,7 +109,7 @@ const ModalHotel = ({ isModalHotelOpen = true, onClose, onOK, idAddress }) => {
 
     return (
         <Modal title="Khách sạn" visible={isModalHotelOpen} onOk={handleOk} onCancel={handleCancel} width="80%">
-            {hotels.length == 0 ?
+            {hotels.length === 0 ?
                 <p>Không có khách sạn nào ở địa điểm này</p> :
                 <>
                     <div>

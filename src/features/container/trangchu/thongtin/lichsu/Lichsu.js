@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./lichsu.css"
-import { Spin } from 'antd'
+import { Modal, Spin } from 'antd'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 export default function Lichsu() {
+    const [isShowHotel, setIsShowHotel] = useState(false);
+    const [infoHotel, setInfoHotel] = useState({});
     const infor = useSelector(state => state.infor.infor.data)
     const hoadons = useSelector(state => state.hoadons.hoadon.data)
     let thongtin = []
@@ -14,6 +16,29 @@ export default function Lichsu() {
             }
         }
     }
+
+
+
+    const handleClickViewHotel = (e, hotelString) => {
+        let hotel = JSON.parse(hotelString)
+        const groupedHotel = hotel.reduce((groups, user) => {
+            const hotelName = user.hotelName;
+            if (!groups[hotelName]) {
+                groups[hotelName] = [];
+            }
+            groups[hotelName].push(user);
+            return groups;
+        }, {});
+        e.stopPropagation()
+        e.preventDefault()
+        setIsShowHotel(true)
+        setInfoHotel(groupedHotel)
+    }
+
+    const handleOk = () => {
+        setIsShowHotel(false)
+    }
+
     return (
         <div className="history">
             <div className="history__header">
@@ -23,8 +48,26 @@ export default function Lichsu() {
             <div className="history__content">
                 {thongtin.length === 0 ? <div className="spin"><Spin className="mt-5" /></div> :
                     thongtin.map((ok, index) => (
-                        <Link to={`/tour/${ok.tourId}`}>
-                            <div className="history__box" key={index}>
+                        <Link to={`/tour/${ok.tourId}`} key={index}>
+                            <div className="history__box" style={{ position: "relative" }} >
+                                <div style={{
+                                    top: 10,
+                                    right: 10,
+                                    position: 'absolute',
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 5,
+                                    zIndex: 1000
+                                }}>
+                                    {
+                                        ok.hotel &&
+                                        <button onClick={(e) => handleClickViewHotel(e, ok.hotel)}>xem khách sạn</button>
+                                    }
+                                    {
+                                        ok.service &&
+                                        <button>xem dịch vụ</button>
+                                    }
+                                </div>
                                 <img src={ok.Tour.avatar} alt="" />
                                 <div className="history__tour">
                                     <div className="history--title">
@@ -66,11 +109,39 @@ export default function Lichsu() {
                                     </div>
                                 </div>
                             </div>
-
                         </Link>
                     ))
                 }
             </div>
+            <Modal title="Thông tin khách sạn" visible={isShowHotel} onOk={handleOk} onCancel={handleOk} width="50%">
+                {Object.entries(infoHotel).map(([hotelName, room]) => (
+                    <div key={hotelName}>
+                        <p>Khách sạn: {hotelName}</p>
+                        <div className="rooms">
+                            <p>Phòng:</p>
+                            <div className="row">
+                                {
+                                    room?.map(data => (
+                                        <div className="col-md-6" style={{ marginBottom: 20 }} key={data.id} >
+                                            <div className={`room`}>
+                                                <img src={data.imgRooms[0]?.urlImg ?? "https://pix8.agoda.net/hotelImages/159186/71699211/70d12ed128533df944afc2bae811fa6e.jpg?ca=16&ce=1"} alt="" />
+                                                <div className="content">
+                                                    <div>
+                                                        <h4>{data.name}</h4>
+                                                        <div className="info">Giá: {data.price?.toLocaleString()} vnđ</div>
+                                                        <div className="info">Số lượng: {data.total}</div>
+                                                        <div className="info">Loại phòng: {data.TypeRoom.name}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </Modal>
         </div>
     )
 }

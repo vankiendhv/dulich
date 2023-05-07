@@ -67,7 +67,7 @@ function Stripe(props) {
                             </div>
                             <div className="col-md-6 text-center">
                                 <Elements stripe={stripePromise}>
-                                    <CheckoutForm totalMoney={thanhtoan[0].thanhtien} roomActive={thanhtoan[0].roomActive} hoadon={thanhtoan[0].hoadon} tentour={thanhtoan[0].name} thanhtien={thanhtoan[0].tongtien} email={email} price={quyDoi(thanhtoan[0].thanhtien, usd)} />
+                                    <CheckoutForm totalMoney={thanhtoan[0].thanhtien} services={thanhtoan[0].services} roomActive={thanhtoan[0].roomActive} hoadon={thanhtoan[0].hoadon} tentour={thanhtoan[0].name} thanhtien={thanhtoan[0].tongtien} email={email} price={quyDoi(thanhtoan[0].thanhtien, usd)} />
                                 </Elements>
                             </div>
                         </div>

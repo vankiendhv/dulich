@@ -15,11 +15,11 @@ export default function CheckoutForm(props) {
     const elements = useElements();
     const email = props.email;
     const roomActive = props.roomActive;
+    const services = props.services;
     const price = props.price * 100;
     const hoadon = props.hoadon;
     const totalMoney = props.totalMoney;
     const tentour = props.tentour;
-    console.log(tentour);
     const thanhtien = props.thanhtien;
     const dispatch = useDispatch();
     const history = useHistory();
@@ -50,7 +50,7 @@ export default function CheckoutForm(props) {
         } else {
             if (result.paymentIntent.status === "succeeded") {
                 Axios.post("http://localhost:666/sendemail/", {
-                    thanhtien: thanhtien,
+                    thanhtien: totalMoney,
                     email: email,
                     tentour: tentour,
                 });
@@ -67,6 +67,8 @@ export default function CheckoutForm(props) {
                         nguoilon: hoadon.nguoilon,
                         ngaydi: hoadon.ngaydi,
                         thanhtien: totalMoney,
+                        hotel: JSON.stringify(roomActive),
+                        service: JSON.stringify(services?.map(s => ({ id: s.id, name: s.name, price: s.price })))
                     }),
                 );
                 actionhoadon();

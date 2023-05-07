@@ -15,6 +15,7 @@ import taikhoanApi from "../../../../api/taikhoanApi";
 import { ngaydiData } from "../../admin/Ngaydi/ngaydiSlice";
 import { addthanhtoan } from "./thanhtoanSlice";
 import ModalHotel from "./ModalHotel";
+import ServiceDetail from "./ServiceDetail";
 function Tour(props) {
     const { id } = useParams();
 
@@ -39,7 +40,8 @@ function Tour(props) {
         loadlaihoadon: 1,
         totalService: 0,
         roomActive: [],
-
+        serviceActive: [],
+        serviceSaveHoadon: []
     });
 
     const [idAddress, setIdAddress] = useState(null);
@@ -59,6 +61,7 @@ function Tour(props) {
             optionService.push({
                 value: item.id,
                 label: `${item.name} - ${item.price?.toLocaleString() || 0} vnđ`,
+                price: item.price
             })
         });
     }
@@ -88,17 +91,15 @@ function Tour(props) {
     };
 
     const dispatch = useDispatch();
-    const actionbinhluan = async () => {
-        await dispatch(binhluanData());
+    const actionbinhluan = () => {
+        dispatch(binhluanData());
     };
-    const actionhoadon = async () => {
-        await dispatch(hoadonData());
+    const actionhoadon = () => {
+        dispatch(hoadonData());
     };
-    const actionngaydi = async () => {
-        await dispatch(ngaydiData());
+    const actionngaydi = () => {
+        dispatch(ngaydiData());
     };
-
-
 
     const tour = [];
     if (tours) {
@@ -317,6 +318,7 @@ function Tour(props) {
                         giatreem: tour_ngay[0].giatreem,
                         giaembe: tour_ngay[0].giaembe,
                         gianguoilon: tour_ngay[0].gianguoilon,
+                        services: state.serviceSaveHoadon
                     }),
                 );
                 history.push("/stripe");
@@ -387,14 +389,18 @@ function Tour(props) {
 
     const handleChange = (value) => {
         let serviceActive = services.filter(s => value.includes(s.id))
+        console.log(JSON.stringify(serviceActive?.map(s => ({ id: s.id, name: s.name, price: s.price }))));
         let totalService = serviceActive.reduce((accumulator, current) => accumulator + current.price, 0)
         setState({
             ...state,
-            totalService
+            totalService,
+            serviceSaveHoadon: serviceActive,
+            serviceActive: value
         })
     };
 
     const handleOnOkHotel = (value) => {
+
         setState({
             ...state,
             roomActive: value
@@ -737,10 +743,10 @@ function Tour(props) {
                         style={{
                             width: "100%"
                         }}
-                        // className="form-control"
                         tokenSeparators={[',']}
                         options={optionService}
                     />
+                    {/* <ServiceDetail dataService={optionService} total={tong} listActive={state.serviceActive} /> */}
 
                 </div>
                 <h4 className="text-center text-primary">Khách sạn</h4>
@@ -758,7 +764,7 @@ function Tour(props) {
                 ))}
             </Modal>
             <Modal
-                title="Đặt tour"
+                title="Điều khoản"
                 visible={state.visible2}
                 onOk={handleOk2}
                 onCancel={handleCancel2}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './doanhthu.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { userData } from '../taikhoan/taikhoanSlice';
+import Chart from './Chart';
 
 
 export default function Doanhthu() {
@@ -129,6 +130,7 @@ export default function Doanhthu() {
                     </div>
                 </div>
             </div>
+            <Chart />
         </div>
     )
 }

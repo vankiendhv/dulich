@@ -75,7 +75,7 @@ function ListMenu(props) {
             visible2: false,
         });
     };
-    const getprofile = async () => {
+    const getProfile = async () => {
         if (users) {
             var ok = await taikhoanApi.getOne(users.id).then((ok) => {
                 return ok;
@@ -85,17 +85,18 @@ function ListMenu(props) {
         }
     };
     useEffect(() => {
-        getprofile();
+        getProfile();
         setAvatar("");
     }, [users]);
-    const actioninfor = async () => {
-        await dispatch(inforData());
+    const actioninfor = () => {
+        dispatch(inforData());
     };
     const logout = () => {
         localStorage.removeItem("token");
         actioninfor();
         setAvatar("");
         setUser("");
+        history.push("/dangnhap")
     };
     const onChange = (e) => {
         setState({
@@ -230,7 +231,7 @@ function ListMenu(props) {
                     });
                 // console.log(update);
                 if (update) {
-                    getprofile();
+                    getProfile();
                     message.success("Sửa thông tin thành công!");
                     setState({
                         visible2: false,
@@ -262,7 +263,7 @@ function ListMenu(props) {
                     });
                 // console.log(update);
                 if (update) {
-                    getprofile();
+                    getProfile();
                     message.success("Sửa thông tin thành công!");
                     setState({
                         visible2: false,

@@ -6,6 +6,7 @@ import { Option } from 'antd/lib/mentions'
 import roomApi from '../../../../api/room';
 import { PlusOutlined } from '@ant-design/icons';
 import { storage } from '../../../../firebase';
+import JoditEditor from 'jodit-react';
 
 function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -21,7 +22,6 @@ function AddRoom() {
     const [state, setState] = useState({
         status: 1,
         name: '',
-        description: "",
         total: 0,
         price: 0,
         idTypeRoom: 1,
@@ -31,8 +31,9 @@ function AddRoom() {
         previewImage: "",
         fileList: [],
         previewTitle: "",
-
     });
+
+    const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
 
     const onChange = e => {
@@ -54,13 +55,13 @@ function AddRoom() {
                     addPeople: data.addPeople,
                     moneyForOne: data.moneyForOne,
                     idTypeRoom: data.typeRoomId,
-                    description: data.description,
                 })
+                setDescription(data.description)
             })
         }
     }, [idRoom])
 
-    const { name, price, total, idTypeRoom, addPeople, moneyForOne, description, previewVisible, previewImage, fileList, previewTitle } = state;
+    const { name, price, total, idTypeRoom, addPeople, moneyForOne, previewVisible, previewImage, fileList, previewTitle } = state;
     const history = useHistory();
 
     const handleTypeRoom = (id) => {
@@ -176,7 +177,11 @@ function AddRoom() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Chi tiết phòng</label>
-                        <textarea name="description" value={description} onChange={onChange} id="" cols="30" rows="10" className="form-control w-50"></textarea>
+                        <JoditEditor
+                            value={description}
+                            tabIndex={1}
+                            onChange={e => setDescription(e)}
+                        />
                     </div>
                     <div className="form-group">
                         <label htmlFor="">Loại phòng</label>
