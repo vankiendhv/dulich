@@ -1,10 +1,14 @@
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { Button } from "@material-ui/core";
-import { Popconfirm, Popover, Spin, Table, Tooltip } from "antd";
-import React, { useEffect } from "react";
+import { Modal, Popconfirm, Popover, Spin, Table, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { hoadonData, removehoadon } from "./hoadonSlice";
 function Hoadon() {
+    const [isShowHotel, setIsShowHotel] = useState(false);
+    const [isShowService, setIsShowService] = useState(false);
+    const [infoHotel, setInfoHotel] = useState({});
+    const [infoService, setInfoService] = useState([]);
     const columns = [
         {
             title: "Người dùng",
@@ -25,6 +29,14 @@ function Hoadon() {
         {
             title: "Số lượng",
             dataIndex: "soluong",
+        },
+        {
+            title: "Khách sạn",
+            dataIndex: "hotel",
+        },
+        {
+            title: "Dịch vụ",
+            dataIndex: "service",
         },
         {
             title: "Tổng tiền",
@@ -67,6 +79,33 @@ function Hoadon() {
             </div>
         );
     };
+
+    const handleClickViewHotel = (hotelString) => {
+        let hotel = JSON.parse(hotelString)
+        const groupedHotel = hotel.reduce((groups, user) => {
+            const hotelName = user.hotelName;
+            if (!groups[hotelName]) {
+                groups[hotelName] = [];
+            }
+            groups[hotelName].push(user);
+            return groups;
+        }, {});
+        setIsShowHotel(true)
+        setInfoHotel(groupedHotel)
+    }
+
+    const handleClickViewService = (service) => {
+        setIsShowService(true)
+        setInfoService(JSON.parse(service))
+    }
+
+    const handleOk = () => {
+        setIsShowHotel(false)
+    }
+
+    const handleOkService = () => {
+        setIsShowService(false)
+    }
     return (
         <div id="admin">
             <div className="heading">
@@ -98,6 +137,8 @@ function Hoadon() {
                                     vnđ
                                 </span>
                             ),
+                            hotel: (ok.hotel && <p onClick={() => handleClickViewHotel(ok.hotel)}>Open</p>),
+                            service: ok.hotel && <p onClick={() => handleClickViewService(ok.service)}>Open</p>,
                             action: (
                                 <div className="action">
                                     <Popconfirm
@@ -115,6 +156,46 @@ function Hoadon() {
                     />
                 )}
             </div>
+            <Modal title="Thông tin khách sạn" visible={isShowHotel} onOk={handleOk} onCancel={handleOk} width="50%">
+                {Object.entries(infoHotel).map(([hotelName, room]) => (
+                    <div key={hotelName}>
+                        <p>Khách sạn: {hotelName}</p>
+                        <div className="rooms">
+                            <p>Phòng:</p>
+                            <div className="row">
+                                {
+                                    room?.map(data => (
+                                        <div className="col-md-6" style={{ marginBottom: 20 }} key={data.id} >
+                                            <div className={`room`}>
+                                                <img src={data.imgRooms[0]?.urlImg ?? "https://pix8.agoda.net/hotelImages/159186/71699211/70d12ed128533df944afc2bae811fa6e.jpg?ca=16&ce=1"} alt="" />
+                                                <div className="content">
+                                                    <div>
+                                                        <h4>{data.name}</h4>
+                                                        <div className="info">Giá: {data.price?.toLocaleString()} vnđ</div>
+                                                        <div className="info">Số lượng: {data.total}</div>
+                                                        <div className="info">Loại phòng: {data.TypeRoom.name}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </Modal>
+            <Modal title="Thông tin dịch vụ" visible={isShowService} onOk={handleOkService} onCancel={handleOkService} width="50%">
+                {infoService?.map(item => (
+                    <div key={item.id} style={{
+                        padding: "10px 0"
+                    }}>
+                        <span>Dịch vụ: {item.name}</span>
+                        <br />
+                        <span>Giá: {(item.price).toLocaleString()} vnđ</span>
+                    </div>
+                ))}
+            </Modal>
         </div>
     );
 }

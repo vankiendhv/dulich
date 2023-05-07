@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 export default function Lichsu() {
     const [isShowHotel, setIsShowHotel] = useState(false);
+    const [isShowService, setIsShowService] = useState(false);
     const [infoHotel, setInfoHotel] = useState({});
+    const [infoService, setInfoService] = useState([]);
     const infor = useSelector(state => state.infor.infor.data)
     const hoadons = useSelector(state => state.hoadons.hoadon.data)
     let thongtin = []
@@ -16,8 +18,6 @@ export default function Lichsu() {
             }
         }
     }
-
-
 
     const handleClickViewHotel = (e, hotelString) => {
         let hotel = JSON.parse(hotelString)
@@ -35,8 +35,18 @@ export default function Lichsu() {
         setInfoHotel(groupedHotel)
     }
 
+    const handleClickViewService = (e, service) => {
+        e.preventDefault()
+        setIsShowService(true)
+        setInfoService(JSON.parse(service))
+    }
+
     const handleOk = () => {
         setIsShowHotel(false)
+    }
+
+    const handleOkService = () => {
+        setIsShowService(false)
     }
 
     return (
@@ -65,7 +75,7 @@ export default function Lichsu() {
                                     }
                                     {
                                         ok.service &&
-                                        <button>xem dịch vụ</button>
+                                        <button onClick={(e) => handleClickViewService(e, ok.service)}>xem dịch vụ</button>
                                     }
                                 </div>
                                 <img src={ok.Tour.avatar} alt="" />
@@ -139,6 +149,17 @@ export default function Lichsu() {
                                 }
                             </div>
                         </div>
+                    </div>
+                ))}
+            </Modal>
+            <Modal title="Thông tin dịch vụ" visible={isShowService} onOk={handleOkService} onCancel={handleOkService} width="50%">
+                {infoService?.map(item => (
+                    <div key={item.id} style={{
+                        padding: "10px 0"
+                    }}>
+                        <span>Dịch vụ: {item.name}</span>
+                        <br />
+                        <span>Giá: {(item.price).toLocaleString()} vnđ</span>
                     </div>
                 ))}
             </Modal>
