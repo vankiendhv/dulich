@@ -28,9 +28,7 @@ function Header(props) {
         diachi: "",
         gioitinh: 1,
         ngaysinh: "",
-        chamngon: "",
         email: "",
-        website: "",
         linkImg: '',
         tenanh: '',
         img: ''
@@ -43,7 +41,7 @@ function Header(props) {
             img: e.target.files[0],
         });
     }
-    const { kynang, facebook, github, img, linkImg, name, sdt, diachi, gioitinh, ngaysinh, chamngon, website } = state
+    const { img, linkImg, name, sdt, diachi, gioitinh, ngaysinh } = state
     const showDrawer = () => {
         setState({
             ...state,
@@ -59,7 +57,7 @@ function Header(props) {
     const onSubmit = async (e) => {
         e.preventDefault();
         var idsua = users.id
-        if (name.trim() === "" || diachi.trim() === "" || gioitinh === "" || ngaysinh.trim() === "" || sdt.trim() === "" || kynang.trim() === "" || website.trim() === "" || chamngon.trim() === "" || github.trim() === "" || facebook.trim() === "") {
+        if (name.trim() === "" || diachi.trim() === "" || gioitinh === "" || ngaysinh.trim() === "" || sdt.trim() === "") {
             message.warning("Bạn chưa nhập đủ thông tin!")
         } else {
             if (img) {
@@ -69,7 +67,7 @@ function Header(props) {
                     .then(data => {
                         return data;
                     })
-                var updateUserRole = await userroleApi.edituserroleHeader({ idsua: user.idUserRole, kynang: kynang, chamngon: chamngon, website: website, github: github, facebook: facebook })
+                var updateUserRole = await userroleApi.edituserroleHeader({ idsua: user.idUserRole })
                     .then(data => {
                         return data
                     })
@@ -90,7 +88,7 @@ function Header(props) {
                     .then(data => {
                         return data;
                     })
-                var updateUserRole = await userroleApi.edituserroleHeader({ idsua: user.idUserRole, kynang: kynang, chamngon: chamngon, website: website, github: github, facebook: facebook })
+                var updateUserRole = await userroleApi.edituserroleHeader({ idsua: user.idUserRole, })
                     .then(data => {
                         return data
                     })
@@ -150,11 +148,7 @@ function Header(props) {
                 sdt: infor.sdt,
                 avatar: infor.avatar,
                 idUserRole: inforadmin.id,
-                chamngon: inforadmin.chamngon,
-                facebook: inforadmin.facebook,
-                github: inforadmin.github,
-                kynang: inforadmin.kynang,
-                website: inforadmin.website
+
             })
             setState({
                 name: infor.name,
@@ -163,11 +157,7 @@ function Header(props) {
                 gioitinh: infor.gioitinh,
                 ngaysinh: infor.ngaysinh,
                 sdt: infor.sdt,
-                chamngon: inforadmin.chamngon,
-                facebook: inforadmin.facebook,
-                github: inforadmin.github,
-                kynang: inforadmin.kynang,
-                website: inforadmin.website
+
             })
         }
     }
@@ -204,9 +194,7 @@ function Header(props) {
                             <div className="col-md-6">
                                 <p className="mb-2"><span>Account:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">{user.email}</span></p>
                                 <p className="mb-2"><span>Địa chỉ:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">{user.diachi}</span></p>
-                                <p className="mb-2"><span>Website:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">Laisatthu.com.vn</span></p>
                             </div>
-                            <p className="tab"><span>Châm ngôn:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">{user.chamngon}</span></p>
                         </div>
                     </div>
                     <hr />
@@ -220,18 +208,15 @@ function Header(props) {
                             <p className="mb-2"><span>Trách nhiệm:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">{users ? users.mota : ""}</span></p>
                             <p className="mb-2"><span>Giám sát:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">Trần Sang</span></p>
                         </div>
-                        <p className="tab"><span>Kỹ năng:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user text-justify">{user.kynang}</span></p>
                     </div>
                     <hr />
                     <h4>Liên hệ</h4>
                     <div className="row">
                         <div className="col-md-6">
                             <p className="mb-2"><span>Email:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">{user.email}</span></p>
-                            <p className="mb-2"><span>Github:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">{user.github}</span></p>
                         </div>
                         <div className="col-md-6">
                             <p className="mb-2"><span>Phone Number:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">{user.sdt}</span></p>
-                            <p className="mb-2"><span>Facebook:&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="tt-user">{user.facebook}</span></p>
                         </div>
                     </div>
                     <Button variant="contained" color="secondary" onClick={() => showDrawer2()} className="float-right mt-2">Thay đổi thông tin</Button>
@@ -281,32 +266,13 @@ function Header(props) {
                         <label htmlFor="">Ngày sinh</label>
                         <input type="date" name="ngaysinh" value={ngaysinh} onChange={onChange} className="form-control " placeholder="" aria-describedby="helpId" />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="">Kỹ năng</label>
-                        <input type="text" name="kynang" value={kynang} onChange={onChange} className="form-control " placeholder="" aria-describedby="helpId" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="">Github</label>
-                        <input type="text" name="github" value={github} onChange={onChange} className="form-control " placeholder="" aria-describedby="helpId" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="">Facebook</label>
-                        <input type="text" name="facebook" value={facebook} onChange={onChange} className="form-control " placeholder="" aria-describedby="helpId" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="">Website</label>
-                        <input type="text" name="website" value={website} onChange={onChange} className="form-control " placeholder="" aria-describedby="helpId" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="">Châm ngôn</label>
-                        <input type="text" name="chamngon" value={chamngon} onChange={onChange} className="form-control " placeholder="" aria-describedby="helpId" />
-                    </div>
+
                     <div className="text-center">
                         <Button type="submit" variant="contained" color="primary" className=" mt-2">Sửa đổi</Button>
                     </div>
                 </form>
             </Drawer>
-        </div >
+        </div>
 
     )
 }
