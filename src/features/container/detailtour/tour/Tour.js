@@ -561,7 +561,7 @@ function Tour(props) {
                                                         <span>Nơi khởi hành:</span>
                                                     </td>
                                                     <td>
-                                                        <span>Vinh</span>
+                                                        <span>Hà nội</span>
                                                     </td>
                                                 </tr>
                                             </table>

@@ -49,10 +49,20 @@ export default function CheckoutForm(props) {
             message.warning("Số thẻ hoặc thông tin khác không hợp lệ!");
         } else {
             if (result.paymentIntent.status === "succeeded") {
+                const groupedHotel = roomActive.reduce((groups, user) => {
+                    const hotelName = user.hotelName;
+                    if (!groups[hotelName]) {
+                        groups[hotelName] = [];
+                    }
+                    groups[hotelName].push(user);
+                    return groups;
+                }, {});
                 Axios.post("http://localhost:666/sendemail/", {
                     thanhtien: totalMoney,
                     email: email,
                     tentour: tentour,
+                    hotel: groupedHotel,
+                    service: services
                 });
                 roomApi.offRoom({
                     ids: roomActive.map(r => r.id)

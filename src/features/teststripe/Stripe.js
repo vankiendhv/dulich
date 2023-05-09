@@ -17,7 +17,6 @@ function Stripe(props) {
             thanhtoan.unshift(thanhtoans[i]);
         }
     }
-    // console.log(thanhtoan);
     const infor = useSelector(state => state.infor.infor.data);
     useEffect(() => {
         // Axios.get("https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=6c24709f2cfc058a0499").then(data => {
@@ -38,6 +37,7 @@ function Stripe(props) {
     const quyDoi = (tien, usd) => {
         return (tien / usd).toFixed(2)
     }
+
     return (
         <div className="thanhtoan">
             {thanhtoan.length === 0 ?
