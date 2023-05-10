@@ -40,7 +40,6 @@ import Hotel from "../hotel/Hotel";
 import AddHotel from "../hotel/addHotel";
 import Room from "../hotel/Room";
 import AddRoom from "../hotel/addRoom";
-
 export default function Nav() {
     const match = useRouteMatch();
     const { Header, Sider, Content } = Layout;
@@ -96,25 +95,106 @@ export default function Nav() {
             <Route exact path={match.path}>
                 <Doanhthu />
             </Route>
+            <Route exact path={`${match.path}/chiphi`}>
+                <Chiphi url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/hotel`}>
+                <Hotel url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/hotel/addHotel`}>
+                <AddHotel url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/hotel/editHotel/:id`}>
+                <AddHotel url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/room/:id`}>
+                <Room url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/room/:id/addRoom`}>
+                <AddRoom url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/room/:id/editRoom/:idRoom`}>
+                <AddRoom url={match.url} />
+            </Route>
+            <Route path={`${match.path}/chiphi/suachiphi/:id`}>
+                <Themchiphi url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/chiphi/themchiphi`}>
+                <Themchiphi url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/khuyenmai`}>
+                <Khuyenmai url={match.url} />
+            </Route>
+            <Route path={`${match.path}/khuyenmai/themkhuyenmai`}>
+                <Themkhuyenmai url={match.url} />
+            </Route>
+            <Route path={`${match.path}/khuyenmai/suakhuyenmai/:id`}>
+                <Themkhuyenmai url={match.url} />
+            </Route>
+            <Route path={`${match.path}/tintuc/chitiettintuc/:id`}>
+                <Chitiettintuc />
+            </Route>
+            <Route exact path={`${match.path}/tintuc`}>
+                <Tintuc url={match.url} />
+            </Route>
+            <Route path={`${match.path}/tintuc/themtintuc`}>
+                <Themtintuc />
+            </Route>
+            <Route path={`${match.path}/tintuc/suatintuc/:id`}>
+                <Themtintuc />
+            </Route>
+            <Route exact path={`${match.path}/diadiem`}>
+                <Diadiem url={match.url} />
+            </Route>
+            <Route path={`${match.url}/diadiem/themdiadiem`}>
+                <Themdiadiem />
+            </Route>
+            <Route path={`${match.path}/diadiem/suadiadiem/:id`}>
+                <Themdiadiem />
+            </Route>
+            <Route exact path={`${match.path}/lienhe`}>
+                <Lienhe url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/ngaydi`}>
+                <Ngaydi />
+            </Route>
+            <Route exact path={`${match.path}/hoadon`}>
+                <Hoadon url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/anh`}>
+                <Anh url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/dichvu`}>
+                <Dichvu url={match.url} />
+            </Route>
+            <Route exact path={`${match.path}/binhluan`}>
+                <Binhluan url={match.url} />
+            </Route>
             <Route exact path={`${match.path}/tour`}>
                 <Tour url={match.url} />
+            </Route>
+            <Route path={`${match.path}/lienhe/themlienhe`}>
+                <Themlienhe />
+            </Route>
+            <Route path={`${match.path}/dichvu/themdichvu`}>
+                <Themdichvu />
+            </Route>
+            <Route path={`${match.path}/binhluan/chitietbinhluan/:id`}>
+                <Chitietbinhluan />
             </Route>
             <Route path={`${match.path}/tour/chitiettour/:id`}>
                 <Chitiettour />
             </Route>
-            <Route path={`${match.path}/tour/themtour`}>
-                <Themtour />
+            <Route path={`${match.path}/quocgia/chitietquocgia/:id`}>
+                <Chitietquocgia />
             </Route>
-            <Route path={`${match.path}/tour/suatour/:id`}>
-                <Themtour />
+            <Route path={`${match.path}/lienhe/sualienhe/:id`}>
+                <Themlienhe />
+            </Route>
+            <Route path={`${match.path}/dichvu/suadichvu/:id`}>
+                <Themdichvu />
             </Route>
             <Route path={`${match.path}/loaitour/sualoaitour/:id`}>
-                <Themloaitour />
-            </Route>
-            <Route exact path={`${match.path}/loaitour`}>
-                <Loaitour url={match.url} />
-            </Route>
-            <Route path={`${match.path}/loaitour/themloaitour`}>
                 <Themloaitour />
             </Route>
             <Route path={`${match.path}/quocgia/suaquocgia/:id`}>
@@ -123,17 +203,20 @@ export default function Nav() {
             <Route exact path={`${match.path}/quocgia`}>
                 <Quocgia url={match.url} />
             </Route>
+            <Route exact path={`${match.path}/loaitour`}>
+                <Loaitour url={match.url} />
+            </Route>
+            <Route path={`${match.path}/loaitour/themloaitour`}>
+                <Themloaitour />
+            </Route>
             <Route path={`${match.path}/quocgia/themquocgia`}>
                 <Themquocgia />
             </Route>
-            <Route exact path={`${match.path}/diadiem`}>
-                <Diadiem url={match.url} />
+            <Route path={`${match.path}/tour/themtour`}>
+                <Themtour />
             </Route>
-            <Route path={`${match.path}/diadiem/themdiadiem`}>
-                <Themdiadiem />
-            </Route>
-            <Route path={`${match.path}/diadiem/suadiadiem/:id`}>
-                <Themdiadiem />
+            <Route path={`${match.path}/tour/suatour/:id`}>
+                <Themtour />
             </Route>
         </div>
     );
@@ -310,8 +393,7 @@ export default function Nav() {
                 <Link to={`${match.url}/tintuc`}>Quản lý tin tức</Link>
             </Menu.Item>
         </Menu>
-    );
-    const menu_quanlybinhluan = (
+    ); const menu_quanlybinhluan = (
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
             <Menu.Item
                 key="1"
@@ -354,6 +436,30 @@ export default function Nav() {
                 <Link to="/admin">Doanh thu</Link>
             </Menu.Item>
             <Menu.Item
+                key="19"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-money-check-alt"></span>
+                    ) : (
+                        <span className="fas fa-money-check-alt mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/chiphi`}>Chi phí</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="100"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-hotel"></span>
+                    ) : (
+                        <span className="fas fa-hotel mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/hotel`}>Khách sạn</Link>
+            </Menu.Item>
+            <Menu.Item
                 key="2"
                 icon={
                     state.collapsed === true ? (
@@ -364,6 +470,18 @@ export default function Nav() {
                 }
             >
                 <Link to={`${match.url}/tour`}>Quản lý tour</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="4"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="far fa-newspaper"></span>
+                    ) : (
+                        <span className="far fa-newspaper mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/tintuc`}>Quản lý tin tức</Link>
             </Menu.Item>
             <Menu.Item
                 key="5"
@@ -400,6 +518,90 @@ export default function Nav() {
                 }
             >
                 <Link to={`${match.url}/diadiem`}>Quản lý địa điểm</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="9"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-comments"></span>
+                    ) : (
+                        <span className="fas fa-comments mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/binhluan`}>Quản lý bình luận</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="11"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-images"></span>
+                    ) : (
+                        <span className="fas fa-images mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/anh`}>Quản lý ảnh</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="12"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fab fa-phoenix-framework"></span>
+                    ) : (
+                        <span className="fab fa-phoenix-framework mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/dichvu`}>Quản lý dịch vụ</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="13"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-file-alt"></span>
+                    ) : (
+                        <span className="fas fa-file-alt mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/hoadon`}>Quản lý hoá đơn</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="15"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-id-card"></span>
+                    ) : (
+                        <span className="fas fa-id-card mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/lienhe`}>Quản lý liên hệ</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="16"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-clock"></span>
+                    ) : (
+                        <span className="fas fa-clock mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/ngaydi`}>Quản lý Ngày đi</Link>
+            </Menu.Item>
+            <Menu.Item
+                key="18"
+                icon={
+                    state.collapsed === true ? (
+                        <span className="fas fa-percent"></span>
+                    ) : (
+                        <span className="fas fa-percent mr-2"></span>
+                    )
+                }
+            >
+                <Link to={`${match.url}/khuyenmai`}>Khuyễn mãi</Link>
             </Menu.Item>
         </Menu>
     );

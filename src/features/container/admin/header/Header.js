@@ -131,6 +131,7 @@ function Header(props) {
     const users = useSelector(state => state.infor.infor.data);
 
     const [user, setUser] = useState();
+    console.log('user:', user)
     const getprofile = async () => {
         if (users) {
             var infor = await taikhoanApi.getOne(users.id).then(ok => {
