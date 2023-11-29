@@ -45,6 +45,7 @@ import Themchiphi from "../Chiphi/Themchiphi";
 import Hoadoncanhan from "../Hoadoncanhan/Hoadoncanhan";
 import Kiemduyet from "../Kiemduyet/Kiemduyet";
 import { hoadoncanhanData } from "../Hoadoncanhan/hoadoncanhanSlice";
+import Customers from "../Tour/Customers";
 
 export default function Nav() {
   const match = useRouteMatch();
@@ -62,7 +63,7 @@ export default function Nav() {
     window.scrollTo(0, 0);
   }, []);
   const hoadoncanhan = useSelector(
-    (state) => state.hoadoncanhans.hoadoncanhan.data
+    (state) => state.hoadoncanhans.hoadoncanhan.data,
   );
   let counthoadon = 0;
   if (hoadoncanhan) {
@@ -123,6 +124,9 @@ export default function Nav() {
       </Route>
       <Route path={`${match.path}/tour/themtour`}>
         <Themtour />
+      </Route>
+      <Route path={`${match.path}/tour/customers/:tourId`}>
+        <Customers />
       </Route>
       <Route path={`${match.path}/tour/suatour/:id`}>
         <Themtour />
@@ -308,6 +312,9 @@ export default function Nav() {
       </Route>
       <Route path={`${match.path}/tour/themtour`}>
         <Themtour />
+      </Route>
+      <Route path={`${match.path}/tour/customers/:tourId`}>
+        <Customers />
       </Route>
       <Route path={`${match.path}/tour/suatour/:id`}>
         <Themtour />
@@ -764,7 +771,7 @@ export default function Nav() {
               {
                 className: "trigger",
                 onClick: toggle,
-              }
+              },
             )}
           </Header>
           <Content
