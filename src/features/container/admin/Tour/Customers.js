@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import tourApi from "../../../../api/tourApi";
 import { useParams } from "react-router-dom";
-import { Image, Spin, Table } from "antd";
+import { Button, Image, Spin, Table } from "antd";
+import ReactExport from "react-data-export";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+
 export default function Customers(props) {
   const columns = [
     {
@@ -33,15 +38,8 @@ export default function Customers(props) {
   const { tourId } = useParams();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
-  useEffect(() => {
-    tourApi.getCustomers(tourId).then((data) => {
-      if (data.data[0]?.Users) {
-        setLoading(false);
-        setData(data.data[0]?.Users);
-      }
-    });
-  }, [tourId]);
+  const [dataExcel, setDataExcel] = useState([]);
+  const [nameTour, setNameTour] = useState("");
 
   const convertTime = (date) => {
     // 2021-01-01T14:04:43.000Z
@@ -66,6 +64,59 @@ export default function Customers(props) {
     );
   };
 
+  useEffect(() => {
+    tourApi.getCustomers(tourId).then((data) => {
+      const users = data.data[0]?.Users;
+      if (users) {
+        setLoading(false);
+        setData(users);
+        setNameTour(data.data[0].name);
+      }
+      const newData = [];
+
+      users.forEach((element) => {
+        newData.push([
+          { value: element.name },
+          { value: element.email },
+          { value: element.sdt },
+          { value: element.diachi },
+          { value: convertTime(element.createdAt) },
+        ]);
+      });
+
+      setDataExcel(newData);
+    });
+  }, [tourId]);
+
+  const ExportEXCEL = () => {
+    return (
+      <ExcelFile
+        element={
+          <Button variant="outlined" color="secondary">
+            Xuất file excel
+          </Button>
+        }
+        filename={nameTour}
+      >
+        <ExcelSheet
+          dataSet={[
+            {
+              columns: [
+                { title: "Tên người dùng", width: { wpx: 150 } },
+                { title: "Email", width: { wpx: 170 } },
+                { title: "Số điện thoại", width: { wpx: 100 } },
+                { title: "Địa chỉ", width: { wpx: 250 } },
+                { title: "Ngày đặt", width: { wpx: 150 } },
+              ],
+              data: dataExcel,
+            },
+          ]}
+          name="Khách hàng"
+        />
+      </ExcelFile>
+    );
+  };
+
   return (
     <div id="admin">
       <div className="heading">
@@ -73,6 +124,7 @@ export default function Customers(props) {
         <div className="hr"></div>
       </div>
       <div className="content">
+        <div className="add">{!!data.length && <ExportEXCEL />}</div>
         {loading ? (
           <div className="spin">
             <Spin className="mt-5" />

@@ -7,6 +7,8 @@ import { chitieuData } from "./chitieuSlice";
 import { userData } from "../taikhoan/taikhoanSlice";
 import ReactExport from "react-data-export";
 import chiphiApi from "../../../../api/chiphiApi";
+import PieTopTour from "./PieTopTour";
+import BarLoiNhuan from "./BarLoiNhuan";
 
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
@@ -19,7 +21,7 @@ export default function Doanhthu() {
     chitieungay: "",
     chitieunam: "",
   });
-  const [usd] = useState(23060);
+  const [usd] = useState(1);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -38,7 +40,9 @@ export default function Doanhthu() {
 
   if (chiphi) {
     for (let i = 0; i < chiphi.length; i++) {
-      TongChiPhi += chiphi[i].money;
+      if (chiphi[i].createdAt.includes(new Date().getFullYear())) {
+        TongChiPhi += chiphi[i].money;
+      }
     }
   }
   const actionChitiet = async () => await dispatch(chitieuData());
@@ -83,6 +87,7 @@ export default function Doanhthu() {
       });
     }
   }
+
   let ThuNhapHomNay = 0;
   if (HoaDonDate) {
     let date = new Date();
@@ -95,7 +100,7 @@ export default function Doanhthu() {
       "-" +
       date.getFullYear();
     for (let i = 0; i < HoaDonDate.length; i++) {
-      if (HoaDonDate[i].date === dateToday) {
+      if (HoaDonDate[i].date == dateToday) {
         ThuNhapHomNay += HoaDonDate[i].tongtien;
       }
     }
@@ -110,7 +115,7 @@ export default function Doanhthu() {
       "-" +
       date.getFullYear();
     for (let i = 0; i < HoaDonDate.length; i++) {
-      if (HoaDonDate[i].date.substr(3) === dateMonth) {
+      if (HoaDonDate[i].date.substr(3) == dateMonth) {
         ThuNhapThang += HoaDonDate[i].tongtien;
       }
     }
@@ -119,8 +124,9 @@ export default function Doanhthu() {
   if (HoaDonDate) {
     let date = new Date();
     let dateYear = date.getFullYear();
+
     for (let i = 0; i < HoaDonDate.length; i++) {
-      if (HoaDonDate[i].date.substr(6) === dateYear) {
+      if (HoaDonDate[i].date.substr(6) == dateYear) {
         ThuNhapNam += HoaDonDate[i].tongtien;
       }
     }
@@ -129,7 +135,9 @@ export default function Doanhthu() {
 
   if (HoaDon) {
     for (let i = 0; i < HoaDon.length; i++) {
-      TongThuNhap += HoaDon[i].thanhtien;
+      if (HoaDon[i].createdAt.includes(new Date().getFullYear())) {
+        TongThuNhap += HoaDon[i].thanhtien;
+      }
     }
   }
 
@@ -187,8 +195,8 @@ export default function Doanhthu() {
           dataSet={[
             {
               columns: [
-                { title: "Tháng", width: { wpx: 100 } }, //pixels width
-                { title: "Tổng doanh thu", width: { wpx: 150 } }, //char width
+                { title: "Tháng", width: { wpx: 100 } },
+                { title: "Tổng doanh thu", width: { wpx: 150 } },
                 { title: "Tổng chi", width: { wpx: 100 } },
                 { title: "Lợi nhuận", width: { wpx: 100 } },
               ],
@@ -214,7 +222,7 @@ export default function Doanhthu() {
           </div>
           <div className="monney">
             <span>
-              <strong>$ {TongThuNhap ? thunhap.toLocaleString() : 0}</strong>
+              <strong> {TongThuNhap ? thunhap.toLocaleString() : 0} vnđ</strong>
             </span>
             <br />
             <span>Tổng thu nhập</span>
@@ -230,11 +238,11 @@ export default function Doanhthu() {
           <div className="monney float-right">
             <span>
               <strong>
-                ${" "}
                 {LoiNhuan(
                   (TongChiPhi / usd).toFixed(0),
                   (TongThuNhap / usd).toFixed(0),
-                )}
+                )}{" "}
+                vnđ
               </strong>
             </span>
             <br />
@@ -249,7 +257,7 @@ export default function Doanhthu() {
           </div>
           <div className="monney">
             <span>
-              <strong>$ {chiphitong.toLocaleString()}</strong>
+              <strong> {chiphitong.toLocaleString()} vnđ</strong>
             </span>
             <br />
             <span>Tổng chi</span>
@@ -270,7 +278,7 @@ export default function Doanhthu() {
           </div>
         </div>
       </div>
-      <h4 className="mt-4 mb-2">Chỉ tiêu</h4>
+      {/* <h4 className="mt-4 mb-2">Chỉ tiêu</h4>
       <div className="container text-center">
         <div className="row pt-3 pb-2">
           <div className="col-md-4">
@@ -395,15 +403,15 @@ export default function Doanhthu() {
             </div>
           </div>
         </div>
-      </div>
-      <Button
+      </div> */}
+      {/* <Button
         className="float-right mt-4"
         onClick={showModal}
         variant="contained"
         color="primary"
       >
         Đặt chỉ tiêu
-      </Button>
+      </Button> */}
       <Modal
         title="Đặt chỉ tiêu"
         visible={isModalVisible}
@@ -451,6 +459,24 @@ export default function Doanhthu() {
           />
         </div>
       </Modal>
+      <h4 className="mt-4 mb-2">Doanh thu năm nay</h4>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <BarLoiNhuan usd={usd} />
+      </div>
+      <h4 className="mt-4 mb-2">Top tour được nhiều người đặt</h4>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <PieTopTour />
+      </div>
     </div>
   );
 }

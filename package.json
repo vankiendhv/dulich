@@ -49,6 +49,7 @@
     "react-sticky": "^6.0.3",
     "react-stripe-checkout": "^2.6.3",
     "react-trailer": "^1.2.2",
+    "recharts": "^2.10.3",
     "swiper": "^6.3.5"
   },
   "scripts": {
@@ -71,5 +72,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.18.6"
   }
 }
